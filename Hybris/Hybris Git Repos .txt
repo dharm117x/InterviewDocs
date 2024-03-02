@@ -1,0 +1,88 @@
+Create GIT repos:
+----------------
+git config --global user.email "dharm117x@gmail.com"
+git config --global user.name "Dharmendra kumar"
+
+
+Passwrod reset:
+https://github.com/settings/tokens
+genrate token:   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
+
+git remote -v
+
+git remote show master
+
+git remote rm master
+
+git remote add origin https://github.com/dharm117x/microservice.git
+
+git remote set-url origin git@github.com:USERNAME/REPONAME.git
+
+https://dharm117x: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@github.com/dharm117x/b2b_site.git
+
+git remote set-url origin https://dharm117x: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@github.com/dharm117x/b2b_site.git
+git remote set-url origin https://dharm117x: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@github.com/dharm117x/Linux.git
+
+
+With Admintrastor cmd: Symlink on windows
+-------------------------------------------
+C:\Windows\system32>D:
+
+D:\>cd D:\projects\hybris6_b2c\hybris
+
+mklink /D custom D:\projects\hybris11-b2b\b2b_site\core-customize\hybris\bin\custom
+
+mklink /D config D:\projects\hybris11-b2b\b2b_site\core-customize\hybris\config
+
+D:\projects\hybris6_b2c\hybris>mklink /D D:\projects\hybris6_b2c\hybris\config D:\projects\hybris6_b2c\hybris_repos\config
+symbolic link created for config <<===>> D:\projects\hybris6_b2c\hybris_repos\config
+
+D:\projects\hybris6_b2c\hybris\bin>mklink /D custom D:\projects\hybris6_b2c\hybris_repos\custom
+
+mklink /D custom D:\projects\hybris11-b2b\hybris_cloud\core-customize\hybris\bin\custom
+
+
+symbolic link created for custom <<===>> D:\projects\hybris6_b2c\hybris_repos\custom
+
+git add-symlink <source_file_or_dir> <target_symlink>,
+
+git add-symlink config  D:\projects\hybris6_b2c\hybris_repos\config
+
+Add custom and config folder in hybris_repos
+D:\projects\hybris6_b2c\hybris_repos
+
+CMD command
+1. Add all files in git repos:
+git add --all
+
+2. Commit locally:
+git commit -m "hybris 6 b2c setup"
+
+git remote add remote_server_name username@git_server_ip:/path/to/git_repo
+
+
+3. Git restore after add:
+------------------
+git restore --staged  core-customize/hybris/bin/custom/dkshop/dkshopcore/lib/jstl-1.2.jar
+
+
+GIT Ignore
+---------------------------
+git rm --cached .project
+git rm --cached .classpath
+git rm --cached -r .settings
+git rm --cached -r *
+
+.gitignore
+---------------
+.metadata/
+
+bin/
+target/
+build/
+
+.class
+.project
+.classpath
+.settings
+

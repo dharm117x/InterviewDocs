@@ -1,0 +1,94 @@
+﻿Default component:
+-------------------
+1) Adding CMS component of existing component type like 
+   CMSParagraphComponent,CMSImageComponent , CMSLinkComponent MiniCartComponent etc.
+
+
+---------------------------------------------------------------
+1)Decide what type of existing component we need to use for this requirement.
+
+I am going to use CMSParagraphComponent existing type
+
+2)Write an impex statement for adding this new component item type instance.
+Note: Since it’s an existing component type, we don’t need to create the controller and jsp for this component
+
+3)Write an impex to link it to the appropriate content slot
+
+4)Run the impexes and make sure to synchronize from Staged to Online(or else run impex with directly online version, only for testing purpose)
+
+5)Modify home page related jsp to have cms tags for new content slot
+
+6)Open the Home page and Verify the page to check new component
+
+
+
+Using above steps to create new component with exsting component:
+=================================================================
+
+Step1: decided to use new component as of type CMSParagraphComponent
+Step2: we need to define the component type instance using the impex 
+
+$contentCatalog=electronicsContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;;;;content;
+;;welcomeInfoComponent;Welcome information;welcomeInfoComponent;;;;welcome to home page;
+
+Step3: Now let’s add this component to the appropriate content slot.
+
+cms-content.impex or HAC console.
+
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='LandingPage2Template'];validComponentTypes(code);compTypeGroup(code)
+;welcomeInfo;;;wide
+
+Here we have defined the position/content slot name for Home page template
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active
+;;welcomeInfoSlot;welcome info slot;true
+
+
+Now define the content slot for template as below to link content slot name and content slot
+
+
+
+$contentCatalog=electronicsContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='LandingPage2Template'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;WelcomeInfo-LandingPage2;welcomeInfo;;welcomeInfoSlot;true
+
+Now define the component to the content slot
+Add the below impex to the cms-content.impex
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(uid,$contentCV)
+;;welcomeInfoSlot;welcomeInfoComponent
+
+Step4: Run both the cms-content.impex files and make sure its imported successfully
+
+Step5 : Modfify JSp file: landingLayout2Page
+
+<div class="welcomeInfo">
+    <cms:pageSlot position="welcomeInfo" var="feature">
+                <cms:component component="${feature}" />
+    </cms:pageSlot>
+</div>
+
+=======================All in single impex for exsiting cms component ============
+$contentCatalog=electronicsContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;;;;content;
+;;welcomeInfoComponent;Welcome information;welcomeInfoComponent;;;;welcome to home page;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='LandingPage2Template'];validComponentTypes(code);compTypeGroup(code)
+;welcomeInfo;;;wide
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='LandingPage2Template'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;WelcomeInfo-LandingPage2;welcomeInfo;;welcomeInfoSlot;true
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(uid,$contentCV)
+;;welcomeInfoSlot;welcome info slot;true;welcomeInfoComponent
+
+	
+	

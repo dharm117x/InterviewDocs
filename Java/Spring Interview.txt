@@ -1,0 +1,16 @@
+Spring QA
+============
+The Spring IOC container is responsible for instantiating, configuring, and assembling the Spring beans. 
+
+>> Spring Design pattern:
+-------------------------
+Singleton Design Pattern
+Factory Design Pattern
+Tempalte design pattern
+MVC design pattern
+Proxy Design Pattern
+flyweight design pattern
+
+
+
+

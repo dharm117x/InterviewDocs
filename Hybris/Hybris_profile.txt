@@ -1,0 +1,29 @@
+Having 10 years of IT Experience, SAP HYBRIS developer / lead in developing end-to-end applications. Expertise in developing applications. 
+
+• Hands on experience with Hybris - 2211,2011, 6.6 , 6.2, and 5.7 versions
+• Extensive knowledge in designing, development using HYBRIS technology.
+• Good domain knowledge in ecommerce businesses.
+• Have strong Development Knowledge on AJAX, JQUERY and XML 
+• Strong knowledge in developing Web using MVC , DAO , Singleton, Factory pattern.
+• Good experience of using Log4j, Ant, Jenkins, Version control systems 
+• Strong debugging and problem solving skills with excellent understanding of system development methodologies, techniques and tools.
+
+
+Key Skills
+• HYBRIS Multichannel e-commerce Suite
+• Order Management, Payment, Fulfillment Process
+• SOLR, Solr Customization, Pricing and customization
+• Cronjobs, Flexiblesearch, Impex
+• Strong knowledge in WCMS, Storefront
+• Workflows
+• Business Process
+• Cockpits, Backoffice
+• Promotions, Vouchers and Rule Engine
+• CMS Restrictions, Search Restrictions
+• Access rights
+• PCM and Catalog management
+• Strong knowledge in Hybris Project setup with multiple sites, stores 
+• Java, Spring MVC, Spring Boot, Spring Data JPA, JSP, Webservices(SOAP and Restful)
+• Ajax, HTML
+• Jquery, Java Script, XML
+• OCC, Webservices

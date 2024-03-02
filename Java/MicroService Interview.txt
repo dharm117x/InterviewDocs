@@ -1,0 +1,41 @@
+MicroSerives QA
+=================
+>>Microservices is an architectural style that structures an application as a collection of small, loosely coupled, and independently deployable services. 
+Each service represents a specific business capability and can be developed, deployed, and scaled independently
+
+>>The three commonly used tools for Microservices are:
+Docker: Docker is a tool that lets developers set up apps in lightweight, portable containers in an automated way. It helps put the microservices and their dependencies into containers
+
+>>Kubernetes: Kubernetes is a powerful tool for managing, scaling, and automating the launch of Docker containers.
+
+>>Spring Boot: is a framework built on top of the Spring framework that simplifies the development of Java applications, including microservices. 
+It provides a convention-over-configuration approach, auto-configuration, and embedded servers, allowing developers to quickly create production-ready microservices
+
+>>In Spring Boot, microservices can communicate with each other using various mechanisms:
+
+>>> Synchronous HTTP/REST: Microservices can communicate via HTTP using RESTful APIs, exchanging data in JSON or XML formats. 
+
+>>> Messaging: Asynchronous communication can be achieved using message queues or message brokers like RabbitMQ or Apache Kafka. 
+
+>>> Service Discovery: Microservices can use service discovery mechanisms like Netflix Eureka or Spring Cloud Consul to locate and communicate with other services dynamically. 
+
+>> Service registration and discovery is a mechanism that allows microservices to register themselves with a service registry and discover other services. 
+Service registries maintain a registry of available services, including their network locations and metadata. 
+Service discovery clients can query the registry to obtain the necessary information to communicate with other services.
+
+>> Spring Cloud is a framework that provides a set of tools and libraries to simplify the development of microservices using Spring Boot. 
+It offers features like service discovery, client-side load balancing, distributed tracing, circuit breakers, and more
+
+>> Circuit breaking is a design pattern used to handle and prevent cascading failures in microservice architectures. It involves monitoring the calls to external services and, 
+if a certain threshold of failures is reached, tripping a circuit breaker to stop further requests and return a fallback response.
+n Spring Boot, circuit breaking can be implemented using libraries like Netflix Hystrix or Resilience4j.
+
+>> API Gateway is a service that acts as an entry point for all client requests in a microservices architecture. It sits between the clients and the microservices,
+routing requests, handling authentication/authorization, enforcing security, and providing additional cross-cutting concerns like rate limiting, logging, and monitoring.
+
+
+>>> Rest servive call in microservice:
+1. Using RestTempalte
+2. FinClinet
+3. 
+

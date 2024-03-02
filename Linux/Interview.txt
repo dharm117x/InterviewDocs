@@ -1,0 +1,111 @@
+>>Why is a shell script needed?
+-----------------------------------
+Keeping repetitive tasks to a minimum.
+Can be used by system administrators for routine backups.
+Monitoring the system.
+Adding new functions to the shell.
+Shell scripting allows you to create your own tools.
+System admin can automate daily task
+
+>>> What do you mean by Shell variable?
+Shell variables are integral parts of all Shell programs and scripts.
+variable ="Hello" 
+echo $variable
+
+> Shell scripts usually have two types of variables:  
+System-defined variables Ex: SHELL
+User-defined variables EX: $ a=10 
+
+>>> What are interactive and non-interactive shells?
+Interactive shell: /bin/bash and /bin/sh is interactive shell. It is a non-login shell that gets started from a command line. It first copies the parent environment and then invokes.
+
+Non-Interactive shell: /sbin/nologin shell is non-interactive shell. It is present when the shell script is running and just inherits the parent's environment
+
+
+>>> What is the shebang line in shell scripting?
+Shell scripts or programs often contain shebang at the top. In general, the Shebang (the series of characters "#!") is used to indicate the operating system to use a particular interpreter to process the rest of the file. Here, the symbol '#' is referred to as hash, and "!" is referred to as bang.
+
+Ex: #!/bin/bash  
+
+>>> Tell us about the ‘$#’ use in shell scripting.
+'$#' is used to display the total number of passed arguments to the script. 
+
+>>> How will you pass and access arguments to a script in Linux?
+In scripts, arguments are passed as follows: 
+scriptName "Arg1" "Arg2"…."Argn" 
+
+Arguments in a script can be accessed as follows: 
+$1 , $2 .. $n
+
+>>> Differentiate between $@ and $*.
+$* considers an entire set of positional arguments as a single string whereas, $@ treats each quote argument as a separate argument.  
+
+>>> What is the use of the "$?" command?
+By using the command "$?", you can find out the status of the last command executed
+
+>>> What is the best way to run a script in the background?
+For a script to run in the background, simply add "&" at the end of the command.
+Ex: script.sh &
+
+>>> What is the lifespan of a shell variable?
+A variable is inside the shell script only until the end of execution. 
+
+>>> How will you debug a shell script?
+With set, you can turn on or off debugging options in the shell: 
+
+Set -x: This displays commands and their arguments as they are being executed.
+Set -v: It displays shell input lines in real-time as they are read
+
+>>> Write the difference between $$ and $!?
+You can use $$ to get the process id of the current process. However, $! displays the process id for a background process that recently went away.
+
+>>> In what ways, shell script get input values?
+By reading command: read -p "Destination backup Server: " dest host
+By parameters: ./script param1 param2
+
+>> Way of compare the strings in a shell script.
+Comparison of file attributes
+Comparison of strings
+Comparing basic arithmetic operations
+
+test 50 -gt 40 && echo "Yes" || echo "No"
+Because 50 is greater than 40, this command prints the text "Yes".
+
+["Excellent" = "Excellent"]; echo $?
+As the two strings are identical, this command prints "0" because the expression is true
+
+
+>>> Explain ways to create shortcuts in Linux?
+Hard Link: ard links are mirror images of the originally linked files and are linked with an inode number. A hard-linked file remains even after the original file is deleted.
+
+$ ln  [original filename] [link name]
+Soft Link:When a soft link is created or deleted, it does not affect the original file, but when the original file is deleted, the soft link stops working.
+$ ln  -s [original filename] [link name]
+
+-h file      //true if the file is a symbolic link
+-L file      //true if the file is a symbolic link
+
+
+>>> Please tell us how you will check if a file exists on the filesystem.
+if [ -f /var/log/messages ]
+then
+echo "File exists."
+fi
+
+>>> What is the difference between [[ $string == "efg*" ]] and [[ $string == efg* ]] ?
+[[ $string == efg* ]] – checks if string begins with efg. 
+
+[[ $string == "efg*" ]] – checks if string is efg. 
+
+>>> Ddifference between grep and find command.
+Grep command: This command facilitates searching and displaying content based on regular expressions specified by the user.
+grep “apple” file1.txt
+grep “apple” file1.txt  file2.tx
+
+Find command: The FIND command searches for files and folders based on their size, modification time, and access time
+find –type  f
+find .  –name file1.txt
+
+>>>  How to use pipe commands?
+Pipe command allows you to use several commands in the same way, in which the output of one is used as input for another
+command_1 | command_2 | command_3 | .... | command_N

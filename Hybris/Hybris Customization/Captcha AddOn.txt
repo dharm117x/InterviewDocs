@@ -1,0 +1,46 @@
+Addon INSTALL
+======================
+Step 1. Add below in localextension.xml
+
+<extension dir="${HYBRIS_BIN_DIR}/ext-addon/captchaaddon"/>
+<extension dir="${HYBRIS_BIN_DIR}/ext-addon/addonsupport"/>
+
+Step 2. call addoninstall from platform.
+
+ant addoninstall -Daddonnames="captchaaddon" -DaddonStorefront.yacceleratorstorefront="yacceleratorstorefront"
+
+ant addoninstall -Daddonnames="captchaaddon" -DaddonStorefront.yacceleratorstorefront="nokiastorefront"
+
+Step 3. Register your domain, which will allow you to obtain a reCAPTCHA key. You can do this at 
+https://www.google.com/recaptcha/intro/index.htmlInformation published on non-SAP site. 
+When you receive your public and private keys, add them to the local.properties file.
+
+recaptcha.publickey=myGeneratedSiteKey
+recaptcha.privatekey=myGeneratedSecretKey
+
+If you wish to have store-specific keys, you can add your store name to the properties. For the following example, change electronics to the name of your storefront.
+
+recaptcha.publickey.electronics=myGeneratedSiteKey
+recaptcha.privatekey.electronics=myGeneratedSecretKey
+
+Step 5. Add the Spring configuration property of the captchaaddon AddOn to the project.properties file.
+yacceleratorstorefront.additionalWebSpringConfigs.captchaaddon=classpath:/captchaaddon/web/spring/captchaaddon-web-spring.xml
+
+ Note
+If you initialized your system before installing the captchaaddon AddOn, you have to run ant clean all and update the system.
+
+
+Addon UNINSTALL
+======================
+Step 1.vBefore you run the ant addonuninstall command, make sure the addonsupport extension is listed in localextensions.xml file, as follows:
+...
+<extension name="addonsupport"/>
+...
+
+Step 2. Open the command prompt and navigate to the hybris/bin/platform directory.
+Run the ant addonuninstall command. The command has the following format:
+
+ant addonuninstall -Daddonnames="AddOnName1,AddOnName2" -DaddonStorefront.<storefrontTemplateName>="Storefront1,Storefront2"
+ant addonuninstall -Daddonnames="captchaaddon" -DaddonStorefront.yacceleratorstorefront="nokiastorefront"
+
+When addonuninstall has finished running successfully, rebuild SAP Commerce by running ant clean all from the hybris/bin/platform directory.

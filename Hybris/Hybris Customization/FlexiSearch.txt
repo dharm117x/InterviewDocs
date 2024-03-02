@@ -1,0 +1,77 @@
+Flexi Search:
+---------------
+select {s.pk} from { Student as s JOIN Address as ad ON {s.pk} = {ad.student}}
+
+select {s.pk}, {s.name[en]} from {Student as s JOIN Address as as ON {s.pk} = {as.student}}
+
+SELECT * FROM {Product}
+SELECT * FROM {Product!} -- exclude subtypes
+
+
+SELECT {p.code} FROM {Product AS p} ORDER BY {p.code}
+
+SELECT {p:pk}, {p:name[en]} FROM {Product as p}
+
+SELECT {c:pk} FROM {Category AS c} WHERE {c:code} IS NOT LIKE '%test%'
+
+select {p.code}, {cv.version} from {Product as p 
+JOIN CatalogVersion as cv ON {p.catalogVersion}={cv.pk}} 
+where cv.version='Online'
+order by {p.createionstime} ASC
+
+select {p.pk} from {Product as p} where  p.catalogVersion in ({{ Select {p.catalogVersion} from  {CatalogVersion}}});
+
+
+select * from {Product as p JOIN OrderEntry as oe ON {p:pk}={oe:product}}
+
+select * from {Order as o JOIN OrderEntry as oe ON {o:pk}={oe:order} JOIN Product as p ON {oe:product}={p:pk}}
+
+select * from {Order as o } wehere EXISTS({{ select {os.pk} from {OrderStatus as os} where {os.code}='COMPLETED'}})
+
+SELECT {pk}
+   FROM {Product}
+   WHERE  {modifiedtime} >= ?startDate
+      AND {modifiedtime} <= ?endDate
+
+
+SELECT {p:PK} FROM {Product AS p}  WHERE {p:description[en]:o} LIKE '%text%'
+   OR {p:description[de]:o} LIKE '%text%'
+   OR {p:name[de]:o} LIKE '%text%'
+   OR {p:description[en]:o} LIKE '%text%'
+
+One-to-Many
+-------------------
+select {c.pk} as c_pk, {r.pk} as r_pk from {Country as c JOIN Region as r ON {c.pk} = {r.country}}
+
+select * from 
+{
+Order as o JOIN OrderEntry as oe ON {o:pk}={oe:order}
+}
+
+
+
+Many-to-Many 
+-----------------------
+SELECT {p:PK}, {c:code} FROM
+{
+   Product as p JOIN CategoryProductRelation as rel
+   ON {p:PK} = {rel:target}
+   JOIN Category AS c
+   ON {rel:source} = {c:PK}
+}
+    
+
+SELECT uniontable.PK, uniontable.CODE FROM
+(
+   {{
+      SELECT {c:PK} as PK, {c:code} AS CODE FROM {Chapter AS c}
+      WHERE {c:PUBLICATION} LIKE ?pk
+   }}
+   UNION ALL
+   {{
+      SELECT {p:PK} as PK, {p:code} AS CODE FROM {Page AS p}
+      WHERE {p:PUBLICATION} LIKE ?pk
+   }}
+) uniontable
+	  
+

@@ -1,0 +1,22 @@
+1. Add extension in local.properties
+
+<extension name="addonsupport"/>
+<extension name="captchaaddon"/>
+		
+2. add capatacha add on by cmd
+ant addoninstall -Daddonnames="captchaaddon" -DaddonStorefront.yacceleratorstorefront="nokiastorefront"
+
+3. genrate keys: https://www.google.com/u/1/recaptcha/admin/create
+add below properties in local.properties
+
+recaptcha.publickey=myGeneratedSiteKey
+recaptcha.privatekey=myGeneratedSecretKey
+
+4. add below properties in nokiastrofront extension project.properties
+
+nokiastorefront.additionalWebSpringConfigs.captchaaddon=classpath:/captchaaddon/web/spring/captchaaddon-web-spring.xml
+
+5. captch enable/disable backoffice:
+Log into the Backoffice and navigate to Base Commerce  Base Store.
+Click the Search button and select a storefront.
+In the Properties tab, select the True or False radio buttons under Captcha Widget Enabled to enable or disable the CAPTCHA widget.

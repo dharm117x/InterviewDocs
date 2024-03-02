@@ -1,0 +1,108 @@
+CMS compnent access:
+/view/CustomOffersComponentController?componentUid=SummerOfferComponent
+
+https://powertools.local:9002/nokiastorefront/powertools/en/USD/view/YouTubeVideoComponentController?componentUid=HomePageVideoCMSComponent
+
+https://powertools.local:9002/nokiastorefront/view/YouTubeVideoComponentController?componentUid=HomePageVideoCMSComponent
+
+select * from {attributedescriptor} where qualifierinternal='allDocuments'
+
+2. system update issue.
+---------------------------
+select * from composedtypes where InternalCode like 'B2B%'
+
+DELETE from composedtypes where InternalCode = 'B2BUnitActiveConstraint'
+DELETE from composedtypes where InternalCode = 'B2BUnitActive'
+
+2. Update license 
+-------------------
+select * from users;
+
+UPDATE users set createdTS = NOW();
+or
+license.bat -show
+license.bat -temp CPS_SQL
+license.bat -delete CPS Y4989890650 CPS_SQL
+
+
+3. difference between custom-property and attributes
+----------------------
+These <custom-properties> are used to define ItemType as catalog aware. Like Product Type. You can refer this post for more detail.
+
+<attribute> is used to define and configure a column of the table/item.
+
+In SQL word, I can say <custom-properties> is used for table level configuration(metadata) and <attribute> is used to define and configure the column of that table.
+
+4. Create new User group
+-----------------------------
+# Access rights for asagentgroup
+# - These are needed for rendering (cmsoccaddon).
+
+$START_USERRIGHTS;;;;;;;;;
+Type;UID;MemberOfGroups;Password;Target;read;change;create;remove;change_perm
+UserGroup;readonlygroup;;;;;;;;
+
+# general
+;;;;Item;+;;;;;
+;;;;Type;+;;;;;
+
+$END_USERRIGHTS;;;;;
+
+$START_USERRIGHTS;;;;;;;;;
+Type;UID;MemberOfGroups;Password;Target;read;change;create;remove;change_perm
+UserGroup;asagentgroup;;;;;;;;
+
+# general
+;;;;Item;+;;;;;
+;;;;Type;+;;;;;
+
+# access rights for Products, Store, Site and Catalogs
+;;;;Product;+;;;;;
+;;;;Category;+;;;;;
+;;;;VariantType;+;;;;;
+;;;;BaseSite;+;;;;;
+;;;;BaseStore;+;;;;;
+;;;;Catalog;+;;;;;
+;;;;CatalogVersion;+;;;;;
+;;;;ContentCatalog;+;;;;;
+;;;;MediaContainer;+;-;-;-;-;
+;;;;MediaContext;+;-;-;-;-;
+;;;;MediaFormat;+;-;-;-;-;
+;;;;MediaFormatMapping;+;-;-;-;-;
+
+# cms2 items
+;;;;CMSItem;+;-;-;-;-;
+
+$END_USERRIGHTS;;;;;
+===============================
+
+
+6.Hybris OCC setup
+==========================
+Craetae OathDetals:
+INSERT_UPDATE OAuthClientDetails;clientId[unique=true];resourceIds;scope;authorizedGrantTypes;clientSecret;authorities
+;admin;hybris;basic;authorization_code,refresh_token,password,client_credentials;nimda;ROLE_CLIENT
+
+
+INSERT_UPDATE OAuthClientDetails;clientId[unique=true]    ;resourceIds       ;scope        ;authorizedGrantTypes                                            ;authorities             ;clientSecret    ;registeredRedirectUri
+                                ;client-side              ;hybris            ;basic        ;implicit,client_credentials                                     ;ROLE_CLIENT             ;secret          ;http://localhost:9001/authorizationserver/oauth2_implicit_callback;
+                                ;mobile_android           ;hybris            ;basic        ;authorization_code,refresh_token,password,client_credentials    ;ROLE_CLIENT             ;secret          ;http://localhost:9001/authorizationserver/oauth2_callback;
+
+
+INSERT_UPDATE OAuthClientDetails;clientId[unique=true]    ;resourceIds       ;scope        ;authorizedGrantTypes                                            ;authorities             ;clientSecret    ;registeredRedirectUri 
+                                ;trusted_client           ;hybris            ;extended     ;authorization_code,refresh_token,password,client_credentials    ;ROLE_TRUSTED_CLIENT     ;secret;         ;
+
+
+
+urls:
+Open the interactive OCC REST API documentation in your web browser by accessing the following link: 
+http://<hostname>:<port>/rest/v2/swagger-ui.html.
+
+For example, if you have a storefront installed on your local machine, you can access the OCC REST API documentation with the following link: 
+https://localhost:9002/rest/v2/swagger-ui.html.
+
+
+https://localhost:9002/authorizationserver/oauth/token?grant_type=password&username=admin&password=nimda
+
+
+

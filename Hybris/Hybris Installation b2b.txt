@@ -1,0 +1,116 @@
+Please follow the steps for B2B modulegen custom in Hybris 6.0
+
+Step 1: Navigate to the /installer directory. install.bat -r b2c_acc for b2b custom
+
+step 2- Navigate to the /platform directory.
+
+Step 3 - Set your ant environment by entering the following command: setantenv.bat
+
+Step 4 - Run the ant modulegen command 
+ant modulegen -Dinput.module=accelerator -Dinput.name=dkshop -Dinput.package=com.dkshop -Dinput.template=production
+ant extgen -Dinput.name=dkshopocc -Dinput.package=com.dkshop.occ -Dinput.template=yocc
+ant extgen -Dinput.name=dkshopintegrations -Dinput.package=com.dkshop.integrations -Dinput.template=yempty
+          
+
+ant extgen -Dinput.name=nokiabackoffice -Dinput.package=com.nokia -Dinput.template=ybackoffice
+ant extgen -Dinput.name=nokiawebservices -Dinput.package=com.nokia -Dinput.template=ycommercewebservices
+
+
+if you want to change training name then change the extgen/project.properties in plateform folder
+
+Step - 5 After running the ant modulegen command, open the localextensions.xml file, which is located in /hybris/config.
+
+remove or comment these extensions -yacceleratorcockpits,yacceleratorinitialdata, yacceleratorfulfilmentprocess, yacceleratorstorefront
+
+add these extensions - trainingcore, trainingfacades, trainingstorefront, traininginitialdata, trainingtest, trainingcockpits, trainingfulfilmentprocess
+
+Add the following B2B Accelerator extensions to the localextensions.xml file: 
+
+powertoolsstore, b2bcommercebackoffice, b2badmincockpit, b2bacceleratoraddon, commerceorgaddon
+
+Step- 6 Install the B2B Accelerator AddOns on the training storefront by running the following ant commands from the /platform directory:
+
+ant addoninstall -Daddonnames="b2bacceleratoraddon" -DaddonStorefront.yacceleratorstorefront="dkshopstorefront"
+ant addoninstall -Daddonnames="commerceorgaddon" -DaddonStorefront.yacceleratorstorefront="dkshopstorefront"
+
+ant addoninstall -Daddonnames=cmsoccaddon -DaddonStorefront.ycommercewebservices=nokiawebservices
+
+
+if used b2bocc then uninstall:
+ant addonuninstall -Daddonnames=b2boccaddon -DaddonStorefront.ycommercewebservices=commercewebservices
+
+
+Step-6.1: Update storfront spring-filter-config.xml file change sitechannel b2c to b2b
+
+	<alias name="b2bAcceleratorSiteChannels" alias="acceleratorSiteChannels"/>
+	<util:set id="b2bAcceleratorSiteChannels" value-type="de.hybris.platform.commerceservices.enums.SiteChannel">
+		<ref bean="SiteChannel.B2B"/>
+	</util:set>
+
+
+Step- 7 Add the following properties to /hybris/config/local.properties:
+
+website.dkshop.http=http://localhost:9001/dkshopstorefront 
+website.dkshop.https=https://localhost:9002/dkshopstorefront
+
+
+Step - 8 Build and initialize Hybris Commerce by running the following ant command from the /platform directory:
+
+ant initialize
+
+Step -9 Start the Hybris server by running the following command from the /platform directory:
+
+hybrisserver.bat
+
+Step -10 B2B Url for running
+
+https://localhost:9002/trainingstorefront/?site=powertools
+
+license.bat -temp CPS_SQL
+
+====================================================
+Actually i meant to use "ant modulegen" instead of "recipe installer". (mentioned in the link)
+
+Because using recipe is kind of a quick installation, just including some "yTemplate" extensions.
+Like using "b2b_acc" recipe to install b2b accelerator, is working at the end.
+But it does not generate your own accelerator extensions, which should be what you wanted.
+
+So using "ant modulegen" to generate the 7 core accelerator extenions,
+then you need to use the new generated 7 accelerator extensions to replace the "yacceleratorXXXX" extension, you may modify it based on the "localextensions.xml" which is created by "b2b_acc" recipe:
+
+     <extension name='mcc' />
+     <extension name='backoffice' />
+     <extension name='commercesearchbackoffice' />
+     <extension name='b2bcommercebackoffice' />
+     <extension name='commerceservicesbackoffice' />
+     <extension name='solrfacetsearchbackoffice' />
+     <extension name='b2badmincockpit' />
+
+     <extension name='yacceleratorcockpits' />
+     <extension name='yacceleratorinitialdata' />
+     <extension name='yacceleratorfulfilmentprocess' />
+     <extension name='yaddon' />
+     <extension name='ycommercewebservices' />
+     <extension name='powertoolsstore' />
+     <extension name='solrserver' />
+     <extension name='acceleratorwebservicesaddon' />
+     <extension name='b2bacceleratoraddon' />
+     <extension name='commerceorgaddon' />
+     <extension name='customersupportbackoffice' />
+     <extension name='rulebuilderbackoffice' />
+     <extension name='promotionenginebackoffice' />
+     <extension name='droolsruleengineservices' />
+     <extension name='promotionenginesamplesaddon' />
+     <extension name='yb2bacceleratorstorefront' />
+As in hybris 6.0, there is no such "yb2baccelerator" templates anymore, both B2B and B2C accelerators are based on the same core accelerator template extensions. And even "yb2bacceleratorstorefront" which is generated by "b2b_acc" recipe, is the same as the "yacceleratorstorefront" (only name is different) However, for B2B it has b2b addon extension, which has difference from B2C.
+
+
+OCC data
+=======================
+INSERT_UPDATE OAuthClientDetails;clientId[unique=true]    ;resourceIds       ;scope        ;authorizedGrantTypes                                            ;authorities             ;clientSecret    ;registeredRedirectUri
+                                ;client-side              ;hybris            ;basic        ;implicit,client_credentials                                     ;ROLE_CLIENT             ;secret          ;http://localhost:9001/authorizationserver/oauth2_implicit_callback;
+                                ;mobile_android           ;hybris            ;basic        ;authorization_code,refresh_token,password,client_credentials    ;ROLE_CLIENT             ;secret          ;http://localhost:9001/authorizationserver/oauth2_callback;
+
+
+curl -k -d "client_id=mobile_android&client_secret=secret&grant_type=client_credentials" -X POST https://localhost:9002/authorizationserver/oauth/token
+

@@ -1,0 +1,177 @@
+##Update all item #############
+-------------------------------
+UPDATE Employee[batchmode=true];itemtype(code)[unique=true];name
+			       ;Employee;Dharmendra
+
+
+#1. Update admin password:
+#========================
+$passwordEncoding=md5
+$defaultPassword=12341234
+$setPassword=@password[translator=de.hybris.platform.impex.jalo.translators.ConvertPlaintextToEncodedUserPasswordTranslator][default='$passwordEncoding:$defaultPassword']
+
+INSERT_UPDATE Customer;originalUid[unique=true];uid[unique=true];title(code);name;description;sessionLanguage(isocode);sessionCurrency(isocode);groups(uid);$setPassword;&userId;defaultPaymentAddress(&addId);defaultShipmentAddress(&addId)
+;expressuser@expresscheckout.com;expressuser@expresscheckout.com;;express user;express user;en;EUR;customergroup;;expressuser@expresscheckout.com
+;pickupuser@expresscheckout.com;pickupuser@expresscheckout.com;;pickup user;pickup user;en;EUR;customergroup;;pickupuser@expresscheckout.com
+
+
+UPDATE Employee; uid[unique=true];password;
+;admin;1234;
+			   	   
+INSERT_UPDATE Employee; uid[unique=true];$setPassword;
+;dkumar;
+
+If key not found execute succfully but nothing impact on db.
+
+# Update all row without any unique attribute.
+UPDATE Employee[batchmode=true];itemtype(code)[unique=true];name
+Employee;Dharmendra
+
+
+# Update All Products of powertoolsProductCatalog Staged version
+UPDATE Product[batchmode=true]; $catalogVersion; minOrderQty ; maxOrderQty
+;;1;99
+
+##With unique catlog column
+$productCatalog=apparelProductCatalog
+$productCatalogName=Apparel Product Catalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+UPDATE Product[batchmode=true];$catalogVersion;onlineDate[dateformat=dd.MM.yyyy];offlineDate[dateformat=dd.MM.yyyy] 
+;;01.01.2020;01.05.2022
+
+
+#Without unique column
+UPDATE Product[batchmode=true];itemtype(code)[unique=true];onlineDate[dateformat=dd.MM.yyyy];offlineDate[dateformat=dd.MM.yyyy] 
+                               Product;01.01.2020;01.05.2022;
+
+
+
+UPDATE Customer[batchmode=true];itemtype(code)[unique=true];emailPreference
+;Customer;true
+
+
+#Upload product catalog
+===========================
+
+INSERT_UPDATE Catalog;id[unique=true];name[lang=en]
+;testCatalog;testCatalog;
+
+INSERT_UPDATE CatalogVersion;catalog(id)[unique=true];version[unique=true];active;defaultCurrency(isocode)
+;testCatalog;Offline;true;EUR;en
+;testCatalog;Online;true;EUR;en
+							
+$catalog=catalog(id)
+$catalogversion=catalogversion($catalog, version)[unique=true, default=testCatalog:Offline]
+
+INSERT_UPDATE Product;code[unique=true];$catalogversion;name[lang=en];
+;101;testCatalog:Offline;SamsungNote 6;
+
+#OR Without macro
+INSERT Product; code[unique=true]; catalogVersion(catalog(id),version);;name[lang=en];
+;102;testCatalog:Offline;SamsungNote 7;
+
+Media Folder
+==============
+INSERT_UPDATE MediaFolder;qualifier[unique=true];path[unique=true]
+;reports;reports
+
+INSERT_UPDATE ServicelayerJob;code[unique=true];springId[unique=true]
+;weeeReportImportJob;weeeReportImportJob
+
+
+INSERT_UPDATE WeeeImportReportCronJob;code[unique=true];job(code);noOfDays;sessionLanguage(isocode)[default=en]
+;WeeeImportReportCronJob;weeeReportImportJob;15
+
+			
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];cronExpression
+;WeeeImportReportCronJob;0 0/30 * * * ?
+		 
+					 
+CronJob:
+==================
+INSERT_UPDATE TestCronJob;code[unique=true];job(code);singleExecutable;sessionLanguage(isocode);startDate[dateformat=dd.MM.yyyy][forceWrite=true] 
+;myTestCronJob;myTestJob;true;en;01.01.2021;
+
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];cronExpression
+;myTestCronJob;0 0/30 * * * ?
+
+CustomUser:
+==============
+INSERT_UPDATE UserAddress;code[unique=true];fullName;address1;pin;
+;A-101;Dharmendra kumar;Mulnd E nanepada;400081
+;A-102;Dharmendra kumar;Mulnd E nanepada;400081
+;A-103;Dharmendra kumar;Mulnd E nanepada;400081
+
+INSERT_UPDATE CustomUser;userId[unique=true];name;nickNames[mode=apend];
+;C-101;Dharmaendra;kumar,sharma,pandit;
+
+
+INSERT_UPDATE CustomUser;userId[unique=true];name;nickNames[mode=apend];userAddressMap(key(code), value(code))[map-delimeter=|]
+;C-101;Dharmaendra;kumar,sharma,pandit;Address-1 -> A-101 | Address-2 -> A-102;
+
+INSERT_UPDATE CustomUser;userId[unique=true];name;nickNames[mode=apend];languages;userAddressMap(key(code), value(code))[map-delimeter=|]
+
+
+Getting local.prperties data::
+================================
+Local.properties:
+your.config.property=322
+
+
+# Import config properties into impex macros
+UPDATE GenericItem[processor=de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor];pk[unique=true]
+
+$variable=$config-your.config.property
+
+INSERT_UPDATE SampleItem;code[unique=true];name
+;sample1;$variable
+
+# OR you can just directly use the config macro
+INSERT_UPDATE SampleItem;code[unique=true];name
+;sample1;$config-your.config.property
+
+
+Disable interceptor
+======================================
+
+Example 1 - Disable beans [disable.interceptor.beans='yourDataInterceptorToDisable']
+
+INSERT_UPDATE YourType[disable.interceptor.beans='yourDataInterceptorToDisable'];isocode[unique=true];toto;titi;
+;something;toto;titi;
+	
+Example 2 - Disable interceptors type [disable.interceptor.types=validate]
+
+INSERT_UPDATE YourType[disable.interceptor.types=validate];isocode[unique=true];toto;titi;
+;something;toto;titi;
+
+Example 3 - Disable by type [disable.UniqueAttributesValidator.for.types='YourType']
+
+INSERT_UPDATE YourType[disable.UniqueAttributesValidator.for.types='YourType'];isocode[unique=true];toto;titi;
+;something;toto;titi;
+
+OR we can do in leagacy mode true.
+	
+	   
+#Impex Export by type and flexisearch:
+======================================
+# ---- Extension: core ---- Type: User ---- 
+"#% impex.setTargetFile( ""User.csv"" , true );"
+insert_update User; pk[unique=true]; CN; DN; Europe1PriceFactory_UDG(itemtype(pk),code); Europe1PriceFactory_UPG(itemtype(pk),code); Europe1PriceFactory_UTG(itemtype(pk),code); addresses(pk); allDocuments(pk); carts(pk); defaultPaymentAddress(pk); defaultShipmentAddress(pk); description; domain; europe1Discounts(pk); hmcLoginDisabled; ldapaccount[allownull=true]; ldaplogin; ldapsearchbase; loginDisabled; name; orders(pk); owner(pk); password; passwordAnswer; passwordQuestion; paymentInfos(pk); sessionCurrency(pk); sessionLanguage(pk); uid[unique=true]; userprofile(pk)
+"#% impex.exportItems( ""User"" , false );"
+
+
+"#% impex.setTargetFile( ""Employee.csv"" , true );"
+INSERT_UPDATE Employee;pk
+"#%impex.exportItemsFlexibleSearch(""select {pk} from {Employee} "");"
+
+
+"#% impex.setTargetFile( ""CustomUser.csv"" , true );"
+INSERT_UPDATE CustomUser;userId[unique=true];name;nickNames[mode=apend];languages;userAddressMap(key(code), value(code))[map-delimeter=|]
+"#% impex.exportItems( ""CustomUser"" , false );"
+
+INSERT_UPDATE order;pk;code;creationtime
+"#% impex.exportItemsFlexibleSearch( "" select {o:pk}, {o.code}, {o.creationtime} from {order as o join orderstatus as s on {o.status}={s.pk}} where {s.code} = 'SUBMITTED'"");"
+ 
+
+
+------------------------

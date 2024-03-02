@@ -1,0 +1,16 @@
+1. Craete New Items and extend with  StoreFrontCustomerProcess
+
+<itemtype code="OrderDescEmailProcess" extends="StoreFrontCustomerProcess" 
+    				  jaloclass="com.nokia.core.jalo.OrderDescEmailProcess"	
+    				  generate="true" autocreate="true">
+				<attributes>
+						<attribute type="AbstractOrder" qualifier="cart">
+						<modifiers read="true" write="true" search="true" />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+2. Create process.xml file
+
+

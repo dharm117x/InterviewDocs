@@ -1,0 +1,254 @@
+:Adding CMS component of completely new component type:
+
+1) Create a new CMS component type by defining in the *items.xml
+hybris\bin\custom\training\trainingcore\resources\trainingcore-items.xml by extends="SimpleCMSComponent"
+
+<collectiontype code="CustomOfferLinksList" elementtype="CMSLinkComponent" autocreate="true" generate="true" type="list" />
+
+<itemtype code="CustomOffersComponent" extends="SimpleCMSComponent" generate="true" autocreate="true"
+			jaloclass="org.training.core.jalo.CustomOffersComponent">
+			<description>Used to display offers on homepage</description>
+				<attributes>
+					<attribute type="localized:java.lang.String" qualifier="headrerText">
+						<modifiers read="true" write="true" optional="false" />
+						<persistence type="property" />
+					</attribute>
+					<attribute type="localized:java.lang.String" qualifier="footerText">
+						<modifiers read="true" write="true" optional="false" />
+						<persistence type="property" />
+					</attribute>
+					<attribute type="Media" qualifier="offerImage">
+						<modifiers read="true" write="true" optional="false" />
+						<persistence type="property" />
+					</attribute>
+					<attribute type="CustomOfferLinksList" qualifier="offerImageLink">
+						<persistence type="property" />
+						<description>List of CMS Link Component</description>
+						<modifiers read="true" write="true" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+2)Write an impex statements for adding the new component item type instance and to add the 
+newly created CMS component to a home page by assigning it to the right content slot
+
+3)Create the controller and JSP page for the new component(controller call extends : AbstractAcceleratorCMSComponentController and jsp file name in lowecase same as componet : cms/youtubevideocomponent.jsp)
+
+4)Add this new component into the Home page JSP using CMS tags
+
+5)Open the Home page and Verify to check new component
+
+or
+https://powertools.local:9002/nokiastorefront/powertools/en/USD//view/YouTubeVideoComponentController?componentUid=HomePageVideoCMSComponent
+
+============================================================
+
+1. Impex for defining content slot name
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='LandingPage2Template'];validComponentTypes(code);compTypeGroup(code)
+;SummerOffersSlotName;;CustomOffersComponent
+
+2. Impex for defining content slot
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;summerOfferContentSlot;Summer offer slot;true;summerOfferComponent
+
+3. Impex for defining content slot for page
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='homepage'];contentSlot(uid,$contentCV)[unique=true]
+;;summerOfferslotforpage-Homepage;SummerOffersSlotName;;summerOfferContentSlot
+
+Make sure below lines are added at the beginning of the cms-content.impex to avoid any errors
+==============================================================================================
+
+$contentCatalog=apparel-ukContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$productCatalog=apparelProductCatalog
+$productCatalogName=Apparel Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV) ;
+
+$siteResource=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConstants&/apparelstore/import/sampledata/contentCatalogs/$contentCatalog
+$jarResourceCms=jar:de.hybris.platform.apparelstore.constants.ApparelstoreConstants&/apparelstore/import/sampledata/cockpits/cmscockpit
+# Load the storefront context root config param
+$storefrontContextRoot=$config-storefrontContextRoot
+$lang=en
+$category=category(code, $productCV)
+
+Note: We are defining the content slot directly for page rather than template, doing so will just add this slot only to the page not to the template
+
+Step3: Create the custom controller and JSP for the new component : CustomOffersComponentController
+-----------------------
+
+AbstractCMSComponentController has no implementation for fillModel() method whereas 
+DefaultCMSComponentController has overridden it and provided the definition for fillModel() method.
+
+Add new constant value inside Actions Interface and inside CMS interface,it should be something like as below
+
+public interface ControllerConstants
+{
+
+interface Actions
+    {
+        interface Cms
+        {
+            //All the existing lines goes here
+ 
+            String CustomOffersComponent = _Prefix + CustomOffersComponentModel._TYPECODE + _Suffix;
+        }
+    }
+--
+	
+Create a new jsp page called views/desktop/cms/customOffersComponent.jsp as below:
+-----------------
+
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="template" tagdir="/WEB-INF/tags/desktop/template" %>
+<%@ taglib prefix="theme" tagdir="/WEB-INF/tags/shared/theme" %>
+<%@ taglib prefix="nav" tagdir="/WEB-INF/tags/desktop/nav" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="cms" uri="http://hybris.com/tld/cmstags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="ycommerce" uri="http://hybris.com/tld/ycommercetags" %>
+<%@ taglib prefix="common" tagdir="/WEB-INF/tags/desktop/common" %>
+<%@ taglib prefix="breadcrumb" tagdir="/WEB-INF/tags/desktop/nav/breadcrumb" %>
+
+<div class="customOffersComponent">
+<p class="customOffersComponent_header_text">${headerText}</p>
+<img alt="Offer Image" src="${offerImage.url}" class="offers_image">
+<ul class="offers_list">
+
+<c:forEach items="${offerImageLinks}" var="offerImageLink">
+<li class="offers_list_element"><a href="${offerImageLink.url}">${offerImageLink.name}</a></li>
+</c:forEach>
+
+</ul>
+
+<p class="customOffersComponent_header_text">${footerText}</p>
+</div>
+
+
+Add css inside /nokiastorefront/web/webroot/_ui/desktop/common/css/landingLayout2Page.css file.
+
+.customOffersComponent{
+	border:1px dotted #a5a5a5;
+	border-width:1px 0 ;
+	position:relative;
+}
+
+.customOffersComponent_header_text .customOffersComponent_header_text{
+	border-bottom:1px solid #a5a5a5;
+	height:30px;
+	line-height:30px;
+	text-transform:uppercase;
+	font-weight:bold;
+	font-size:1em;
+	white-space: nowrap;
+	display:block;
+	margin:0 0 10px 0;
+}
+.offers_list{
+	margin: 20px 0;
+	padding: 5px;
+	border: 1px dotted #000;	
+}
+.offers_list_element{
+	vertical-align:top;
+	border-bottom:1px dotted #a5a5a5;
+	padding:20px 0 0 0;
+}
+
+.offers_image{
+	float:left;
+	text-align:center;
+	
+}
+
+Step4 : addd to home page: landingLayout2Page.jsp
+-----------------
+
+<cms:pageSlot position="SummerOffersSlotName" var="feature" element="div" class="span-24 section5 cms_disp-img_slot">
+<cms:component component="${feature}" />
+</cms:pageSlot>
+
+
+Step 5:
+----------------
+Do ant all, Update system and make sure the content catalog is copied from Staged to Online(if not done then synchronize it)
+
+===============Update impex in single shot with impex iport from hac modeule.=================
+
+$contentCatalog=electronicsContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$productCatalog=electronicsProductCatalog
+$productCatalogName=Electronics Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$picture=media(code, $contentCV) ;
+
+$siteResource=jar:de.hybris.platform.electronicsstore.constants.ElectronicsstoreConstants&/electronicsstore/import/sampledata/contentCatalogs/$contentCatalog
+$jarResourceCms=jar:de.hybris.platform.electronicsstore.constants.ElectronicsstoreConstants&/electronicsstore/import/sampledata/cockpits/cmscockpit
+
+# Load the storefront context root config param
+$storefrontContextRoot=$config-storefrontContextRoot
+$lang=en
+$category=category(code, $productCV)
+
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;&componentRef;target(code)[default='sameWindow'];$category;
+;;MenOfferLink;Men Offer Link;/MenOfferLink;MenOfferLink;MenOfferLink;;;;
+;;WomenOfferLink;Women Offer Link;/WomenOfferLink;WomenOfferLink;WomenOfferLink;;;;
+;;KidsOfferLink;Kids Offer Link;/KidsOfferLink;KidsOfferLink;KidsOfferLink;;;;
+
+INSERT_UPDATE CustomOffersComponent;$contentCV[unique=true];uid[unique=true];name;headrerText[lang=$lang];footerText[lang=$lang];offerImage(code);&componentRef;offerImageLink(&linkRef);
+;;summerOfferComponent;Summer offer Component;"up to 70 % off";"Grab this offer on all summer<br>Collections";customOffersMedia;summerOfferComponent;MenOfferLink,WomenOfferLink,KidsOfferLink
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='LandingPage2Template'];validComponentTypes(code);compTypeGroup(code)
+;SummerOffersSlotName;;CustomOffersComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;summerOfferContentSlot;Summer offer slot;true;summerOfferComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='homepage'];contentSlot(uid,$contentCV)[unique=true]
+;;summerOfferslotforpage-Homepage;SummerOffersSlotName;;summerOfferContentSlot
+
+
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/png'];&imageRef;folder(qualifier)[default='images'];altText
+;;customOffersMedia;$siteResource/images/banners/homepage/offers.png;;offers.png;;
+
+
+Media Import from absalute resoource path: default stage --> sysnch after update
+================================================================================
+
+$contentCatalog=electronicsContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+$siteResource=file:C:\Users\dharm\Desktop
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/png']
+;;customOffersMedia;$siteResource/offer1.png;
+					
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/png'];&imageRef;folder(qualifier)[default='images'];altText
+;;customOffersMedia;$siteResource/offer.png;;offer.png;;
+
+============================================
+
+1. Impex for CMSLinkComponent
+---------------------------------
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;&componentRef;target(code)[default='sameWindow'];$category;
+;;MenOfferLink;Men Offer Link;/MenOfferLink;MenOfferLink;MenOfferLink;;;;
+;;WomenOfferLink;Women Offer Link;/WomenOfferLink;WomenOfferLink;WomenOfferLink;;;;
+;;KidsOfferLink;Kids Offer Link;/KidsOfferLink;KidsOfferLink;KidsOfferLink;;;;
+
+2. Image location: hybris\bin\ext-data\apparelstore\resources\apparelstore\import\sampledata\contentCatalogs\apparel-ukContentCatalog\images\banners\homepage
+-----------------
+Impex for media:
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpeg'];&imageRef;folder(qualifier)[default='images'];altText
+;;customOffersMedia;$siteResource/images/banners/homepage/offers.jpeg;;offers.jpeg;;
+
+3. Impex for CustomOffersComponent
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='LandingPage2Template'];validComponentTypes(code);compTypeGroup(code)
+;SummerOffersSlotName;;CustomOffersComponent
+
+===============================================================================

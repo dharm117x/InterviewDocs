@@ -1,0 +1,50 @@
+1. Item restriction:
+-------------------------
+A restriction in Hybris is a set of rules applied to flexible searches in order to limit the search results based on certain specific 
+conditions. By default, restrictions are not applied on admingroup members, admin will always get the full results.
+
+Create restriction
+INSERT_UPDATE SearchRestriction	;code[unique=true]			;name[lang=en]			      ;principal(UID)	;restrictedType(code)	;active	;generate	;query
+			        ;customerWithoutAnonymous	        ;Customer Anonymous Restriction	      ;employeegroup	;Customer		;true	;true		;{uid} NOT LIKE 'anonymous'
+
+code: Unique id code of the restriction.
+
+name: Name of the restriction.
+
+principal: User/user group to whom the restriction will be applied.
+
+restrictedType: Item type to which the restriction will be applied on.
+
+active: true means the restriction is enabled, false is disabled.
+
+query: conditions to be added to the WHERE clause of the flexible search
+
+Use restriction
+When you run a flexible search query on CustomerModel as a User who belongs to the employeegroup.
+SELECT {pk}, {uid} FROM {Customer}
+
+The restriction query will systematically be added to the flexible search.
+SELECT {pk}, {uid} FROM {Customer} WHERE {uid} NOT LIKE 'anonymous'
+								
+2. CMS restriction:
+-------------------------
+We can restrict a page or component from being displayed to specified users or user groups, on specified dates etc..
+
+There are different types of restrictions like user restriction, user group restriction, time restriction etc..
+We can apply restriction either to a page or to a component.
+
+We can apply restriction through impex or directly through CMS Cockpit.
+
+Step 1: Define new CMS Restriction and provide the reference of page/component on which restriction has to be applied
+
+$contentCatalog=myStoreContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+INSERT_UPDATE CMSUserRestriction;$contentCV[unique=true];uid[unique=true];name;users(uid);components(&componentRef);&componentRef
+;;AnonymousUserRestriction;Anonymous User Restriction;anonymous;LoginLink;AnonymousUserRestriction
+
+INSERT_UPDATE CMSUserGroupRestriction;$contentCV[unique=true];uid[unique=true];name;userGroups(uid);includeSubgroups;components(&linkRef)
+;;MyAccountLinkApproverGroupRestriction;My Account Link Approver Group Restriction;b2bapprovergroup;true;ApprovalDashboardLink
+
+Step 2: Synchronize the content catalog so that restriction is available in online catalog.
+

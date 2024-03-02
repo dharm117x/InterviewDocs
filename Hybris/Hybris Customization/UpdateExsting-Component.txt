@@ -1,0 +1,52 @@
+==========
+Update custom compoent with exsting slot:
+--------------
+1.Create custom component by extending simplecmscomponent, create controller by extending class, create jsp page same as component name.
+and controller as well.
+
+2. Run below impex.
+
+UPDATE GenericItem[processor=de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor];pk[unique=true]
+$jarResourceCms=$config-jarResourceCmsValue
+
+$contentCatalog=apparel-ukContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+INSERT_UPDATE YouTubeVideoComponent;$contentCV[unique=true];uid[unique=true];name;width;height;videoId;autoPlay;showControls;&componentRef
+;;HomePageYouTubeVideoComponent;Our first component;1530;500;SltCd8pBpi8;false;true;HomePageYouTubeVideoComponent
+
+UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];active;cmsComponents(&componentRef)[mode=append]
+;;Section1Slot-Homepage;true;HomePageYouTubeVideoComponent
+
+=======================
+Update exsting component with new slot
+-------------------------------
+
+$contentCatalog=apparel-ukContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Online])[default=$contentCatalog:Online]
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;content;&componentRef
+;;WelcomeInfoComponent;Welcome information;welcome to my first paragraph for home page;WelcomeInfoComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;WelcomeInfoSlot-Homepage;welcomeInfo slot;true;WelcomeInfoComponent
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='LandingPage2Template'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;WelcomeInfo-LandingPage2;WelcomeInfoSlotName;;WelcomeInfoSlot-Homepage;true
+
+optional
+------------
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='LandingPage2Template'];validComponentTypes(code);compTypeGroup(code)
+;WelcomeInfoSlotName;;;wide
+
+
+Modfify JSp file: landingLayout2Page
+
+<div class="welcomeInfo">
+    <cms:pageSlot position="WelcomeInfoSlotName" var="feature">
+                <cms:component component="${feature}" />
+    </cms:pageSlot>
+</div>
+
+
+============

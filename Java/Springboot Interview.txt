@@ -1,0 +1,51 @@
+Spring boot QA
+===============
+>>Common Annotaion:
+
+@SpringBootApplication = @Configuration + @EnableAutoConfiguration + @ComponentScan
+
+@ConditionalOnBean Annotation Example
+Use when we want to define conditions based on the presence or absence of a specific bean:
+
+@PropertySource("classpath:config.properties")
+
+@RequestBody: binds method parameters to the request body.
+
+
+->Commonly used Spring boot starters:
+spring-boot-starter: core starter, including auto-configuration support, logging, and YAML
+spring-boot-starter-data-jpa: for using Spring Data JPA with Hibernate
+spring-boot-starter-security: for using Spring Security
+spring-boot-starter-web: for building web, including RESTful, applications using Spring MVC.
+spring-boot-starter-data-rest: Starter for exposing Spring Data repositories over REST using Spring Data REST
+spring-boot-starter-test: for testing Spring Boot applications
+
+
+->Production-Ready Applications:
+spring-boot-starter-actuator - To use advanced features like monitoring & tracing to your application out of the box
+spring-boot-starter-undertow, spring-boot-starter-jetty, spring-boot-starter-tomcat - To pick your specific choice of Embedded Servlet Container
+spring-boot-starter-logging - For Logging using log back
+spring-boot-starter-cache - Enabling Spring Framework’s caching support
+
+
+Spring Boot starters
+Spring Boot autoconfiguration
+Elegant configuration management
+Spring Boot Actuator
+Easy-to-use embedded servlet container support
+
+>>Spring Boot Actuator provides production-ready features for monitoring and managing Spring Boot applications. 
+It offers a set of built-in endpoints and metrics that allow you to gather valuable insights into the health, performance, and management of your application.
+
+Health Monitoring: The actuator exposes a /health, detailed health checks for different components, such as the database, cache, and message brokers.
+Metrics Collection: The actuator collects various metrics about your application's performance and resource utilization. It exposes endpoints like /metrics and /prometheus
+Auditing and Tracing: Actuator allows you to track and monitor the activities happening within your application. It provides an /auditevents
+Environment Information: The actuator exposes an /info endpoint that displays general information about your application, such as version numbers, build details, and any custom information you want to include.
+Configuration Management: Actuator provides an /configprops endpoint that lists all the configuration properties used in your application.
+Remote Management: Actuator allows you to manage and interact with your application remotely. It provides various endpoints, such as /shutdown to gracefully shut down the application, /restart to restart the application, and /actuator to list all available endpoints.
+
+>>Async call:
+----------------
+1. Enable by @EnableAsync
+2. Method annoted with @Async and retur type should be CompletableFeature.
+

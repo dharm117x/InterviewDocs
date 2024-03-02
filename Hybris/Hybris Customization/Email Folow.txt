@@ -1,0 +1,14 @@
+ForgotPassword Email folow:
+
+Once click on forgotpassword link
+
+1. ForgotPasswordController
+
+2. Service -->Event.java(uid, language) -->EventListener<Event.java> -->createBussiness(forgotpasswordBussinessProcess)
+
+3. process.xml --> forgotpasswordBussinessProcess
+
+4. GenrateEmailAction (forgotpasswordEmailTemplate) --genrating email template with all details
+
+5. sendEmail
+

@@ -1,0 +1,128 @@
+﻿For New basic attribute: alias
+-----------------------
+Solar Query:
+
+id:apparelProductCatalog/*/300310300
+
+1. Add new attribute:
+
+<itemtype code="Product" autocreate="false" generate="false">
+				<attributes>
+					<attribute autocreate="true" qualifier="alias" type="java.lang.String"
+						generate="true">
+						<persistence type="property" />
+						<modifiers read="true" write="true" search="true"
+							initial="true" optional="true" unique="false" />
+					</attribute>
+				</attributes>
+			</itemtype>
+
+2.Add new att in solr.imepx:
+
+# impex for indexing alias attribute
+INSERT_UPDATE SolrIndexedProperty;solrIndexedType(identifier)[unique=true];name[unique=true];type(code);sortableType(code);currency[default=false];localized[default=false];multiValue[default=false];useForSpellchecking[default=false];useForAutocomplete[default=false];fieldValueProvider;valueProviderParameter
+;$solrIndexedType; alias                  ;string ;            ;    ;;    ;true;true;                 ;
+
+INSERT_UPDATE SolrSearchQueryProperty;indexedProperty(name, solrIndexedType(identifier))[unique=true];searchQueryTemplate(name, indexedType(identifier))[unique=true][default=DEFAULT:$solrIndexedType];facet;ftsPhraseQuery[default=false];ftsPhraseQueryBoost;ftsQuery[default=false];ftsQueryBoost;ftsFuzzyQuery[default=false];ftsFuzzyQueryBoost;ftsWildcardQuery[default=false];ftsWildcardQueryType(code)[default=POSTFIX];ftsWildcardQueryBoost;ftsWildcardQueryMinTermLength;includeInResponse[default=true]
+;alias:$solrIndexedType                   ;	 ;	  ;TRUE;100;TRUE;50;TRUE;25 ;  ;   	   ;  ;
+
+3. Add Sample data:
+
+# Impex for adding sample data
+INSERT_UPDATE ApparelProduct;code[unique=true];$catalogVersion;unit(code);supercategories(code,$catalogVersion);varianttype(code);$approved;$taxGroup;ean;genders(code);alias
+;300441142;;pieces;Blue Tomato,caps;;;;1022436212;MALE; alias for blue cap
+
+4.Add new fileld in product data:
+
+<bean class="de.hybris.platform.commercefacades.product.data.ProductData">
+        <property name="alias" type="String"/>
+</bean>
+	
+5. Updated populator:
+
+	@Override
+	public void populate(final ProductModel source, final ProductData target) throws ConversionException
+	{
+		final ProductModel baseProduct = getBaseProduct(source);
+
+		if (baseProduct instanceof ApparelProductModel)
+		{
+			final ApparelProductModel apparelProductModel = (ApparelProductModel) baseProduct;
+			if (CollectionUtils.isNotEmpty(apparelProductModel.getGenders()))
+			{
+				final List<GenderData> genders = new ArrayList<GenderData>();
+				for (final Gender gender : apparelProductModel.getGenders())
+				{
+					genders.add(getGenderConverter().convert(gender));
+				}
+				target.setGenders(genders);
+			}
+			target.setAlias(apparelProductModel.getAlias());
+		}
+	}
+	
+7. Update JSp filds:
+<ycommerce:testId code="productDetails_productNamePrice_label_${product.code}">
+            Alias : ${product.alias}
+            <h1>
+                ${product.name}
+            </h1>
+</ycommerce:testId>
+
+8. Update index by hmc:
+HMC -> System -> Facet Search -> indexer operation wizard
+Select full in the indexer operation
+Select apparel-ukIndex in Solr configuration
+Click on Start and make sure it completes successfully
+
+==========================================================================
+==========================================================================
+Using valuprovider: if we don’t want the exact value from DB to be indexed.
+
+Ex: Image of products for diff name
+------------------------------------
+Not Use valu provider: if index the value coming from DB as it is without changing anything.
+Ex: Product code, name, description:
+
+Default value provider: ModelPropertyFieldValueProvider 
+
+
+Custom value Provider class:
+
+1. Create class with extends AbstractPropertyFieldValueProvider and implements FieldValueProvider.
+
+public class ProductOnlineDaysValueProvider extends AbstractPropertyFieldValueProvider implements FieldValueProvider, Serializable
+
+2. Create bean inside spring:
+
+    <!-- value provider for product online days -->
+    <bean id="productOnlineDaysValueProvider"
+          class="org.training.core.search.solrfacetsearch.provider.impl.ProductOnlineDaysValueProvider"
+           parent="abstractPropertyFieldValueProvider">
+        <property name="fieldNameProvider" ref="solrFieldNameProvider"/>
+    </bean>
+
+3. UPdate solr.imex files:
+
+#Impex for adding new indexing property
+INSERT_UPDATE SolrIndexedProperty;solrIndexedType(identifier)[unique=true];name[unique=true];type(code);sortableType(code);currency[default=false];localized[default=false];multiValue[default=false];useForSpellchecking[default=false];useForAutocomplete[default=false];fieldValueProvider;valueProviderParameter
+                                 ;$solrIndexedType; onlineDays    ;int;            ;    ;    ;    ;    ;    ;productOnlineDaysValueProvider
+
+4. Create new property inside product data by bean config;
+<bean class="de.hybris.platform.commercefacades.product.data.ProductData">
+		<property name="genders" type="java.util.List<org.training.facades.product.data.GenderData>"/>
+<property name="onlineDays" type="int"></property>
+</bean>
+
+5. Create new class and extends SearchResultProductPopulator  and overrride populator methods
+	target.setOnlineDays(this.<Integer> getValue(source, "onlineDays").intValue());
+	
+6. Add  inside acc.autocomplete.js:
+   renderHtml += 	"<span class='title'>" + "Online Days " +item.onlineDays +"</span>";
+   
+7. Update manually impex file from hac and rebuild index from hmc.
+	
+	
+
+  
+  

@@ -1,0 +1,75 @@
+Diff between PK , TypePK  and OwnerPK.
+==========================================
+
+TypePK is the PK of the type this object is of, i.e. the type "Product" or "MyProduct" etc.
+
+PK is the PK of the instance of this object (the actual product).
+
+OwnerPK is the owner of the item, the creator. Though it seems to me this is not used, looked at a few objects just now and it's not set.
+
+
+
+Create Dynamic Attribute process:
+-------------------------------------
+Step 1. Create dynamic attribute as set persistence type="dynamic" and attributeHandler="bean name of custom handler class"
+
+Step 2. Create class extend with DynamicAtrributeHandler and override get methods.
+
+Step 3. Register class in spring.xml file.
+
+Step 4. ant all
+
+
+Remove attribute process:
+-----------------
+Step 1. delete attribute from item.xml then ant all.
+
+Step 3. remove all data from attributedescriptor where qualifierinternal='name of attribute';
+
+
+Alter table column
+==========================
+
+FIND AND DELETE ALL REFRENRECE- take backup before
+--------------------------------------------------
+SQL query
+--------------
+SELECT * FROM attributedescriptors
+WHERE lower(columnName) = 'p_STARTDATE' AND EnclosingTypePK 
+IN (SELECT PK FROM composedtypes WHERE itemtypecode 
+IN (SELECT typecode FROM ydeployments WHERE lower(tablename) = 'CronJobs'))
+AND PersistenceTypePK IS NOT NULL;
+
+same proces from : attributedescriptorslp if attribute localized
+
+Using-Impex
+----------------
+REMOVE AttributeDescriptor;qualifier[unique=true];enclosingType(code)[unique=true];
+;name;UserAddress;
+
+drop old column 
+--------------------
+ALTER TABLE CronJobs DROP COLUMN p_STARTDATE;
+
+ALTER TABLE UserAddresss DROP COLUMN p_name;
+
+
+Update type in item.xml
+-----------------------
+run ant all
+
+update hybris system.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

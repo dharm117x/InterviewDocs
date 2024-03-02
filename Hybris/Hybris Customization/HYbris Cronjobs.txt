@@ -1,0 +1,71 @@
+Craete Cron Job ::
+
+All job bean store inside:
+
+select * from {servicelayerjob} where p_springid='myTestJob'
+
+Step 1. We can use same CronJobModel or CustomCronJobModel for extra property.
+	 for custom attribute then we need to crate TestCronJob with extendes only CronJob type in item.xml
+	 Create customJob with extends AbstracJobperfomable<CronjobModel> or  
+	 AbstracJobperfomable<TestCronJobModel>  and override perform methods and write bussiness logic.
+     
+Step 2. Register this class in spring.xml with bean id="myTestJob".
+
+Step 2.a Make job aboratable 
+
+1. add below caode inside job calss perform methods.
+
+    if (clearAbortRequestedIfNeeded(cronJobModel)) {
+        LOG.error(String.format(MSG_INFO_JOB_ABORTED, cronJobModel.getCode()));
+        return new PerformResult(CronJobResult.UNKNOWN, CronJobStatus.ABORTED);
+    }
+
+2. override isAbortable methods and return true.
+
+   @Override
+   public boolean isAbortable()
+   {
+       return true;
+   }
+
+
+Step 3. update following impex for cronjob and trigger
+
+INSERT_UPDATE ServicelayerJob;code[unique=true];springId[unique=true]
+;productRemovalCronJob;productRemovelJob;
+
+INSERT_UPDATE TestCronJob;code[unique=true];job(code);singleExecutable;sessionLanguage(isocode);startDate[dateformat=dd.MM.yyyy][forceWrite=true] 
+;myTestCronJob;myTestJob;true;en;01.01.2021;
+
+INSERT_UPDATE Trigger;cronJob(code)[unique=true];cronExpression
+;myTestCronJob;0 0/30 * * * ?
+
+REMOVE ProductRemovalCronJob;code[unique=true];
+;productRemovalCronJob;
+
+
+INSERT_UPDATE ProductRemovalCronJob;code[unique=true];job(code);singleExecutable;sessionLanguage(isocode);noOfDays;
+;productRemovalCronJob;productRemovelJob;true;en;19;
+
+INSERT_UPDATE ProductRemovalCronJob;code[unique=true];job(code);singleExecutable;sessionLanguage(isocode);noOfDays[forceWrite=true,allownull=true];
+;productRemovalCronJob-New;productRemovelJob;true;en;;
+
+INSERT_UPDATE Trigger;CronJob(code)[unique=true];cronExpression
+;productRemovalCronJob;0 0/30 * * * ?
+
+INSERT_UPDATE Trigger;CronJob(code)[unique=true];cronExpression
+;productRemovalCronJob-New;0 0/45 * * * ?
+
+
+code-ProductRemovalCronJob
+bean-productRemovelJob
+
+---------------------------------------
+Composite jobs setup
+
+INSERT_UPDATE CompositeEntry;code[unique=true]  ;executableCronJob(code)
+;testOneCronJobEntry;testOneCronJob
+;testTwoCronJobEntry;testTwoCronJob
+
+INSERT_UPDATE CompositeCronJob;code[unique=true];job(code);compositeEntries(code);sessionUser(uid)[default=admin];sessionLanguage(isocode)[default=en]
+;testCompositeCronJob;compositeJobPerformable;testOneCronJobEntry,testTwoCronJobEntry

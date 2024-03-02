@@ -1,0 +1,17 @@
+Hybris Key Skills
+==========================
+• Order Management, Payment, Fulfillment Process
+• SOLR, Solr Customization, Pricing and customization
+• Cronjobs, Flexiblesearch, Impex
+• Strong knowledge in WCMS, Storefront
+• Workflows
+• Business Process
+• Cockpits, Backoffice
+• Promotions, Vouchers and Rule Engine
+• CMS Restrictions, Search Restrictions
+• Access rights
+• PCM and Catalog management
+• Strong knowledge in Hybris Project setup with multiple sites, stores 
+• OCC, Webservices
+
+=====================================

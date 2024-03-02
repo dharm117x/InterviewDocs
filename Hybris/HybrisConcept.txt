@@ -1,0 +1,61 @@
+1.The Omni Commerce Connect (OCC) . 
+
+It is a next-generation commerce API that offers a broad set of commerce and data services
+The Omni Commerce Connect (OCC) is based on RESTful web services. To maximize the list of potential API clients, 
+the OCC supports both XML and JSON representations
+
+Authorization
+The OAuth 2.0 authorization framework is the default authorization framework for the commerce driven OCC (Omni Commerce Connect) Web Services 
+under the ycommercewebservices extension.
+   
+2. What is the use of Hybris Management Console (HMC)?
+Ans) HMC or Backoffice provides a single user interface to manage any kind of data. 
+It can be used to access stores, sites, products, users, companies and catalogs.
+
+3. What are the different components under the SAP Hybris Promotion module?
+
+Promotion Templates
+Promotion Rule Builder
+Priority Order
+Promotion Contextual Messages
+Coupon codes generation and management
+
+4. Catalog aware and unware items?
+
+Hybris Catalog has two versions - Offline (Staged) and Online. The business users work on the Staged version and push it (to) 
+Online once the item under work (product or content) is suitable to go live. They do this via a process called Synchronization.
+
+This process picks the items from Staged version, checks for some rules (which indicate that the item is ready to go live), and 
+creates (or updates if already created) a copy of the item with Online as the version. Hybris system understands that only Online needs to go live, 
+picks the item, and displays it on the website (storefront).
+
+Now, there are some entities which should have two copies in the system, so that Business users (like content managers or product managers) 
+can make appropriate changes to make it look suitable on the website before it actually appears there. E.g. - Product, Images etc.
+
+But there are certain items which need not to have to copies of them, E.g. - Price, Stock etc. because they would be same for both copies of 
+the item (Product in this case) and creating another copy would be an overhead on the system.
+
+Therefore, 
+the items that (should) take part in the synchronization process like Product, CMS Pages, Components etc. are called Catalog Aware.
+The items which do (or should) not take part in synchronization process are called Catalog Unaware
+
+5. CMS components?
+
+cms:pageSlot - It is governed by the tag file /web/webroot/WEB-INF/common/tld/cmstags.tld which is in the acceleratorcms extension. If you go to the description of the same, it says-"terates over the components in a CMS content slot for a position in the current page". It uses the cmsPageContextService to get the content slot. You can access the contenSlot on the template jsp by mentioning the position of the slot there (which you, ofcourse give when you create a content slot). Furthermore, there are other attributes as well, which talk about the limit of components to render for the slot, the HTML element to be generated for this slot etc. This tag tries to find the contentSlot first by the mentioned position, or you can alternatively specify the "uid" of the slot.
+
+cms:slot - This is governed by /cms2lib/resources/cms2lib/cmstags/cmstags.tld. Unlike the earlier one, it does not uses the "position" but the "uid" to get the corresponding slot. There is no such flexibility and control over this tag in terms of the HTML element that needs to be rendered for this slot etc.
+
+
+
+6. Controller and renderer
+
+Actually, ComponentController and ComponentRenderer both serve different purposes.
+
+ComponentController:
+is where you can play around incoming requests, manipulate data or some business logic before feeding it to view to render the final output. Here you need to write view in JSP file. Refer CMSPageUrlResolvingController, SimpleResponsiveBannerComponentController, DynamicBannerComponentController etc.
+
+ComponentRenderer:
+is for View. Which means you are going to write view content on the page context directly inside the renderer. Here you do not require to have JSP to render the view. Refer CMSParagraphComponentRenderer, CMSLinkComponentRenderer, ImageMapComponentRenderer etc
+
+If you just want to populate your component attributes to Model, then you don't require to define the custom controller or renderer, OOTB GenericCMSAddOnComponentController will take care of it.
+Please note, If there is a respective custom componentRenderer already defined, then componentContoller won't be invoked, having said that custom componentRenderer and custom componentContoller can't work together.

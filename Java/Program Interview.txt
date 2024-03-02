@@ -1,0 +1,57 @@
+1. Fibnocy number: 0 1 1 2 3 5 8 13 to n
+		int i1 = 0;
+		int i2 = 1;
+		for (int i = 0; i < n; i++) {
+			System.out.println(i1);
+			
+			int i3 = i1 + i2;
+			i1 = i2;
+			i2 = i3;
+
+			
+2. Prime number test:
+	if (test == 0 || test == 1) {
+			return false;
+	}
+	for (int i = 2; i < test / 2 + 1; i++) {
+			if (test % i == 0) {
+				return false;
+		}
+	}
+		return true;
+}
+
+3. Find large no:
+	int[] data = { 11, 33, 55, 99, 90, 24, 19 };
+		int max = data[0];
+		for (int i = 1; i < data.length; i++) {
+			if (data[i] > max) {
+				max = data[i];
+			}
+		
+
+}
+
+4. Find duplicate no:
+		int[] data = { 11, 11, 33, 55, 99, 99, 90, 24, 19 };
+		for (int i = 0; i < data.length; i++) {
+			for (int j = i + 1; j < data.length; j++) {
+				if (data[i] == data[j]) {
+					System.out.println("duplicate no-> "+data[i]);
+				}
+			}
+		}
+5. Plindrom test:
+	char[] array = str.toCharArray();
+	char[] revc= new char[array.length];
+	String revs= "";
+	for (int i = array.length-1, j=0; i >=0 ; i--,j++) {
+		revc[j]= array[i];
+		revs = array[i] + revs;
+	}
+
+	System.out.println("Reves::"+revs);
+	
+6. 
+
+	
