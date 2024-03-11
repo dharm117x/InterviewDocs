@@ -1,0 +1,27 @@
+Kuberneties:Container Orchestration.
+=====================================
+Its is orchestratiaon and manage 1000 of microserive instnace.
+
+Feature: Auto scaling, Service Dicscovery, Load Balancing, Self healing, Zero down time.
+
+Cloud Neutrel: its work any cloud plateform.
+
+Google kubeneties Engine(GKE) on Google cloud platform(GCF).
+
+Kubernet not deploy container directly its deploy in pod(unique IP address) and containes multiple container and share same resource as localhost.
+
+commands:
+==============
+kubectel  explain pods
+
+kubectel  get pods
+
+kubectel describe pod podid
+
+kubectel  get rs
+
+kubectel  get rs -o wide
+
+
+
+ 

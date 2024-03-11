@@ -1,0 +1,89 @@
+Rest API QA
+=====================
+>>REST(Representational State Transfer) 
+
+>>HATEOAS: stands for Hypermedia as the Engine of Application State and it is a component of RESTful API architecture and design. With the use of HATEOAS, the client-side needs minimal knowledge about how to interact with a server.
+A HATEOAS request allows you to not only send the data but also specify the related actions. The response will contain hypermedia links that allow the client to take further actions.
+
+
+>>REST services are scalable due to the statelessness that they do not store data on the server.
+
+REST APIs can be kept secure with the help of safety measures such as Authentication and authorization, API Server Validation, TSl/SSL Encryption, 
+Rate-limiting for DDoS attacks, and sensitive information such as username, password, or authentication token should not be visible in URIs
+
+GET, PUT, and DELETE are idempotent methods, because they always return the same resource, update the same resource, or remove the same resource, respectively.
+200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable.
+
+>>Rest API Data validation 
+----------------------------
+1. Request Body data Using constraint validation annotaion: Ex @NotEmpty, @Email, @Min, @MAx etc
+	public void createUser(@REquestBody @Valid User user){}
+2. Request paramenter and Path field also validate with above annotaion
+	public void getUser(@Requestparam @NotNull String name){}
+
+
+>> Rest Api Security:
+=======================
+
+>>>JWT Authenitaction/Authorization
+----------------------------------
+JWT stands for JSON Web Token-> It can be used for an authentication system and can also be used for information exchange.The token is mainly composed of header, payload, signature.
+
+It is most suitable for Microservices Architecture
+It has other advantages like specifying the expiration time.
+
+A JWT consists of 3 parts: header.payload.token
+------------------------------------------------
+Header: A header in a JWT is mostly used to describe the cryptographic operations applied to the JWT like signing/decryption technique used on it.
+{
+    "typ":"JWT",
+    "alg":"HS256"
+}
+
+Payload: The payload is the part of the JWT where all the user data is actually added. This data is also referred to as the ‘claims’ of the JWT
+{
+     "userId":"b07f85be-45da",
+     "iss": "https://provider.domain.com/",
+     "sub": "auth/some-hash-here",
+     "exp": 153452683
+ }
+
+
+Signature: used to verify the authenticity of token
+Secret: "secrret key for jwt"
+
+Genrate JWT:
+--------------
+Jwts.builder().setClaims(claims)
+.setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+.setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
+.signWith(SignatureAlgorithm.HS512, secret).compact();
+
+
+
+
+>>>OAuth2 Authenitaction/Authorization
+-------------------------------------
+Resource owner: (User having gogle acc and want to login with)
+
+Client Application: Spring boot application (unique client id and secret key) thats need to be authenticated. 
+
+Authorization server: Server issuing access token after successfuly auhthenticae the resource owner and obtaining aouthorization server.
+
+Resource Server: Its handles authenticated requests after the applcaion has obtained an access token.
+
+Authorization server already have client id configured to recognize client apps
+
+Ex:
+1-Login 
+
+1. Oauth2 : GrantType - client_credential- User have no role, its machine to machine communication. 
+
+2. Oauth2:  GrantType - password - User have to passs password and username with clinet id and secrect key to get access token and using 				   this access token get resource from resource server.
+ 
+
+
+
+
+
+

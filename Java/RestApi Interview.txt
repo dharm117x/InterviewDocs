@@ -15,10 +15,22 @@ GET, PUT, and DELETE are idempotent methods, because they always return the same
 200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable.
 
 >>Rest API Data validation 
+----------------------------
 1. Request Body data Using constraint validation annotaion: Ex @NotEmpty, @Email, @Min, @MAx etc
 	public void createUser(@REquestBody @Valid User user){}
 2. Request paramenter and Path field also validate with above annotaion
 	public void getUser(@Requestparam @NotNull String name){}
+
+>> Rest Api security 
+-----------------------
+> Restrict HTTP methods
+> Input validation
+> Validate content types
+> Validate request content types
+> Security Headers-X-Content-Type-Options: nosniff, 
+> oauth2 sso enable
+> 
+
 
 
 

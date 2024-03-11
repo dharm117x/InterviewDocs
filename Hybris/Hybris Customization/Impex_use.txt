@@ -36,6 +36,7 @@ UPDATE Product[batchmode=true]; $catalogVersion; minOrderQty ; maxOrderQty
 $productCatalog=apparelProductCatalog
 $productCatalogName=Apparel Product Catalog
 $catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+
 UPDATE Product[batchmode=true];$catalogVersion;onlineDate[dateformat=dd.MM.yyyy];offlineDate[dateformat=dd.MM.yyyy] 
 ;;01.01.2020;01.05.2022
 

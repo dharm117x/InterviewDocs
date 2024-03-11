@@ -1,0 +1,66 @@
+DockerFile:
+------------
+FROM tomcat:8.0-alpine
+LABEL maintainer="Dharmendra"
+ADD sample.war /usr/local/tomcat/webapps/
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
+----------------------------------
+FROM openjdk:17
+EXPOSE 8080
+ADD target/docker-demo.jar demo.jar
+ENTRYPOINT ["java", "-jar", "demo.jar"]
+
+
+Image dwonload/upload from repos:
+---------------------------
+docker login
+docker login -u "dharm117docker" -p "Cybercom117#" docker.io
+
+docker tag demo:01 dharm117docker/demo:01
+docker push dharm117docker/demo:01
+
+docker image pull <image_name>:<image_version/tag>
+docker image pull demo:01
+
+Build from DocekrFile:
+--------------------------
+docker build .
+or
+docker build -f /path/to/a/Dockerfile  -t demo:01 .
+
+docker image ls
+docker image rm -f <Image_id>
+docker image prune -a
+
+docker tag repositry_nmae:1 repostry_name:latest
+
+docker search imagename
+docker image hostory imageid
+docker image inspect imageid
+
+
+Run:
+-------
+docker run -d  -p <host_port>:<container_port> --name <container_Name> <image_name>:<Image_version/tag>
+docker run -d -p 9000:8080 --name demo demo:01
+
+docker run -d --name httpd_server -p 8080:80 httpd:2.
+docker ps -a
+
+docker start/stop <container_id>
+docker rm <container_id>
+
+Login coker container:
+---------------------
+docker exec -it <container_Name> /bin/bash
+
+docker container pause/unpause uid
+docker container inspect imageid
+
+dcoekr log -f uid
+docker container ls -a
+
+
+
+

@@ -1,0 +1,9 @@
+>> 3+ Ways to Include Bootstrap 4 In Your Angular 12 Project
+You can include Bootstrap in your Angular 12 project in multiple ways:
+
+Including the Bootstrap CSS and JavaScript files in the <head> section of the index.html file of your Angular 12 project with a <link> and <script> tags,
+Importing the Bootstrap CSS file in the global styles.css file of your Angular project with an @import keyword.
+Adding the Bootstrap CSS and JavaScript files in the styles and scripts arrays of the angular.json file of your project
+
+>> 
+

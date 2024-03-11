@@ -1,0 +1,65 @@
+Create Projeccts:
+ng new Lab1 --skip-install
+
+create symblink with node modules for new project:
+mklink /d node_modules D:\programs\angular12\node_modules
+
+
+Interploation-display dynamic data on page.
+ts- componet variable
+html- {{title}}
+
+Agular CLI:
+----------------
+- craete componet: 
+
+default location inside src/app and genrate total 4 files and update app module.ts files
+html-
+ts- 
+css- 
+spect.ts-
+
+ 
+ng generate component login
+or
+ng g c login
+
+//inline css use without css fille 
+ng g c register --inline-style 
+
+// inline html without html file
+ng g c menue --inline-template 
+
+------------------------------------------------
+Component use:
+---------------------
+One component use inside component by using selector of component in first compnnet as html tag
+
+-crearte module- have multiplae components
+ng g m user-module
+ng g c user-module/sign-in
+
+-- crate module with inside routing.
+ng g m admin --routing
+ng g c admin/login
+
+
+Regsiter module inside app.module.ts inside imports.
+
+- Create class - > holds properties and methods.
+ng genrate class Dummy - create two files
+dummy.js- class files
+dummy-spects.js- for testing
+
+- inside user module
+ng genrate class user-module/Dummy
+
+- create interface - > holds property only as data template.
+ng g interface DummyInterface
+
+
+-Directive:Its provide additional feature to attributes.
+ng g directive redEL
+
+ex *ngIf, *ngFor etc.
+

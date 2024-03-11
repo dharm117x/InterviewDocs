@@ -86,3 +86,57 @@ Avoid This
 boolean removed = myItems.remove(item); return removed;
 Try This Instead
 return myItems.remove(item); 
+
+Security volunrbility and fixed
+=================================
+>> Java-vulnerabilities-and-how-to-fix-them
+----------------------------
+OWASP TOP 10 Vulnerabilities
+
+A1	Injection
+A2	Broken Authentication and Session Management (XSS)
+A3	Cross Site Scripting (XSS)
+A4	Insecure Direct Object References
+A5	Security Misconfiguration
+A6	Sensitive Data Exposure
+A7	Missing Function Level Access Control
+A8	Cross Site Request Forgery (CSRF)
+A9	Using Components with Known Vulnerabilities
+A10	Unvalidated Redirects and Forwards
+
+>Unpatched Libraries
+Unpatched libraries can introduce critical risks to your application. Utilizing such a library can introduce vulnerabilities, potentially bypassing security controls that are in place elsewhere.
+
+sol: Be sure to keep components up-to-date and patched. Monitor for reported vulnerabilities so that prompt action may be taken
+
+>Cross-Site Scripting ("XSS")-> Occur when an attacker embeds malicious client-side script or HTML in a form or query variables submitted to a site via a web interface.
+
+Sol: any encoding or filtering scheme: < > “ ‘ ; & ? One or more of these characters, such as the single quote
+
+>Application Misconfiguration: Debug
+
+Sol: Debug mode should be disabled in production. In addition to any debug mode provided by the programming language, developers may implement their own custom debug mode
+
+>Application Misconfiguration: Global Error Handling Disabled
+Disabling a global error handling mechanism increases the risk that verbose implementation details will be revealed to attackers through a stack trace.
+
+>Application Misconfiguration: Excessive Permissions
+An application may use custom permissions that can then allow a separate application to access hardware level functionality through its API
+Sol: Applications should only request the minimum permissions needed for stated application functionality.
+
+Sol: To minimize the risk of disclosing sensitive implementation details through error messages, ensure the application deployment d
+escriptor declares an error-page declaration that catches all uncaught exceptions thrown by the application.
+
+>Disclosure: ClearText Password
+sol: System passwords should be encrypted, or the configuration file they are contained within should be encrypted, whenever possible
+
+>Denial of Service (DoS): Readline
+ven if the number of lines to be read is limited, an attacker can supply a large file with no newline characters and cause an OutOfMemoryError exception.
+
+sol: Another solution is to override both BufferedReader and the readLine() method and implement a limit for the maximum number of characters that can be read. In the absence of a more secure method, avoid taking input from the client whenever possible and ensure data being read is trusted.
+
+>Insufficient Session Expiration
+User sessions with long or no inactivity timeouts may help attackers replay attacks or hijack sessions
+Sol: In general, idle user sessions should timeout within 15-20 minutes, or less for sensitive applications. 
+
+

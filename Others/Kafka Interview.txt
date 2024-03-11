@@ -1,0 +1,104 @@
+Why kafa?
+1. Distributed, resilinet architecture, fault tolerent
+2. Horizantol scalibility(Scale 100s of broker and milions of message per second)
+3. High performance(low letency <10ms)
+
+Yes, Zookeeper is must by design for Kafka. Because Zookeeper has the responsibility a kind of managing Kafka cluste
+Since version 2.8.0, Kafka provides an option to run without ZooKeeper, using a feature called Kafka Raft Metadata mode
+
+Use cases:
+Messeging system
+Activity tracking,
+Gather metrics from diff location
+Aplication log gethering
+Stream processing
+De-couple
+Integration with spark
+Microservice
+---------------------
+Kafka components:
+=================
+Topics, Partitions, offsets
+
+>>Topic: A particular stream of data, like table in database can have many topics and its identified by name.
+Its support any message format, sequence of messages is call a data stream.
+We can not query data from topic, instead use kafaka producer.
+
+>>Partions: As the Kafka partitions are containing the data records or messages.
+Partiona are made of segments (files) at a time only one segemt is active(for data written)
+Two segments setting:
+1. log.segment.size the max size of segemt is 1gb default
+2. log.segment.ms the time kafak will wait before commite segment is not full defaul 1 week.
+
+Segment comes with 2 indexs:
+1. An offset ot position index: Wher to read message from to find message
+2. A Timestamp to offset index: Find message with speciifc timestamp.
+
+>>Offset:As the Kafka partitions are containing the data records or messages, each of these messages within a partition needs to be assigned an incremental ID. This incremental ID is with respect to the position, the message holds inside the Partition. This specific ID has defined an Offset
+
+
+>>Schema Registry:: is a simple concept but it’s really powerful in enforcing data governance within your Kafka architecture. Schemas reside outside of your Kafka cluster, only the schema ID resides in your Kafka, hence making schema registry a critical component of your infrastructure. If the schema registry is not available, it will break producers and consumers
+
+		    [SchemaRegistry : Apache Avro™ ]
+
+Prodcuer -> shemaid+data [kafak] shemaid+data -> Consumer
+
+
+With the schema registry in place, the producer, before sending the data to Kafka, talks to the schema registry first and checks if the schema is available. If it doesn’t find the schema then it registers and caches it in the schema registry. Once the producer gets the schema, it will serialize the data with the schema and send it to Kafka in binary format prepended with a unique schema ID. When the consumer processes this message, it will communicate with the schema registry using the schema ID it got from the producer and deserialize it using the same schema. If there is a schema mismatch, the schema registry will throw an error letting the producer know that it’s breaking the schema agreement.
+ 
+Kafka Error Handling:
+---------------------
+Dead letter queue is nothing but creating new failure queue in the name of TOPIC.DLT, If consumer not able to process message even after retry those unprocessed message pushed to Dead letter queue.
+Spring boot provides @DltHandler by using this annotation we can able to enable DLT logic for failure message based on Kafka topic.
+
+Data duplicate:
+------------------
+>>Duplicate messages can occur in the scenario where:
+
+A Producer attempts to write a message to a topic partition.
+The broker does not acknowledge the write due to some transient failure scenario.
+The Producer should retry as it does not know whether the write succeeded or not.
+If the Producer is not idempotent and the original write did succeed then the message would be duplicated.
+
+Elimination of Message Duplication: The idempotent producer ensures that duplicate messages are prevented from being written to Kafka. 
+
+Best Kafak Config:
+----------------
+enable.idempotence=true
+acks=all
+retries= integer max
+max.in.flight.requests.per.connection=<=5
+
+
+Kafaka command:
+==================
+Steps to start kafak server:
+cd D:\Apps\kafka_2\bin\windows
+
+1. Start zookeeper:
+zookeeper-server-start  ..\..\config\zookeeper.properties
+
+2. Start kafak server:
+kafka-server-start ..\..\config\server.properties
+
+Topic:
+kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+
+kafka-topics --bootstrap-server localhost:9092 --topic TestTopic --create --replication-factor 1 --partitions 3
+
+kafka-topics --bootstrap-server localhost:9092 --list
+
+kafka-topics --bootstrap-server localhost:9092 --topic TestTopic --describe
+
+kafka-topics --bootstrap-server localhost:9092 --topic TestTopic --alter --partitions 4
+
+>Note--Delete topic windows have issue so clean kafka and zookeper log from log file and restart.
+
+kafka-configs --bootstrap-server localhost:9092 --entity-type topics --entity-name TestTopic --describe
+
+
+Producer:
+kafka-console-producer --broker-list localhost:9092 --topic TestTopic
+
+Consumer:
+kafka-console-consumer --bootstrap-server localhost:9092 --topic TestTopic --from-beginning

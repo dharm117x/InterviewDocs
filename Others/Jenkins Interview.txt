@@ -1,0 +1,38 @@
+1. install jenkins iin windows or start jenkis war file.
+
+2. Plugin install
+> Maven
+> Email
+> 
+
+3. Pipeline build.
+> script:
+
+pipeline{
+
+agent any
+
+stages{
+
+stage("build"){
+steps{
+  sh 'echo "Building application"'
+}
+
+}
+stage("test"){
+steps{
+  sh 'echo "Test application"'
+}
+
+}
+stage("deploy"){
+steps{
+  sh 'echo "Deploy application"'
+}
+
+}
+
+
+}
+}
