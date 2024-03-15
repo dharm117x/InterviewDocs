@@ -4,8 +4,8 @@ A restriction in Hybris is a set of rules applied to flexible searches in order 
 conditions. By default, restrictions are not applied on admingroup members, admin will always get the full results.
 
 Create restriction
-INSERT_UPDATE SearchRestriction	;code[unique=true]			;name[lang=en]			      ;principal(UID)	;restrictedType(code)	;active	;generate	;query
-			        ;customerWithoutAnonymous	        ;Customer Anonymous Restriction	      ;employeegroup	;Customer		;true	;true		;{uid} NOT LIKE 'anonymous'
+INSERT_UPDATE SearchRestriction	;code[unique=true]			;name[lang=en]			       ;principal(UID);restrictedType(code);active;generate	;query
+			                    ;customerWithoutAnonymous	;Customer Anonymous Restriction;employeegroup ;Customer		       ;true  ;true		;{uid} NOT LIKE 'anonymous'
 
 code: Unique id code of the restriction.
 

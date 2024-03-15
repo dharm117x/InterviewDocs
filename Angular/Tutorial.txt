@@ -1,36 +1,49 @@
-Create Projeccts:
+>> Create project myapp
+--------------------------
 ng new Lab1 --skip-install
 
-create symblink with node modules for new project:
 mklink /d node_modules D:\programs\angular12\node_modules
 
-
-Interploation-display dynamic data on page.
-ts- componet variable
-html- {{title}}
-
-Agular CLI:
-----------------
-- craete componet: 
-
-default location inside src/app and genrate total 4 files and update app module.ts files
-html-
-ts- 
-css- 
-spect.ts-
-
- 
+Without folder:
 ng generate component login
-or
 ng g c login
+or
+ng g c login --skip-tests // without test file.  spec.ts
 
-//inline css use without css fille 
-ng g c register --inline-style 
+ng g c register --inline-style // inline css no css file
 
-// inline html without html file
-ng g c menue --inline-template 
+ng g c menue --inline-template // inline tempalte no html file
 
-------------------------------------------------
+
+With folders:
+------------------
+ng g c components/add-tutorial
+ng g s services/tutorial
+ng g class models/tutorial --type=model
+
+code .
+
+ng build --configuration=dev
+
+ng build --watch
+
+ng serve
+--http://localhost:4200
+
+ng serve --prot 9001
+
+Genrate angluar item with CLI:
+---------------------------------
+Component   ng g component my-new-component
+Directive   ng g directive my-new-directive
+Pipe    ng g pipe my-new-pipe
+Service ng g service my-new-service
+Class ng g class my-new-class
+Guard   ng g guard my-new-guard
+Interface   ng g interface my-new-interface
+Enum    ng g enum my-new-enum
+Module  ng g module my-module
+
 Component use:
 ---------------------
 One component use inside component by using selector of component in first compnnet as html tag
@@ -46,8 +59,10 @@ ng g c admin/login
 
 Regsiter module inside app.module.ts inside imports.
 
-- Create class - > holds properties and methods.
+>>Create class - > holds properties and methods.
+
 ng genrate class Dummy - create two files
+
 dummy.js- class files
 dummy-spects.js- for testing
 
@@ -58,8 +73,33 @@ ng genrate class user-module/Dummy
 ng g interface DummyInterface
 
 
--Directive:Its provide additional feature to attributes.
+>> Directive:Its provide additional feature to attributes.
 ng g directive redEL
 
 ex *ngIf, *ngFor etc.
+
+Project Explain
+---------------------------
+– tutorial.model.ts exports the main class model: Tutorial.
+– There are 3 components: tutorials-list, tutorial-details, add-tutorial.
+– tutorial.service has methods for sending HTTP requests to the Apis.
+– app-routing.module.ts defines routes for each component.
+– app component contains router view and navigation bar.
+– app.module.ts declares Angular components and import necessary modules.
+
+===================================
+Folder:
+--------------
+src-components and js files
+assets-media folder like image js etc.
+environment-
+index.htm- load first file its hold aap-root and css other json
+main.ts- bootstrap
+styles.css-
+
+package-lock.json- package details
+pacakge.json-
+angular.json- config icon, first html, js 
+tsconfig.json- z
+
 

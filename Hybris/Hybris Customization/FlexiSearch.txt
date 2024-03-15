@@ -74,4 +74,170 @@ SELECT uniontable.PK, uniontable.CODE FROM
    }}
 ) uniontable
 	  
+=================
+Use of Enum in the query 
+-------------------
+Find all running Solr Index jobs
+
+select {cj.code},{enum:code},{cj.startTime},{cj.endTime} 
+from { SolrIndexerCronJob! as cj 
+       join EnumerationValue as enum on {cj.status}={enum.pk}
+     } where {enum:code} = 'RUNNING'
+
+Compare Date in the flexiblesearch query
+-------------------
+Find all running Solr Index jobs from the given date
+
+select {cj.code},{enum:code},{cj.startTime},{cj.endTime} 
+from { SolrIndexerCronJob! as cj 
+       join EnumerationValue as enum on {cj.status}={enum.pk}
+     } 
+where {enum:code} = 'RUNNING' and {cj.startTime} >= TO_DATE('2021/12/25','YYYY/MM/DD')
+
+
+Basic JOIN and IN query
+-------------------------
+Get the most recent order for each customer using flexible search.
+
+select {o.code} as orderCode,
+       {c.name} as name,
+       {a.cellphone} as cellphone
+
+from   {order as o 
+        join Customer as c on {c.pk} = {o.user}  
+        join Address as a on {o.deliveryaddress} = {a.pk}
+       } 
+
+       where {o.code} in ({{select max({code}) from {order} group by {user}}})
+
+Note: This query is not optimized one. This is just the reference to the temporary table join syntax
+
+select t1.orderCode, t1.name, t1.cellphone 
+from 
+({{
+    select {o.code} as orderCode, {c.name} as name,{a.cellphone} as cellphone 
+    from {order as o join Customer as c on {c.pk} = {o.user} join Address as a 
+    on {o.deliveryaddress} = {a.pk}}
+}}) as t1
+
+Join
+
+({{
+  select max({code}) as orderCode, {user} as user from {order} group by {user}
+}}) as t2
+
+on t1.orderCode = t2.orderCode
+Temporary table and join between
+Fetch all registered customers and their last order information
+
+select t1.name, t2.orderCode, t2.cellphone
+
+from 
+
+({{
+  select {pk} as userPk, {name} as name from {Customer}
+}}) as t1
+
+LEFT JOIN
+
+({{
+    select 
+       {o.code} as orderCode,
+       {o.user} as user,
+       {a.cellphone} as cellphone
+
+from   {order as o 
+        join Address as a on {o.deliveryaddress} = {a.pk}
+       } 
+
+       where {o.code} in ({{select max({code}) from {order} group by {user}}})
+}}) as t2
+
+on t2.user = t1.userPk
+
+
+Find value in the collection type
+------------------------------------
+Search in Collections to check if the value exists in the collection type attribute.
+
+<collectiontype code="PaymentModeCollection" elementtype="PaymentMode" autocreate="true" generate="false"/>
+
+<itemtype code="DeliveryMode"
+          extends="GenericItem"
+          jaloclass="de.hybris.platform.jalo.order.delivery.DeliveryMode"
+          autocreate="true"
+          generate="true">
+    <attributes>
+        <attribute qualifier="code" type="java.lang.String" autocreate="true" generate="true">
+            <persistence type="property"/>
+            <modifiers read="true" write="true" search="true" optional="false" unique="true"/>
+            <custom-properties>
+                <property name="hmcIndexField">
+                    <value>"thefield"</value>
+                </property>
+            </custom-properties>
+        </attribute>
+        <attribute autocreate="true" qualifier="supportedPaymentModes" type="PaymentModeCollection"
+                   generate="true">
+            <persistence type="jalo"/>
+            <modifiers read="true" write="true" search="false" optional="true"/>
+        </attribute>
+    </attributes>
+</itemtype>
+
+Here let's say you want to get the name of the all PaymentMode which is there as supported payment mode of DeliveryMode table. Your query would be like.
+SELECT {pm.name}, {pm.code}
+FROM
+{
+   DeliveryMode AS dm JOIN PaymentMode AS pm
+   ON {dm.supportedPaymentModeInternal} LIKE CONCAT( '%', CONCAT( {pm.PK} , '%' ) )
+} 
+
+CASE WHEN
+Sort the product review by numbers of like it got
+SELECT {c.pk}
+FROM { CustomerReview c LEFT JOIN
+     LikeReview l
+     ON {c.pk} = {l.customerReview} }
+WHERE {c.product} = ?product AND
+      {c.LANGUAGE} = ?language
+GROUP BY {c.pk}
+ORDER BY SUM(CASE WHEN {l.ISLIKE} = "true" THEN 1 ELSE 0 END) DESC
+
+HAVING CLAUSE
+Get the list of user who has more than one cart
+select {u.pk}, {b.pk}, count(distinct({c.pk})) 
+from {
+   user as u 
+   join cart as c on {c.user} = {u.pk} 
+   join basestore as b on {b.pk} = {c.store}
+}
+
+WHERE {c.saveTime} IS NULL AND {c.quoteReference} IS NULL
+GROUP BY {u.pk}, {b.pk}
+having count(distinct({c.pk})) > 1
+PrincipalGroup Join
+Get all customers based on usergroup
+SELECT {u:uid}, {ug:uid} FROM
+ {
+    UserGroup as ug JOIN PrincipalGroupRelation as rel
+    ON {ug:PK} = {rel:target}
+    JOIN User AS u
+    ON {rel:source} = {u:PK}
+ }
+ WHERE {ug:uid}='admingroup'
+
+PrincipalGroup Join
+
+Get all active B2BUnits of the SalesOrg
+SELECT {unit:uid},  {unit:name} FROM
+ {
+	
+	SalesOrgUnit as so JOIN PrincipalGroupRelation as rel
+	ON {so:PK} = {rel:target}
+	JOIN B2BUnit AS unit
+	ON {rel:source} = {unit:PK} AND {unit.active}=1
+ }
+ 
+ WHERE {so:uid}='DEB'
 

@@ -1,0 +1,13 @@
+Backoffice:
+====================
+
+component="listview"
+
+component="editor-area"
+
+component="simple-search"
+
+component="advanced-search"
+
+parent="create-wizard"
+

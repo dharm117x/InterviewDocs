@@ -1,0 +1,20 @@
+
+--------------------------------------------
+SPARTCUS Hybris 2011
+----------------------------
+Angular CLI: Version 12.0.5 or later, < 13.
+Yarn: Version 1.15 or later.
+Node.js: Version 14.15 is required.
+
+ng new powertools --style=scss --skip-install
+
+cd powertools-store
+
+ng add @spartacus/schematics --pwa
+
+yarn start
+
+-----------------
+
+ng add @spartacus/schematics@latest --base-url https://localhost:9002/ --baseSite=powertools-spa --currency=usd,eur --language=en,de --ssr
+

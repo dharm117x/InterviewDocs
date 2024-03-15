@@ -12,15 +12,31 @@ Kubernet not deploy container directly its deploy in pod(unique IP address) and 
 
 commands:
 ==============
-kubectel  explain pods
+kubectl version --client
+kubectl version --client --output=yaml
 
-kubectel  get pods
+install minicube on local machine.
+-----------------------------
+minikube start
+minikube start --no-vtx-check
+minikube ssh -v 7
+ssh -i ~/.minikube/machines/minikube/id_rsa docker@192.168.59.100
 
-kubectel describe pod podid
 
-kubectel  get rs
+minikube kubectl -- get po -A
 
-kubectel  get rs -o wide
+kubectl cluster-info
+
+
+kubectl explain pods
+
+kubectl get pods
+
+kubectl describe pod podid
+
+kubectl get rs
+
+kubectl get rs -o wide
 
 
 

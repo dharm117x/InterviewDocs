@@ -1,0 +1,76 @@
+Create Event:
+--------------
+
+1.Event class HelloWorldEvent extend AbstractEvent/ClusterAwareEvent/
+
+2. public class HelloWorldEventListener extends AbstractEventListener<HelloWorldEvent> {
+   protected void onEvent(HelloWorldEvent helloWorldEvent) { 
+	// write bussiness logic.
+  }
+}
+
+3. Regiser event:
+<bean id="helloWorldEventListener"
+	  class="com.stackextend.training.core.event.listener.HelloWorldEventListener"
+	  parent="abstractSiteEventListener">
+
+4. publish the event:
+HelloWorldEvent event = new HelloWorldEvent("Mouad EL Fakir");
+// Publish the event
+eventService.publishEvent(event);
+
+
+Create Bussiness process: Business Processes in Hybris are a great way to run the logic in background asynchronously.
+========================
+
+1. Create Action classes and register with spring.xml as a beans. those define on business process and 
+
+class FirstAction extends 
+<bean id="firstAction" class="">
+
+
+2. Create New Process item if u have new Attribute:
+
+<itemtype code="HelloWorldProcess" extends="StoreFrontCustomerProcess"
+	jaloclass="com.training.core.jalo.process.HelloWorldProcess">
+	<attributes>
+		<attribute qualifier="firstName" type="java.lang.String">
+			<persistence type="property" />
+		</attribute>
+	</attributes>
+
+</itemtype>
+
+
+3. Create customerHelloWorldProcess.xml file with name, process class, start, action, end.
+
+<process xmlns="http://www.hybris.de/xsd/processdefinition" start="fisrtAction" name="customerHelloWorldProcess"
+		processClass="com.training.core.jalo.process.HelloWorldProcessModel" onError="error">
+
+	<action id="fisrtAction" bean="fisrtAction">
+		<transition name="OK" to="secondAction"/>
+		<transition name="NOK" to="error"/>
+	</action>
+
+	<action id="secondAction" bean="secondAction">
+		<transition name="OK" to="success"/>
+		<transition name="NOK" to="failed"/>
+	</action>
+
+	<end id="error" state="ERROR">Something went wrong.</end>
+	<end id="failed" state="FAILED">Could not send customer registration email.</end>
+	<end id="success" state="SUCCEEDED">Sent customer registration email.</end>
+
+</process>
+
+4. Register Process defination in spring.xml file.
+
+<bean id="customerHelloWorldProcessDefinitionResource"
+      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+	<property name="resource" value="classpath:/dkshopcore/processes/customerHelloWorldProcess.xml"/>
+</bean>
+
+3. Create bussiness process and start.
+helloWorldProcessModel = getBusinessProcessService().createProcess("helloWorld-" + System.currentTimeMillis(), "customerHelloWorldProcess");
+getBusinessProcessService().startProcess(helloWorldProcessModel);
+

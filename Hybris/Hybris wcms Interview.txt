@@ -1,0 +1,36 @@
+WCMS:
+====================
+
+Create New Page:
+--------------------
+1. Create layout jsp page with:
+
+<template:page>
+<cms:pageSlot position="conttent slot name" var="feature">
+<cms:component component="${feature}" />
+</cms:pageSlot>
+
+</<template:page>
+
+2. Use existing component or crate new compenent.
+
+
+3. Create impex file:
+
+INSERT_UPDATE PageTemplate : Its used to create new tempalte with jsp page layout.
+
+INSERT_UPDATE ContentPage : Its use to create new content page with template.
+
+INSERT_UPDATE ContentSlotName: Create content slot names required for the template.
+
+INSERT_UPDATE ContentSlot: create content slot which holds 1-n components.
+
+INSERT_UPDATE ContentSlotForTemplate:Link the content slots for the offer page template.
+  	
+CMS Restriction:
+=======================
+We can apply restriction either to a page or to a component.
+
+INSERT_UPDATE CMSUserRestriction;
+INSERT_UPDATE CMSUserGroupRestriction
+

@@ -1,9 +1,58 @@
->> 3+ Ways to Include Bootstrap 4 In Your Angular 12 Project
-You can include Bootstrap in your Angular 12 project in multiple ways:
+1. CSS and JS file config:
 
-Including the Bootstrap CSS and JavaScript files in the <head> section of the index.html file of your Angular 12 project with a <link> and <script> tags,
-Importing the Bootstrap CSS file in the global styles.css file of your Angular project with an @import keyword.
-Adding the Bootstrap CSS and JavaScript files in the styles and scripts arrays of the angular.json file of your project
+index.html:   Including the Bootstrap CSS and JavaScript files in the <head> section of the index.html file with a <link> and <script> tags,
+styles.css:   Importing the Bootstrap CSS file in the global styles.css file of your Angular project with an @import keyword.
+angular.json: Adding the Bootstrap CSS and JavaScript files in the styles and scripts arrays of the angular.json file of your project.
 
->> 
+
+2. Directive: Its is classes that add aditional behavior to element have 3 Type of directive:
+
+> Components: directives that include a template that is rendered in the place of the component
+
+> Attribute directive:
+NgModel (tow way data binding), NgStyle (add/remove htmlm style), NgClass (add/remove css style)
+
+
+> Structural directive: Which change the DOM lay out by add/remove DOM element its applied with prefix * like *ngIf
+  Only one structral directive on same element otherwise error throw.
+  
+  NgIf, NgFor, NgSwitc
+
+> Custom directive:
+
+
+3. Decorators:  its provides configuration metadata that determines how the component, class or a function should be processed, instantiated and used at runtime. 
+
+> Class Decorators: decorators that mark a class as an Angular component and provide configuration metadata that determines how the component should be processed, instantiated, and used at runtime.
+
+@Component: class as an component and provide configuration metadata 
+@NgModule: class as an NgModule and supplies configuration metadata.
+
+>Property Decorators:Are decorators that mark a class field as an input property and supplies configuration metadata.			
+@Input() exampleProperty: string;
+
+>Method Decorators: Are decorator that declares a DOM event to listen for, and provides a handler method to run when that event occurs.
+@HostListener('click', ['$event'])
+onHostClick(event: Event) {
+    // clicked, `event` available
+  }
+
+
+>Parameter Decorators: injecting primitives into a constructor, where you need to manually tell Angular to inject a particular provider.
+constructor(@Inject(MyService) myService) {
+   console.log(myService); // MyService
+}
+
+
+3. Pipe: is a function to accept data as input and transform it into a desired output
+Ex: <p>Birthday is {{ birthday | date }}</p>`
+  
+4. parameterized pipe: A pipe can accept any number of optional parameters to fine-tune its output, i.e Pipe:paramenter
+Ex. <p>Birthday is {{ birthday | date:'dd/MM/yyyy'}}</p> 
+
+5. Pipe chaining: 
+<p>Birthday is {{  birthday | date:'fullDate' | uppercase}} </p>
+
+6. Custome pipe:
+
 

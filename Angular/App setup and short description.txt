@@ -1,60 +1,76 @@
-Create project myapp
---------------------------
-ng new Angular12Crud --skip-install
-ng new Lab1 --skip-install
+>> Step 1. Install node.js for windows by msi:
+node --version
+>> Step 2. Install yarn by command:
+npm install --global yarn
+yarn --version
 
-mklink /d node_modules D:\programs\angular12\node_modules
+npm --v
+ng --version
+npx node -v
 
-ng g s services/tutorial
+>>Step3: Install aggular cli by command:
 
-ng g c components/add-tutorial
-ng g c components/tutorial-details
-ng g c components/tutorials-list
+npm install -g @angular/cli -- latest version , g for globally
+npm uninstall -g @angular/cli
 
-ng g class models/tutorial --type=model
+npm install -g @angular/cli@12.2.0
+npm cache verify
 
-code .
-
-ng serve
-
-ng serve --prot 9001
-
-===============
-Component   ng g component my-new-component
-Directive   ng g directive my-new-directive
-Pipe    ng g pipe my-new-pipe
-Service ng g service my-new-service
-Class ng g class my-new-class
-Guard   ng g guard my-new-guard
-Interface   ng g interface my-new-interface
-Enum    ng g enum my-new-enum
-Module  ng g module my-module
-===================================
+npx node -v
 
 
-http://localhost:4200
--------------------------------
-Project Explain
----------------------------
-– tutorial.model.ts exports the main class model: Tutorial.
-– There are 3 components: tutorials-list, tutorial-details, add-tutorial.
-– tutorial.service has methods for sending HTTP requests to the Apis.
-– app-routing.module.ts defines routes for each component.
-– app component contains router view and navigation bar.
-– app.module.ts declares Angular components and import necessary modules.
 
-===================================
-Folder:
---------------
-src-components and js files
-assets-media folder like image js etc.
-environment-
-index.htm- load first file its hold aap-root and css other json
-main.ts- bootstrap
-styles.css-
+yarn install - fixed package issue.
 
-package-lock.json- package details
-pacakge.json-
-angular.json- config icon, first html, js 
-tsconfig.json- z
+npm install lite-server --save-dev
+yarn add lite-server --dev # or yarn
+
+# Inside package.json...
+  "scripts": {
+    "dev": "lite-server"
+  },
+
+npm run dev
+
+npx lite-server
+
+npm install --global lite-server
+# To run:
+lite-server
+
+==========================================
+Anngular build process
+-----------------------
+ng analytics project off
+
+ng build --watch
+
+update angular.json
+----------------
+"configurations": {
+            "dev": {
+                "fileReplacements": [
+                    {
+                      "replace": "src/environments/environment.ts",
+                      "with": "src/environments/environment.dev.ts"
+                    }
+                  ]
+              },
+
+ng build --configuration=dev
+
+
+##Install lite-server globalyy:
+--------------------------------
+npm install --global lite-server
+
+# To run:
+lite-server
+
+lite-server --baseDir="dist/project-name"
+
+
+ng add @angular/fire
+ng deploy
+
 

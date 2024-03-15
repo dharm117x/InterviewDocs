@@ -4,13 +4,51 @@
     				  jaloclass="com.nokia.core.jalo.OrderDescEmailProcess"	
     				  generate="true" autocreate="true">
 				<attributes>
-						<attribute type="AbstractOrder" qualifier="cart">
+					<attribute type="AbstractOrder" qualifier="cart">
 						<modifiers read="true" write="true" search="true" />
 						<persistence type="property" />
 					</attribute>
 				</attributes>
-			</itemtype>
+</itemtype>
 
-2. Create process.xml file
+2. Create a newtest-process.xml file.
+
+<process xmlns="http://www.hybris.de/xsd/processdefinition" start="firstAction" name="newProcess" processClass="de.hybris.platform.orderprocessing.model.OrderProcessModel">
+
+
+    <action id="firstAction" bean="firstAction">
+        <transition name="OK" to="secondAction"/>
+        <transition name="NOK" to="error"/>
+    </action>
+   
+    <action id="secondAction" bean="secondAction">
+        <transition name="OK" to="success"/>
+        <transition name="NOK" to="error"/>
+    </action>
+      
+
+    <end id="error" state="ERROR">All went wrong.</end>
+    <end id="failed" state="FAILED">Test Business Process Failed.</end>
+    <end id="success" state="SUCCEEDED">Test Business Process Successful.</end>
+
+
+</process>
+
+3.Create newtest-process-spirng.xml , crate action extend with AbstractSimpleDecisionAction 
+<bean id="firstAction" class="com.training.fulfilmentprocess.test.FirstAction"  parent="abstractAction"/>
+
+4. Mapping:
+<bean id="newtestProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+        <property name="resource" value="classpath:/trainingfulfilmentprocess/process/newtest-process.xml"/>
+</bean>
+   
+<import resource="/trainingfulfilmentprocess/process/newtest-process-spring.xml"/>
+
+4. Calling bussienss process inside event listener for asynch call.
+BusinessProcessService.createProcess(String id, String newProcess, Map<String, Object> map)
+getBusinessProcessService().startProcess(quotePostCancellationProcessModel)
+
+
+ 
 
 

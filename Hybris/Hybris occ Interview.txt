@@ -1,0 +1,68 @@
+Oauth Client Details setup:
+===================
+INSERT_UPDATE OauthClientDetails ; clientId[unique=true] ; resourceIds  ; scope ; authorizedGrantTypes                                         ; clientSecret ; authorities        
+                                 ; testClient            ; testClientId ; basic ; authorization_code,refresh_token,password,client_credentials ; secret       ; ROLE_CUSTOMERGROUP,ROLE_TRUSTED_CLIENT
+
+
+Cart API:
+===============
+user login with clientid, clientsecret, username, password, granttype=password
+https://localhost:9002/authorizationserver/oauth/token -> access_token & refresh_token
+
+https://localhost:9002/occ/v2/dkshopUS/orgUsers/test.user1@gmail.com?fields=FULL
+
+https://localhost:9002/occ/v2/dkshopUS/users/{{userid}}/carts/
+https://localhost:9002/occ/v2/dkshopUS/orgUsers/{{userid}}/carts/{{cartid}}/entries?code=90004&quantity=2
+
+Sessin management:
+======================
+springSecurityFilterChain
+SessionLanguageFilter
+SessionCurrencyFilter
+
+
+RestSessionFilter 
+BaseSiteMatchingFilter
+UserMatchingFilter
+CartMatchingFilter
+
+DefaultSessionService-> 
+jaloSession->
+
+
+New Class occ response setup:
+========================================
+
+dto-mappings-v2-spring.xml
+
+<bean id="studentFieldMapper" parent="fieldMapper">
+	<property name="sourceClass" value="com.dkshopocc.data.student.StudentData"/>
+	<property name="destClass" value="com.dkshopocc.dto.student.StudentDataWSDTO"/>
+</bean>
+
+dto-level-mappings-v2-spring.xml
+<bean id="studentDataListWSDTOFieldSetLevelMapping" parent="fieldSetLevelMapping">
+	<property name="dtoClass" value="com.dkshopocc.dto.student.StudentDataListWSDTO" />
+	<property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="students"/>
+                <entry key="DEFAULT" value="students(DEFAULT)"/>
+                <entry key="FULL" value="students(FULL)"/>
+            </map>
+        </property>
+</bean>
+
+
+
+ODATA Service:
+=========================
+OData in the SAP context gets used as an application programming interface (API) or as a communication channel between different user interfaces. Methods to test OData service include systems, integration and component tests.
+
+OData helps define the practices to build RESTful APIs and applications. It allows data, updates and queries on the SAP gateway in various formats, including ATOM, JSON and XM
+
+Create pre and post hook for data manupulatin.
+and its eexecute when pass headear with those bean with key:
+
+Pre-Persist-Hook: spring bean id for pre hook (Optional<ItemModel> execute(final ItemModel item))
+Post-Persist-Hook: spring bean id for post hook (void execute(final ItemModel item))
+

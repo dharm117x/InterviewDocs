@@ -23,8 +23,8 @@ docker push dharm117docker/demo:01
 docker image pull <image_name>:<image_version/tag>
 docker image pull demo:01
 
-Build from DocekrFile:
---------------------------
+DCOKER BUILD:
+========================
 docker build .
 or
 docker build -f /path/to/a/Dockerfile  -t demo:01 .
@@ -39,11 +39,12 @@ docker search imagename
 docker image hostory imageid
 docker image inspect imageid
 
+DOCKER RUN:
+==================
 
-Run:
--------
 docker run -d  -p <host_port>:<container_port> --name <container_Name> <image_name>:<Image_version/tag>
 docker run -d -p 9000:8080 --name demo demo:01
+docker run -d -p 9000:8080 -m 512m --name demo demo:01
 
 docker run -d --name httpd_server -p 8080:80 httpd:2.
 docker ps -a
@@ -51,7 +52,7 @@ docker ps -a
 docker start/stop <container_id>
 docker rm <container_id>
 
-Login coker container:
+Login docker container:
 ---------------------
 docker exec -it <container_Name> /bin/bash
 
@@ -60,6 +61,12 @@ docker container inspect imageid
 
 dcoekr log -f uid
 docker container ls -a
+
+-----------------
+docker stats
+docker events
+docker system df
+
 
 
 

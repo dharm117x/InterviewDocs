@@ -1,0 +1,129 @@
+Data Modeling:
+====================
+1. atomictypes: class="java.lang.Number" extends="java.lang.Object" autocreate="true" generate="false"
+
+2. collectiontypes: code="TypeCollection" elementtype="Type" autocreate="true" generate="false"
+
+3. enumtypes: code="EncodingEnum" autocreate="true" generate="true" dynamic="true"
+
+4. maptypes: code="ExampleMap" argumenttype="Language" returntype="java.math.BigInteger" autocreate="true" generate="false"
+
+5. relations: code="Media2DerivedMediaRel" localized="false" generate="true" autocreate="true"
+> sourceElement- type="Media" qualifier="media" cardinality="one"
+> targetElement- type="DerivedMedia" qualifier="derivedMedias" cardinality="many"
+> modifiers- partof->true/off one many side.
+
+6. itemtypes: 
+> modifires - read="true" write="true" search="true" optional="false" initial="true" unique="true"
+> autocreate
+> generate
+> localized
+> deployment - create table for new custom types.
+
+7. attributes
+> modifiers: read="true" write="false" initial="true" optional="false" search="true"
+> persistence- type - property, dynamic(attributeHandler)
+  > columntype - custom propery type for database.
+> 	
+
+8. indexes:
+>  index name="Media_Code"
+   > key attribute="code
+
+> Convertor and populator:
+-------------------------
+Populator's are used to populate or convert the Data models objects into data transfer objects(DTO).
+
+1. Update exsting popupator with custom one.
+<bean parent="modifyPopulatorList">
+	<property name="list" ref="productConverter"/>
+	<property name="add" ref="apparelProductPopulator"/>
+</bean>
+
+2.  
+ <bean id="carouselProductConverter" parent="defaultProductConverter">
+		<property name="populators">
+			<list merge="true">
+				<ref bean="productPricePopulator"/>
+			</list>
+		</property>
+</bean>
+
+Reverse Populator's are used to populate or convert the Form data Objects or dto into model Objects
+Ex: b2BCustomerReversePopulator
+
+
+Impex: INSERT/UPDATE/INSERT_UPDATE/REMOVE
+========================================
+1. Its use for data cration and manupulation by hac console for exsiting data.
+
+2. cuolumn[unique=true] required unique modifire to perform above task.
+
+3. Batch mode update:(without any unique attribute from type)
+   UPDATE Employee[batchmode=true];itemtype(code)[unique=true];name
+			          ;Employee                   ;Dharmendra
+
+4. Reading data from properties file>
+   your.config.property=322
+   
+   UPDATE GenericItem[processor=de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor];pk[unique=true]
+   $variable=$config-your.config.property
+
+5. Disable interceptor: 
+   YourType[disable.interceptor.beans='yourDataInterceptorBean']
+   YourType[disable.interceptor.types=validate]
+   YourType[disable.UniqueAttributesValidator.for.types='YourType']
+
+6. Modifier : 
+   onlineDate[dateformat=dd.MM.yyyy]
+   groups(uid)[mode=Append/replace/remove]
+   
+   The translator is a "converter"
+   myAttribute[translator=de.hybris.platform.impex.jalo.translators.ItemPKTranslator]
+   Custom translator created by extending AbstractValueTranslator
+   
+   the decorator is a designpattern,ex:ChineseLogisticCellDecorator.
+
+7. 
+       
+
+
+Cronjob:
+========================
+Simple cronjob: By extending AbstracJobperfomable<CronJobModel> ovverirde perform method with businnes logic and register in spring container.
+
+1. Update following item with impex for new cron job.
+> ServicelayerJob
+> CronJob
+> Trigger
+
+Composite cron job:is a composition of multiple cronJobs used when we need to run a bundle of cronJobs successively.
+> CompositeEntry - 
+> CompositeCronJob - 
+> Trigger- 
+
+>> Coronjob Retry: if in case failed to fetch data from FTP, then make retry same job by throw RetryException:
+
+
+Flexisearch:
+=======================================
+SELECT * FROM {Product} ORDER BY {pk} DESC
+SELECT * FROM {Product!} -- exclude subtypes
+
+select {c.pk} as CPK FROM {Country as c JOIN Region as r ON {c.pk} = {r.country}}
+
+select {p.name[en]} from {Order as o 
+JOIN OrderEntry as oe ON {o:pk}={oe:order} 
+JOIN Product as p ON {oe:product}={p:pk}} 
+WHERE {p.code}='1234' 
+AND order by {p.name} desc
+
+
+Search Restriction: limit search results depending on which type is searched and which user is currently logged in.
+========================================
+Disable/Enable:
+searchRestrictionService.disableSearchRestrictions();
+
+searchRestrictionService.enableSearchRestrictions();
+
+
