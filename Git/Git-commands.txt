@@ -10,7 +10,7 @@ git clone https://github.com/dharm117x/InterviewDocs.git
 
 Passwrod reset:
 https://github.com/settings/tokens
-genrate token:   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
+genrate token:   
 
 git remote -v
 git remote show master
@@ -20,7 +20,7 @@ git remote add origin https://github.com/dharm117x/microservice.git
 git remote set-url origin https://dharm117x:token@github.com/dharm117x/Linux.git
 git remote set-url origin https://dharm117x:token@github.com/dharm117x/angular12.git
 
-git remote set-url origin https://dharm117x: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@github.com/dharm117x/angular12.git
+git remote set-url origin https://dharm117x:token@github.com/dharm117x/angular12.git
 
 
 
