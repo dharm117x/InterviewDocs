@@ -1,0 +1,36 @@
+>>>1. Garbage collection:
+=======================
+The main objective of GC is to free heap memory by destroying unreachable objects. An objects said to be unreachable it its doesnot have any refrence.
+
+>> Way to make object eligibale fot GC.
+1. Nullifying
+2. Re-assigining
+3. Object crated inside method.
+4. Island of isolation
+
+>> Way of requesting JVM to GC
+1. System.gc()
+2. Runtime.getRuntime().gc()
+But no gurantee that any of these will run.
+
+>>Types of activity of GC,
+1. Minor: its happen when unreachable objects in the yung generation heap memory are removed.
+2. Major: Its happen objects survived the minor GC, and copied into old genration memeory are removed.
+
+>> Diffrent classification of objects by GC in heap memeory.
+1. Young generation
+> eden
+> s0,s1 (surviver space)
+2. Old generation.
+>tenured
+3. Permanent generation
+>permamanet
+
+>> Diff Types of GC:
+1. Searial
+2. Parallel
+3. CMS
+4. G1(Garbaze first)
+
+>>>2. Serialiaztion:
+---------------------

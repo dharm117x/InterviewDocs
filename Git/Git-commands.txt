@@ -20,6 +20,13 @@ git remote add origin https://github.com/dharm117x/microservice.git
 git remote set-url origin https://dharm117x:token@github.com/dharm117x/Linux.git
 
 
+Git Update:
+--------------
+git pull
+git pull --rebase --autostash
+
+
+
 Git repositry manage:
 ----------------------
 1. Add all files in git repos:
@@ -42,6 +49,33 @@ git branch feature/test
 git checkout -f develop : -f forcefully change with clean
 
 git merge develop
+
+
+GIt Reset
+------------
+git reset --hard
+git checkout HEAD^ file/to/overwrite
+
+git reset file/to/overwrite
+git checkout file/to/overwrite
+git checkout -- <file>
+
+git stash
+
+Git Clean
+----------------
+git clean -n to see a dry run.
+git clean -f to force untracked file deletion.
+git clean -f -d to remove untracked directories.
+git clean -f -x to remove untracked .gitignore files.
+Add the -i switch to do an interactive git clean.
+
+Git Checkout
+-----------------
+git checkout master
+git fetch origin
+git reset --hard origin/master
+git checkout -b newbranch
 
 
 

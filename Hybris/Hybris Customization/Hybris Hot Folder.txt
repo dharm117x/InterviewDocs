@@ -1,0 +1,15 @@
+1. Hot Folder is one of the best way to import and migrate data into Hybris.
+
+Prons:
+> Data import or Data Migration Automation.
+> Fast and multithread based data load.
+> Support to File based System.
+
+General Flow:
+------------------
+In Hot folder concept , hybris periodically poll the configured input directory for data files. If data files are found, they are moved to the processing subdirectory and then sent to the Batch Import pipeline. Once file data is import in Hybris. then file will move to achieve folder. if find any error new file will write in error folder with erro
+
+processing
+error
+archive 
+

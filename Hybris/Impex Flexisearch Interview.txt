@@ -1,0 +1,83 @@
+Impex: INSERT/UPDATE/INSERT_UPDATE/REMOVE
+========================================
+1. Its use for data cration and manupulation by hac console for exsiting data.
+
+2. cuolumn[unique=true] required unique modifire to perform above task except[INSERT].
+
+3. Batch mode update:(without any unique attribute from type)
+   UPDATE Employee[batchmode=true];itemtype(code)[unique=true];name
+			          ;Employee                   ;Dharmendra
+
+4. Reading data from properties file>
+   your.config.property=322
+   
+   UPDATE GenericItem[processor=de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor];pk[unique=true]
+   $variable=$config-your.config.property
+
+5. Disable interceptor: 
+   YourType[disable.interceptor.beans='yourDataInterceptorBean']
+   YourType[disable.interceptor.types=validate]
+   YourType[disable.UniqueAttributesValidator.for.types='YourType']
+
+6. Modifier : 
+   onlineDate[dateformat=dd.MM.yyyy]
+   groups(uid)[mode=Append/replace/remove]
+   
+   myAttribute[translator=de.hybris.platform.impex.jalo.translators.ItemPKTranslator]
+
+   Custom translator created by extending AbstractValueTranslator
+
+   The translator is a "converter"   
+   the decorator is a designpattern. ex:ChineseLogisticCellDecorator.
+
+7. Referece variable: &
+   insert_update Employee;&empRefID;name;salary
+			 ;emp1;DK;1000
+			 ;emp2;SK;1000
+
+   insert_update Department;name;employes(&empRefID)
+			   ;JAVA;emp1,emp2
+8. Map delimeter:
+   INSERT_UPDATE ProductDetail;code;productDetailMap[map-delimiter=|]
+                              ;test;myKey->myValue|myKey2->myValue2;
+ 
+9. Insert update rule with example:
+
+>If unique not set on item level aattribute but its use in impex then its not alloed duplicate. 
+ insert StudentDetails;studentid;studentName;collegeid[unique=true];
+   		     ;1;A;1
+                     ;2;B;1
+insert_update StudentDetails;studentid[unique=true];studentName
+					 ;1;	Bl
+update StudentDetails;studentid[unique=true];studentName
+					 ;1;C	
+					 
+remove StudentDetails;studentid[unique=true];studentName
+					 ;1;D
+					   
+10. Language specific properies.
+
+UPDATE Language;isocode[unique=true];name[en]
+		;en_US;English American    
+
+
+Flexisearch:
+=======================================
+SELECT * FROM {Product} ORDER BY {pk} DESC
+
+SELECT * FROM {Product!} -- exclude subtypes
+
+SELECT {c.pk} as CPK FROM {Country as c JOIN Region as r ON {c.pk} = {r.country}}
+
+SELECT {p.name[en]} from {Order as o 
+JOIN OrderEntry as oe ON {o:pk}={oe:order} 
+JOIN Product as p ON {oe:product}={p:pk}} 
+WHERE {p.code}='1234' 
+AND order by {p.name} desc
+
+SELECT {name[en]} FROM {Language} where {isocode}='en_US'
+
+--------------------native sql----------------------------------
+SELECT  lp.p_name  FROM languages l 
+JOIN languageslp lp ON l.PK = lp.ITEMPK  
+WHERE ( l.p_isocode ='en_US')

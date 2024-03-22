@@ -1,26 +1,3 @@
-About my self:
-=================
-My name is dharmendra kumar having more the 11 years of experience in java-j2ee and hybris commerce also working in different domain like e-commerce and banking.
-My current project is web application based on sap hybris commerce 2022 in which we developing rest based API services to fulfil our client requirements.  
-My responsibility includes requirement gathering, creating story, estimation and developed into features in application, 
-providing technical support and knowledge transfer to my team members.
-
-Role &Responsibility:
-=======================
-Design, develop, and implement Java-based applications
-Lead a team of Java developers in the design, development, and implementation of Java-based applications
-Provide technical leadership and direction for Java development projects
-Ensure that allJava development projects are completed on time and within budget
-Coordinate with other departments and teams to ensure smooth delivery of Java applications
-Coordinate business & front-line technical support teams to provide production support.
-Provide project status and resource estimates to Senior IT leadership
-
-Collaborate with the customer Business Analysts & (subject matter expert)SMEs to perform detailed requirements analysis
-Responsible for Components Design, Construction & Unit Testing of assigned components/modules
-Perform technical review and resolve any technical challenges
-Coordinate with customer stakeholders and bridge the offshore communication
-
-
 ->The GoF Design Patterns:
 ==========================
 ->Creational Patterns for the creation of objects; 
@@ -43,9 +20,8 @@ Iterator Design Pattern
 Chain of responsibility
 Command Design Pattern
 
->OOPs:
-========================
-
+>OOPs: Inheritance, Encapsulation, Abstraction, Polymorphisam 
+==============================================================
 Is-A relationship: Whenever one class inherits another class, it is called an IS-A relationship.
 Has-A relationship: Whenever an instance of one class is used in another class, it is called HAS-A (good choice)
 
@@ -57,7 +33,6 @@ CompletableFeature-> async call its used inside function interface.
 
 ->Collection API:
 ====================
-
 >> Arraylist:
 ArrayList is a resizable array implementation in Java.ArrayList grows dynamically and ensures that there is always a space to add elements.
 
@@ -82,7 +57,6 @@ HashMap in Java stores the data in (Key, Value) pairs, Hashing is a process of c
 
 ->Stream API:
 ========================
-
 Stream API is a way to express and process collections of objects. Enable us to perform operations like filtering, mapping,reducing and sorting.
 
 Operation:
@@ -97,7 +71,8 @@ foreach, return nothing.
 >> Supplier: is a functional interface; it takes no arguments and returns a result
 -->Math.random()
 
->> Predicate: 
+>> Predicate: its take one argument and return boolean value based on logic.
+filter(r-> "ok".equals(ok))
 
 
 -> FunctionalInterface:

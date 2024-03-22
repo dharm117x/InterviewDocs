@@ -1,8 +1,37 @@
-Create Event:
---------------
+1. Email Genration:
+---------------------
+1. Create class CustomEmailContext extend AbstractEmailContext<CustomEmailProcessModel>
 
-1.Event class HelloWorldEvent extend AbstractEvent/ClusterAwareEvent/
+2. Create bean: 
+<bean id="customEmailContext" class="org.training.facades.process.email.context.CustomEmailContext" parent="abstractEmailContext" scope="prototype" >
 
+3. create a vm(velocity) file for subject and body
+
+4. Crate Impex:
+> RendererTemplate with subject and body vm file and context class.
+> EmailPageTemplate (CustomEmailTemplate) with subject and body
+> EmailPage with template and from and to address.
+> Header and footer added content slot and mapped with template.
+
+5. Crate bussiness process with CustomEmailProcessModel and craete action node:
+> generateDiscountEmailAction
+> sendEmail
+> removeSentEmail
+
+6. Action bean generateDiscountEmailAction :
+<bean id="generateDiscountEmailAction" parent="abstractGenerateEmailAction">
+    <property name="frontendTemplateName" value="CustomEmailTemplate"/>
+</bean>
+
+
+Create Event and Listner:
+----------------------------
+1.Event class HelloWorldEvent extend AbstractCommerceUserEvent,AbstractEvent/ClusterAwareEvent/TransactionAwareEvent
+> ClusterawareEvent: Because SAP Commerce can run in a cluster, it's possible to send events from one node to a specific second node or broadcast events  across all nodes of a cluster
+
+we ovverirde publish(int sourceNodeId, int targetNodeId) methods.
+
+ 
 2. public class HelloWorldEventListener extends AbstractEventListener<HelloWorldEvent> {
    protected void onEvent(HelloWorldEvent helloWorldEvent) { 
 	// write bussiness logic.
@@ -25,8 +54,9 @@ Create Bussiness process: Business Processes in Hybris are a great way to run th
 
 1. Create Action classes and register with spring.xml as a beans. those define on business process and 
 
-class FirstAction extends 
-<bean id="firstAction" class="">
+class FirstAction extends AbstractSimpleDecisionAction<StoreFrontProcessModel>
+
+<bean id="firstAction" class=".........FirstAction">
 
 
 2. Create New Process item if u have new Attribute:
@@ -56,8 +86,23 @@ class FirstAction extends
 		<transition name="OK" to="success"/>
 		<transition name="NOK" to="failed"/>
 	</action>
+	
+	<wait id="thirdAction"  then="fourthAction" prependProcessCode="false"> 
+		<event>${process.code}_WaitForCustomer</event>
+		<timeout delay="PT2M" then="timeoutAction"/> 
+		<!--
+		// PT2M-means 2 miniute, PT30S means 30 seconds after that its executes "timeAction."
+		// Or we can trigger event with event using bussiness service, then "fourthAction"		
+		-->
+	</wait>
+
+	<action id="timeoutAction" bean="timeoutActionBean">
+   		<transition name="OK" to="timeout"/>
+   		<transition name="NOK" to="error"/>
+   	</action>
 
 	<end id="error" state="ERROR">Something went wrong.</end>
+	<end id="timeout" state="ERROR">Timeout happen.</end>
 	<end id="failed" state="FAILED">Could not send customer registration email.</end>
 	<end id="success" state="SUCCEEDED">Sent customer registration email.</end>
 
@@ -73,4 +118,11 @@ class FirstAction extends
 3. Create bussiness process and start.
 helloWorldProcessModel = getBusinessProcessService().createProcess("helloWorld-" + System.currentTimeMillis(), "customerHelloWorldProcess");
 getBusinessProcessService().startProcess(helloWorldProcessModel);
+
+4. Trigger wait event by:
+businessService.triggerEvent(process.getCode() + "_WaitForCustomer");
+
+5. Restart process for any node by:
+businessService.restartProcess(processModel, "thirdAction");
+
 

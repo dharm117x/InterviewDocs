@@ -10,13 +10,13 @@ angular.json: Adding the Bootstrap CSS and JavaScript files in the styles and sc
 > Components: directives that include a template that is rendered in the place of the component
 
 > Attribute directive:
-NgModel (tow way data binding), NgStyle (add/remove htmlm style), NgClass (add/remove css style)
+  NgModel (tow way data binding), NgStyle (add/remove htmlm style), NgClass (add/remove css style)
 
 
 > Structural directive: Which change the DOM lay out by add/remove DOM element its applied with prefix * like *ngIf
   Only one structral directive on same element otherwise error throw.
   
-  NgIf, NgFor, NgSwitc
+  NgIf, NgFor, NgSwitch
 
 > Custom directive:
 
@@ -54,5 +54,74 @@ Ex. <p>Birthday is {{ birthday | date:'dd/MM/yyyy'}}</p>
 <p>Birthday is {{  birthday | date:'fullDate' | uppercase}} </p>
 
 6. Custome pipe:
+
+
+7. Component Life cycle:
+> 
+
+8. @ViewChild or @ViewChildren decorators are used to Query and get the reference of the DOM element in the Component. 
+ViewChild returns the first matching element and ViewChildren returns all the matching elements as a QueryList of items.
+
+@ValidChild: is a  directive to access elements in the view directly.
+> ViewChild(selector: string | Function | Type<any>, opts: { read?: any; static: boolean; }): any
+
+<input #uname>
+@ViewChild('uname') input
+
+ngAfterViewInit() {
+  console.log(this.input.nativeElement.value);
+}
+
+> @ViewChildren: its provides a reference to multiple elements that can be used as an iterative list.
+
+
+9. What is lazy loading?
+> It is used for lazy loading by asynchronously loading the feature module for routing whenever required using the property loadChildren.
+
+9. Observaable, Subject and Promise:
+-------------------------------------
+
+> Observable: its use to handle asynchronous operations and lazy by nature, meaning they do not start emitting values until a subscriber actively listens for them and emit three types of values: onNext (data), onError (error), and onCompleted (completion).
+
+Observale: Create, subscribe and unbscribe:
+---------------------------------------------
+import { Observable } from 'rxjs'; 
+const myObservable = new Observable((observer) => { observer.next('First value'); 
+observer.next('Second value'); 
+setTimeout(() => { observer.next('Value after delay'); observer.complete(); }, 2000); });
+
+myObservable.subscribe( 
+(data) => console.log('Data:', data), 
+(error) => console.log('Error:', error), 
+() => console.log('Completed') );
+
+myObservable.unsubscribe();
+
+
+> Subject: is a special type of Observable that also acts as an Observer. It can both emit values and subscribe to other Observables
+
+  Subjects can act as both Observables and Observers, while Observables can only emit values.
+  Subjects can multicast, meaning they can emit values to multiple subscribers simultaneously, while Observables are unicast by default.
+
+Type of subject: Subject, BehaviorSubject, ReplaySubject and AsyncSubject
+
+
+> Promise: Emit a single value,Eagerly execute upon creation, Cannot be canceled, Limited transformation capabilities
+> Observable: Can emit multiple values over time, Lazy and only execute when subscribed, Can be canceled via unsubscription, Support various transformation methods
+
+==================RxJS=========================
+
+RxJS, short for Reactive Extensions for JavaScript, is a library for composing asynchronous and event-driven programs using observable sequences. It  is based on the principles of reactive programming.
+
+HTTP client: Angular's HttpClient module uses observables for making HTTP requests, providing a simple and declarative way to handle asynchronous API calls.
+
+Event handling: Angular uses RxJS observables to handle DOM events, such as button clicks and form submissions, allowing developers to create responsive user interfaces.
+
+Reactive forms: Angular's reactive forms use RxJS observables to handle form state changes, enabling developers to build complex and dynamic forms with ease.
+
+State management: Angular developers can use RxJS to build custom state management solutions, such as the popular NgRx library, which leverages the power of observables to manage application state in a reactive manner.
+
+Real-time updates: Observables can be used to handle real-time data streams, such as WebSocket connections, enabling developers to create real-time applications with Angular.
+
 
 

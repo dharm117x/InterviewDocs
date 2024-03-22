@@ -1,3 +1,12 @@
+1.Hybris jalosession:
+
+Whenever a request comes to Hybris, the filter HybrisInitFilter creates an object of JaloSession. Every JaloSession object is associated with a SessionContext object, which has current user, language, currency, etc and the current HTTP session object.
+
+>Cron jobs also run in a JaloSession.
+>Each JaloSession is bound to a tenant. This cannot be changed after the instance of JaloSession is created.
+>JaloSession is never made persistent in the database. 
+
+
 1.The Omni Commerce Connect (OCC) . 
 
 It is a next-generation commerce API that offers a broad set of commerce and data services
@@ -59,3 +68,17 @@ is for View. Which means you are going to write view content on the page context
 
 If you just want to populate your component attributes to Model, then you don't require to define the custom controller or renderer, OOTB GenericCMSAddOnComponentController will take care of it.
 Please note, If there is a respective custom componentRenderer already defined, then componentContoller won't be invoked, having said that custom componentRenderer and custom componentContoller can't work together.
+
+7. Workflow vs Business process diff:
+
+The Hybris Process Engine is used for defining business processes. It is similar to a workflow (like a workflow diagram). It has a sequence/flow to be followed, and uses different kinds of nodes:
+
+Action: carry out process logic and permit alternative actions to be carried out
+Wait: wait for a subprocess or an external process result
+Notify: inform a user or user group of the state of a process
+Split: split the process into parallel paths
+End: end the process and store state in a process item
+Hybris also has a Workflow System. It is different from the Process Engine, but conceptually the same and uses different classes.
+
+Business Process does not have human intervention, but a Workflow can have.
+On the other hand, the Event System is simply for receiving and sending events. It's similar to the Observer design pattern.

@@ -52,6 +52,12 @@
 
 	System.out.println("Reves::"+revs);
 	
-6. 
+6. Char count in string:
+
+7. First not repeated char in string.
+
+8. LCM of two number.
+
+
 
 	

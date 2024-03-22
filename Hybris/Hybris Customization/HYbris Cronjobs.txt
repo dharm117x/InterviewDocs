@@ -1,4 +1,4 @@
-Craete Cron Job ::
+ Craete Cron Job ::
 
 All job bean store inside:
 

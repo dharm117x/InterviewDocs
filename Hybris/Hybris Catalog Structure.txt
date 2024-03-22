@@ -1,0 +1,35 @@
+1. Create base store 
+storeid,
+prodcutcatlog
+currnecies
+default currency
+langauges
+default lang
+
+Crate realtion bw basestore and warehouse.
+storeid,
+warehouseid
+
+2. Create site with cmssite.
+siteid,
+stores(storeids)
+contentcatalogs(ids)
+defaultProdcutCatalog
+defaultlanguage
+
+3. SiteMap Language and Currency 
+language and currency
+
+4. Create catalog and catalogversion
+
+5. Create content catalog and catalogversion
+
+6. Create cataegory and catogerycataogr relation.
+
+7. Create stock level and product relation
+> stock level have prodcut code, warehouse and quantity
+> Prodcut and stocklevel relation.
+
+8. Classification 
+
+ 

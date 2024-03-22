@@ -1,0 +1,88 @@
+1. Entity class criteria:
+--------------------------
+> Class annoted with @Entity
+> Must have no arg constructor and should not have final class
+> Must have primary key attribute with @Id and @GenratedValue
+> 
+
+2. JPA Entity statuses.
+-----------------------
+New     - > An entity starts as New when first created.
+----------
+public User createUser(String name) {
+    User user = new User();
+    user.setName(name);
+    return userRepository.save(user); // Here, we persist the new entity.
+}
+
+Managed - > when associated with a persistence context, added or retrive from database.
+----------
+public User updateUser(Long id, String newName) {
+    User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    user.setName(newName);
+    // No explicit save() call required here, changes will be auto-saved at the end of the transaction.
+    return user;
+}
+
+
+Detached -> it’s no longer tracked for changes.
+-----------
+@Transactional(readOnly = true)
+public User loadUser(Long id) {
+    return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+}
+
+// Save a possibly detached user entity
+public void saveEditedUser(User editedUser) {
+    userRepository.save(editedUser); 
+}
+
+public void demonstrateDetachedLifecycle(Long userId) {
+    User user = loadUser(userId); // Here, the user entity is managed within the transaction.
+    // Once the above method completes, the transaction ends, and the user entity becomes detached.
+    // Some changes to the user entity can be made here...
+    saveEditedUser(user); // The entity is reattached and updated in the database.
+}
+
+
+Removed  -> it will be deleted from the database.
+-----------
+public void deleteUser(Long id) {
+    User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    userRepository.delete(user); // Here, the entity is marked for removal and will be deleted from the database at the end of the transaction.
+}
+
+
+3. Realation (uni and bi direction)
+OneToOne - OneToOne
+OneToMany - ManyToOne
+ManyToMany - ManytoMany
+
+
+4. Caching:
+> FirstLevel caching: Its hold the enetity in current session and its scope inside session only.
+> Second level caching: by default disable, its enable by config properites and third party chace provider like ehache. its avalable for entire      applciation.
+ 
+Custom properies for L2 cache:
+---------------------------------
+javax.persistence.sharedCache=ENABLE_SELECTIVE // to enable @Cacheable annotation for L2 Cache.
+hibernate.cache.use_second_level_cache=true
+hibernate.cache.use_query_cache=true
+use_query_cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory
+
+@Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "myEhCache")
+calss Person{}
+
+  
+>> Query Cache enable by QueryHints with @Query:
+
+@QueryHints(value = { @QueryHint(name = "org.hibernate.cacheable", value = "true"),
+			@QueryHint(name = "org.hibernate.cacheMode", value = "NORMAL"),
+			@QueryHint(name = "org.hibernate.cacheRegion", value = "myEhCache") })
+@Query(value = "select u from AppUser u JOIN FETCH u.cars c JOIN FETCH u.books b where u.username =?1")
+Optional<AppUser> findByUsername(String username);
+	
+
+5. 

@@ -1,3 +1,31 @@
+JaloSession:
+================
+A JaloSession is always associated with a SessionContext that holds references to the following:
+
+The Hybris specific session object (the JaloSession class) is usually bound to HttpSession and has the same life time
+final JaloSession js = (JaloSession) httpSession.getAttribute(Constants.WEB.JALOSESSION)
+
+JaloSession's User
+JaloSession's Language
+JaloSession's Currency
+JaloSession's Pricefactory
+JaloSession's Locale
+JaloSession's Timezone
+
+final JaloSession session = JaloSession.getCurrentSession();
+jalosession.getSessionContext().setUser( jalosession.getUserManager().getUserByLogin( "myUserName" ) );
+jalosession.getSessionContext().setLanguage( jalosession.getC2LManager().getLanguageByIsoCode( "en" ) );
+
+JaloSession.getCurrentSession().setTimeout( 10 ); Timeout within 10 s
+JaloSession.getCurrentSession().setTimeout( -1/0 ); No Time Out
+
+property update:
+
+[extension].session.timeout=1500
+
+Invalidate Session:
+JaloSession.getCurrentSession().close();
+
 Data Modeling:
 ====================
 1. atomictypes: class="java.lang.Number" extends="java.lang.Object" autocreate="true" generate="false"
@@ -53,40 +81,6 @@ Reverse Populator's are used to populate or convert the Form data Objects or dto
 Ex: b2BCustomerReversePopulator
 
 
-Impex: INSERT/UPDATE/INSERT_UPDATE/REMOVE
-========================================
-1. Its use for data cration and manupulation by hac console for exsiting data.
-
-2. cuolumn[unique=true] required unique modifire to perform above task.
-
-3. Batch mode update:(without any unique attribute from type)
-   UPDATE Employee[batchmode=true];itemtype(code)[unique=true];name
-			          ;Employee                   ;Dharmendra
-
-4. Reading data from properties file>
-   your.config.property=322
-   
-   UPDATE GenericItem[processor=de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor];pk[unique=true]
-   $variable=$config-your.config.property
-
-5. Disable interceptor: 
-   YourType[disable.interceptor.beans='yourDataInterceptorBean']
-   YourType[disable.interceptor.types=validate]
-   YourType[disable.UniqueAttributesValidator.for.types='YourType']
-
-6. Modifier : 
-   onlineDate[dateformat=dd.MM.yyyy]
-   groups(uid)[mode=Append/replace/remove]
-   
-   The translator is a "converter"
-   myAttribute[translator=de.hybris.platform.impex.jalo.translators.ItemPKTranslator]
-   Custom translator created by extending AbstractValueTranslator
-   
-   the decorator is a designpattern,ex:ChineseLogisticCellDecorator.
-
-7. 
-       
-
 
 Cronjob:
 ========================
@@ -102,25 +96,27 @@ Composite cron job:is a composition of multiple cronJobs used when we need to ru
 > CompositeCronJob - 
 > Trigger- 
 
->> Coronjob Retry: if in case failed to fetch data from FTP, then make retry same job by throw RetryException:
+>>* Coronjob Retry: if in case failed to fetch data from FTP, then make retry same job by throw RetryException:
 
 
-Flexisearch:
-=======================================
-SELECT * FROM {Product} ORDER BY {pk} DESC
-SELECT * FROM {Product!} -- exclude subtypes
-
-select {c.pk} as CPK FROM {Country as c JOIN Region as r ON {c.pk} = {r.country}}
-
-select {p.name[en]} from {Order as o 
-JOIN OrderEntry as oe ON {o:pk}={oe:order} 
-JOIN Product as p ON {oe:product}={p:pk}} 
-WHERE {p.code}='1234' 
-AND order by {p.name} desc
-
-
-Search Restriction: limit search results depending on which type is searched and which user is currently logged in.
+>>>Search Restriction: limit search results depending on which type is searched and which user is currently logged in.
 ========================================
+Search Restriction is a set of rules which is applied on Flexible Search Query in order to limit the search results or to filter search results based on specific condition.
+
+Craete via IMPEX:
+-------------------
+INSERT_UPDATE SearchRestriction;code[unique=true];principal(uid)[unique=true];query;restrictedType(code)[unique=true];active;generate
+backendOrderVisibility;customersupportagentgroup;{versionID} IS NULL;Order;true;true
+
+(Identifier)Code: backendOrderVisibility
+(Apply on) principal(uid)[unique=true]: customersupportagentgroup
+(Filter) query: {versionID} IS NULL
+(Restricted type) restrictedType: Order
+active: true
+generate: true
+
+
+
 Disable/Enable:
 searchRestrictionService.disableSearchRestrictions();
 

@@ -1,0 +1,75 @@
+1. Diff flush() and commit() methods.
+------------------------------------
+> Flush can be rollback but after commit not possible.
+> Flush will synchronize database with currrent state of objects in memory but not commit transaction.
+> Flush can use in batch process to avoid outoffmemory error.
+
+
+2. How to improve database perperformance:
+------------------------------------------
+> Data indexing
+  > Identified frequently accesses columns
+  > Composite index
+  > Avoid over indexing
+
+> Query optimization
+ > Avoid select * instead of specific column
+ > Limit results
+ > Filter data early-Use where clause as early as possible.
+ > Use JOIN wisely- 
+
+> Database caching
+ > Query result caching
+ > Object caching
+
+> Database normilaztion
+> Hardware Optimization
+> Database Tuning
+> Backup and Recovery
+> Partitioning 
+
+3. SQL JOINS
+---------------
+Employee, Department
+
+1. INNER
+ > Select all rows from both tables based on condtions satisfied.
+2. LEFT/ LEFT OUTER
+ > Select all rows from left tables and matching result from right side table.
+3. RIGHT
+ > Select all rows from Right tables and matching result from left side table.
+4. FULL 
+ > Craete results by combining LEFT and RIGHT join, its contain all the row from both tables
+5. NATURAL
+ > Tow tables join using cross join. and both table have at leaset one column with same name and type.
+6. SELF
+ > 
+
+4. UNION and UNION ALL
+-------------------------
+Combine the result of two or more tables.
+> union:  combined result with same column name and type and avoid duplicate.
+> unions: Add duplicate value as well.
+
+select city, name from Customer
+UNION
+select city, name from Employee
+order by city
+
+Condition from UNION :
+1. select statement have same numbers have columns.
+2. The columns must have same data type.
+3. The column of every select statement must have in same order and same name.
+
+5. Select Query:
+----------------
+> odd/even data from table:
+
+select * from Table where rownumber % 2 ==0 // even row
+select * from Table where rownumber % 2 !=0 // odd row
+
+> Select Max 3 salary from employee:
+
+ 
+
+

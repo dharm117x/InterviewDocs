@@ -1,0 +1,64 @@
+>>>Workflow:: These are processes which are separated into several tasks and are completed when these tasks are completed.
+1) Manual work flow
+2) Automated work flow(Cronjob)
+
+Steps to create workflow:
+-------------------------
+1) Create workflow template
+2) Create  workflow Actions (Actions are describes  mannual and Automated) define to workflow.
+
+3) Actions Contains many decisions so, WorkflowDecisionTemplate defines Action to the decision, Each manual Actions template (or) Automated Action    template can depends on Several Decisions.
+
+3i) Create Action Jobs(means cronjobs)
+
+4) WorkflowActionTemplateLinkTemplateRelation describes the relation between Actions and decision
+
+5) Star the WorkFlow  by using below code
+   workflowProcessingService.startWorkflow(workflow);
+
+>>>Impex file to crate Workflow, i.e:
+---------------------------------------
+"INSERT_UPDATE WorkflowTemplate";"code[unique=true]";"name[lang=de]";"name[lang=en]";"owner(uid)";"description[lang=de]";"description[lang=en]";"activationscript";"visibleForPrincipals(uid)";;;
+;"NewPlayerRegistration";"Spieler Registrierung";"New Player Registration";"admin";;;;"cuppyadmins";;;
+
+"INSERT_UPDATE WorkflowActionTemplate";"code[unique=true]";"name[lang=de]";"name[lang=en]";"description[lang=de]";"description[lang=en]";"principalAssigned(uid)";"workflow(code)[unique=true]";"sendEmail";"emailAddress";"rendererTemplate(code)";"actionType(code)"
+;"NPR_Confirm";"Bestätigung von einem Administrator";"Confirmation by an administrator";;;"cuppyadmins";"NewPlayerRegistration";"false";;;"start"
+;"NPR_End";"Ende";"End";;;"cuppyadmins";"NewPlayerRegistration";"false";;;"end"
+
+"INSERT_UPDATE AutomatedWorkflowActionTemplate";"code[unique=true]";"name[lang=de]";"name[lang=en]";"description[lang=de]";"description[lang=en]";"principalAssigned(uid)";"workflow(code)[unique=true]";"sendEmail";"emailAddress";"rendererTemplate(code)";"actionType(code)";jobHandler
+;"NPR_Confirm_Positive";"Spieler bestätigt";"Player confirmed";;;"cuppyadmins";"NewPlayerRegistration";"false";;;"normal";registrationConfirmationActionJob
+;"NPR_Confirm_Negative";"Spieler nicht bestätigt";"Player declined";;;"cuppyadmins";"NewPlayerRegistration";"false";;;"normal";registrationDeclineActionJob
+
+"INSERT_UPDATE WorkflowDecisionTemplate";"code[unique=true]";"name[lang=de]";"name[lang=en]";"actionTemplate(code)";"description[allownull=true]";;;;;;
+;"NPR001";"Spieler bestätigen";"Confirm player";"NPR_Confirm";;;;;;;
+;"NPR002";"Spieler nicht bestätigen";"Decline player";"NPR_Confirm";;;;;;;
+;"NPR003";"Ende";"End";"NPR_Confirm_Positive";;;;;;;
+;"NPR004";"Ende";"End";"NPR_Confirm_Negative";;;;;;;
+
+"INSERT_UPDATE WorkflowActionTemplateLinkTemplateRelation";"source(code)[unique=true]";"target(code)[unique=true]";"andConnectionTemplate";"qualifier";;;;;;;
+;"NPR001";"NPR_Confirm_Positive";"false";"WorkflowActionTemplateLinkTemplateRelation";;;;;;;
+;"NPR002";"NPR_Confirm_Negative";"false";"WorkflowActionTemplateLinkTemplateRelation";;;;;;;
+;"NPR003";"NPR_End";"false";"WorkflowActionTemplateLinkTemplateRelation";;;;;;;
+;"NPR004";"NPR_End";"false";"WorkflowActionTemplateLinkTemplateRelation";;;;;;;
+ 
+
+Workflow Item description:
+------------------------------- 
+1. WorkflowTemplate: A WorkflowTemplate instance is a template for a real workflow instance. It holds general attributes which are common to all workflows created by this template.
+It is connected to a set of WorkflowActionTemplates by a 1:n.
+
+2. WorkflowActionTemplate: A workflow action template is used for describing a specific task when modeling a workflow template.
+
+3. AutomatedWorkflowActionTemplate: An automated workflow action template is very similar to a conventional workflow action template. The automated action which is created from the automated workflow action template does not require any manual interaction by the user. To run, it needs a job class which implements AutomatedWorkflowTemplateJob.
+
+4. WorkflowDecisionTemplate: Decision Templates are outbound links from an Workflow Action Template to another Workflow Action Template.
+
+5. Workflow: Technically, Workflows are cron jobs. However, Workflows do not run fully automatically by itself. In order to process through a Workflow, a user will have to select Decisions on every Action.
+
+6. WorkflowAction: An action represents a task the assigned principal has to do. The action will only get active if a decision (OR-Connection) or rather all decisions (AND-Connection) get chosen which link to this action in previous actions.
+
+7. AutomatedWorkflowAction: An automated action is very similar to an action. The automated action does not require any manual interaction by the user. To run, it needs a job class which implements AutomatedWorkflowTemplateJob.
+
+8. WorkflowDecision: Decisions are outbound links from an Action to another Action. A Decision defines which action might follow a given Action.
+
+9. WorkflowItemAttachment: An attachment holds a reference to an item of any type needed in the context of the referenced workflow.
