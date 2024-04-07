@@ -1,24 +1,8 @@
 1. Create base store 
-storeid,
-prodcutcatlog
-currnecies
-default currency
-langauges
-default lang
-
-Crate realtion bw basestore and warehouse.
-storeid,
-warehouseid
 
 2. Create site with cmssite.
-siteid,
-stores(storeids)
-contentcatalogs(ids)
-defaultProdcutCatalog
-defaultlanguage
 
 3. SiteMap Language and Currency 
-language and currency
 
 4. Create catalog and catalogversion
 
@@ -26,10 +10,39 @@ language and currency
 
 6. Create cataegory and catogerycataogr relation.
 
-7. Create stock level and product relation
-> stock level have prodcut code, warehouse and quantity
-> Prodcut and stocklevel relation.
+7. Create stock level and product relation:
 
 8. Classification 
 
- 
+
+===================Realtion=============================
+> BaseSite and BaseStore is Many to Many
+> CMSSite and ContentCatalog is Many to Many
+
+> BaseStore and Catalog is Many to Many
+> BaseStore and Warehouse is Many to Many.
+> BaseStore and Langauge is  Many to many.
+> BaseStore and Currency is  Many to many.
+> BaseStore and DeliveryMode is  Many to many.
+
+> StockLevel and Warehouse is  Many to One.
+
+
+> Catalog and CatalogVersion is One TO Many
+> ContentCatalog and ContentCatalog  is One TO Many
+
+> Category and Category is  Many to many.
+> Category and Product is  Many to many.
+
+> product and ownEurope1Prices is One to Many
+> Prodcut and stocklevel is Many to Many.
+> Category and Product is Many to Many.
+
+> AbstractOrder and AbstractOrderEntry is One TO Many
+
+> User and Address is One TO Many.
+> User and Cart is One TO Many.
+
+> B2BUnit and AbstractOrder is One TO Many.
+
+

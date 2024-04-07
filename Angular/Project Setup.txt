@@ -103,3 +103,10 @@ angular.json- config icon, first html, js
 tsconfig.json- z
 
 
+=========================================
+CODE ID tips:
+
+genrte lement in html file:
+---------------------------
+div.error.error-alert
+

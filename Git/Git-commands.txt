@@ -4,6 +4,7 @@ git config --global user.email "dharm117x@gmail.com"
 git config --global user.name "Dharmendra kumar"
 
 git config --global core.autocrlf true
+git config --global core.autocrlf false --windows
 
 // Pulling first time repositary.
 git clone https://github.com/dharm117x/InterviewDocs.git
@@ -31,6 +32,8 @@ Git repositry manage:
 ----------------------
 1. Add all files in git repos:
 git add --all
+git add .
+git status .
 
 2. Commit locally:
 git commit -m "hybris 6 b2c setup"
@@ -76,6 +79,13 @@ git checkout master
 git fetch origin
 git reset --hard origin/master
 git checkout -b newbranch
+
+Git Patch:
+--------------
+git diff > mypatch.patch
+git diff --cached > mypatch.patch
+
+git apply mypatch.patch
 
 
 

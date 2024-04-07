@@ -49,6 +49,11 @@ docker run -d -p 9000:8080 -m 512m --name demo demo:01
 docker run -d --name httpd_server -p 8080:80 httpd:2.
 docker ps -a
 
+docker run helpre -link app1
+docker run helpre -link app2
+
+
+
 docker start/stop <container_id>
 docker rm <container_id>
 

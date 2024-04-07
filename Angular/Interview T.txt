@@ -4,7 +4,6 @@ index.html:   Including the Bootstrap CSS and JavaScript files in the <head> sec
 styles.css:   Importing the Bootstrap CSS file in the global styles.css file of your Angular project with an @import keyword.
 angular.json: Adding the Bootstrap CSS and JavaScript files in the styles and scripts arrays of the angular.json file of your project.
 
-
 2. Directive: Its is classes that add aditional behavior to element have 3 Type of directive:
 
 > Components: directives that include a template that is rendered in the place of the component
@@ -12,11 +11,20 @@ angular.json: Adding the Bootstrap CSS and JavaScript files in the styles and sc
 > Attribute directive:
   NgModel (tow way data binding), NgStyle (add/remove htmlm style), NgClass (add/remove css style)
 
+ [ngStyle]="{backgroudcolor: getColor()}"
+
 
 > Structural directive: Which change the DOM lay out by add/remove DOM element its applied with prefix * like *ngIf
   Only one structral directive on same element otherwise error throw.
-  
-  NgIf, NgFor, NgSwitch
+  ngIf, ngFor, ngSwitch
+
+  <p *ngIf="isTrue">
+	<span>Data</span>
+  </p>
+
+  <p *ngFor="let data of datas;let i=index">
+	<span>{{data}}-{{i}}</span>
+  </p>
 
 > Custom directive:
 
@@ -32,6 +40,7 @@ angular.json: Adding the Bootstrap CSS and JavaScript files in the styles and sc
 @Input() exampleProperty: string;
 
 >Method Decorators: Are decorator that declares a DOM event to listen for, and provides a handler method to run when that event occurs.
+
 @HostListener('click', ['$event'])
 onHostClick(event: Event) {
     // clicked, `event` available
@@ -56,8 +65,21 @@ Ex. <p>Birthday is {{ birthday | date:'dd/MM/yyyy'}}</p>
 6. Custome pipe:
 
 
-7. Component Life cycle:
-> 
+7. Component Life cycle: Lifecycle hooks
+> Hooks bw components and directive. 
+
+a) ngOnInit(): is called once after the angualr componet or directive has been initializeed, spcifically after the first ngOnChange() call
+its genrally used to initialized componet properties, fetch data, or setup event listener.
+
+b) ngOnChanges(): its called when data-bound input property changed, its recived an obj that contains currnt and previus property values as args.
+
+c) ngDoCheck():  its called when change detection runs.
+d) ngOnDestory(): its called before destroy componet or directive, its use for cleanup, ex subscription, event listener.
+
+
+> Hooks specific to components.
+ngAfterContentInit(), ngAfterContentChecked(), ngAfterViewInint(), ngAfterViewChecked()
+
 
 8. @ViewChild or @ViewChildren decorators are used to Query and get the reference of the DOM element in the Component. 
 ViewChild returns the first matching element and ViewChildren returns all the matching elements as a QueryList of items.
@@ -106,7 +128,7 @@ myObservable.unsubscribe();
 Type of subject: Subject, BehaviorSubject, ReplaySubject and AsyncSubject
 
 
-> Promise: Emit a single value,Eagerly execute upon creation, Cannot be canceled, Limited transformation capabilities
+> Promise (is part of JS not rxJs): Emit a single value,Eagerly execute upon creation, Cannot be canceled, Limited transformation capabilities
 > Observable: Can emit multiple values over time, Lazy and only execute when subscribed, Can be canceled via unsubscription, Support various transformation methods
 
 ==================RxJS=========================

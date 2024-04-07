@@ -1,0 +1,75 @@
+Data binding:
+--------------
+One way: 
+> String interpolation {{data}} use inside html componet.
+> Property binding: [disabled]="isActive";
+
+Two Way:
+> [(NgModel)]="data". to enbale ngModel directive have to add FormModule in app.applciation.ts.
+
+> Event binding:
+(click)="craeteData()"
+
+createData(){
+this.data = "Hello World";
+}
+
+(click)="createData($event)"
+
+createData(event:Event){
+ console.log(event)
+}
+
+Angular forms
+---------------
+1. Template driven from
+<from #f="ngForm" (ngSubmit)="submit(f)">
+	<input type="text" id="email" #email="ngModel" ngModel required email>
+		<span *ngIf="email.valid && email.touched">Please enter email</span>
+	</input>
+</form>
+
+email-email directive for eamil validation.
+
+submit(form:NgForm){}
+submit(form:ElemnetRef){}
+
+@viewChild('f') from:NgForm
+
+
+2. Reactive form
+<form [formGroup]="regForm" (ngSubmit)="submit()">
+	<inpiut formControlName="email"/>
+</form>
+
+regForm = new FormGroup({
+'email': new FormControl('', {Required,})
+});
+
+submit(){
+console.log(this.regForm)
+}
+
+Service:
+-----------
+DI: Constructor injection
+
+constructor(private service: MyService){}
+
+constructor(){
+this.service = inject(MyService);
+}
+
+> If Add serive inside each componet providers its added diff instace of service.
+> For single inctance we need to add provider in app.module.ts
+> Service can injeted inside service, ex if service1 want to inject to service2
+  then use @injectable metadata on service2 and then inject service1 via construcotr.
+
+Interceptors: for cross cutting request
+---------------------
+export class AuthInterceptor extend httpInterceptor{
+interceptor(res: HttpReqest<any>, next:HttpHandler);
+
+}
+
+                 

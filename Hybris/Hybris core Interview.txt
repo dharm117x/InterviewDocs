@@ -39,20 +39,41 @@ Data Modeling:
 5. relations: code="Media2DerivedMediaRel" localized="false" generate="true" autocreate="true"
 > sourceElement- type="Media" qualifier="media" cardinality="one"
 > targetElement- type="DerivedMedia" qualifier="derivedMedias" cardinality="many"
-> modifiers- partof->true/off one many side.
+> modifiers- partof->true use for many side.
 
 6. itemtypes: 
-> modifires - read="true" write="true" search="true" optional="false" initial="true" unique="true"
-> autocreate
-> generate
-> localized
+> code - The unique code of this type
+> autocreate- If 'true', the attribute descriptor will be created during initialization. Default is 'true'.
+> generate - If 'true', the sourcecode for this item will be created. Default is 'true'
+> localized - 
 > deployment - create table for new custom types.
 
-7. attributes
-> modifiers: read="true" write="false" initial="true" optional="false" search="true"
+7.attributes: 
+> Qualifier- Qualifier of this attribute. Attribute qualifiers must be unique across a single type.
+> type- The type of the attribute, such as 'Product', 'int' or 'java.lang.String'. Primitive java types will be mapped to the 
+	corresponding atomic type
+> autocreate="true"- If 'true', the attribute descriptor will be created during initialization.
+> redeclare="false" - Lets you re-define the attribute definition from an inherited type. In essence, you can use a different type of attribute as 
+ 	      well as different modifier combinations than on the supertype.
+> generate="true" - If 'true', getter and setter methods for this attribute will be generated during a hybris Suite build.
+> defaultvalue - The default value is calculated by initialization and will not be re-calculated by runtime
+
+7a. modifires attributes - 
+read="true" - that is, if a getter method will be generated
+write="true" - that is, if a setter method will be generated
+search="true" - Defines if this attribute is searchable by a FlexibleSearch, persistent type-jalo, dynamic cannot seachable.
+optional="true" - Defines if this attribute is mandatory or optional, default is true.
+
+initial="fasle" -  If 'true', the attribute will only be writable during the item creation. Setting this to 'true' is only useful in combination 
+ 		with write='false'
+unique="false" - If 'true', the value of this attribute has to be unique within all instances of this type. If there are multiple 
+ 		attributes marked as unique, then their combined values must be unique
+encrypted="false"- If 'true', the attribute value will be stored in an encrypted way. 
+partof="fasle"- Defines if the assigned attribute value only belongs to the current instance of this type.
+
 > persistence- type - property, dynamic(attributeHandler)
   > columntype - custom propery type for database.
-> 	
+>	
 
 8. indexes:
 >  index name="Media_Code"

@@ -24,8 +24,15 @@ Topics, Partitions, offsets
 Its support any message format, sequence of messages is call a data stream.
 We can not query data from topic, instead use kafaka producer.
 
+Topic devided into 1-n number partions, message within each partion are ordered have incremented id, called offset.
+kafak topics are immutable and data kept inside for limited time (default 1 week)
+
+
 >>Partions: As the Kafka partitions are containing the data records or messages.
 Partiona are made of segments (files) at a time only one segemt is active(for data written)
+Data assign randomly to a partions unless key is provideed, menas same keys goes into same partions
+
+
 Two segments setting:
 1. log.segment.size the max size of segemt is 1gb default
 2. log.segment.ms the time kafak will wait before commite segment is not full defaul 1 week.
@@ -35,6 +42,8 @@ Segment comes with 2 indexs:
 2. A Timestamp to offset index: Find message with speciifc timestamp.
 
 >>Offset:As the Kafka partitions are containing the data records or messages, each of these messages within a partition needs to be assigned an incremental ID. This incremental ID is with respect to the position, the message holds inside the Partition. This specific ID has defined an Offset
+
+Offser are not reusable even previuos message has been deleted, ordered are guranterd within partion not across.
 
 
 >>Schema Registry:: is a simple concept but it’s really powerful in enforcing data governance within your Kafka architecture. Schemas reside outside of your Kafka cluster, only the schema ID resides in your Kafka, hence making schema registry a critical component of your infrastructure. If the schema registry is not available, it will break producers and consumers
@@ -62,12 +71,44 @@ If the Producer is not idempotent and the original write did succeed then the me
 
 Elimination of Message Duplication: The idempotent producer ensures that duplicate messages are prevented from being written to Kafka. 
 
+
+
+
 Best Kafak Config:
 ----------------
 enable.idempotence=true
 acks=all
 retries= integer max
 max.in.flight.requests.per.connection=<=5
+
+Ackoledgement stretegy:
+----------------------
+acks: 0,1 and all
+
+
+Kafaka Producer: Message serialization:
+---------------------------------------
+Its write data to topics and know which partions to write.
+In case of broker failure producer automatically recovred. producer send a message with key, if key==null, data send in roud robin process.
+If key!= null, then all message from that key always goes in same partions(by hashing alo murmur2)
+So key is only required if we want message orderring for specific field.
+
+Kafak Consumer: Message Deserialization:
+----------------------------------------
+Read data from topic (pull mechanisam) its choose broker in case broker failure its know how to recover.
+Data read in order from low to Heigh offset within each partion.
+
+Kafa Consumer groups:
+---------------------
+All consumer in application read data as customer group.
+Each customer in a group read from exclusive partions.
+In Kafak multiple customer group in same topic.
+
+Kafa Consumer Offset:
+---------------------
+Kafaka stores the offset at which a customer group has bean reading.
+By default java consumer will automatically commits offset(at least once).
+Partionors.class=Roudrobinpartiona.class
 
 
 Kafaka command:
