@@ -11,6 +11,8 @@ EXPOSE 8080
 ADD target/docker-demo.jar demo.jar
 ENTRYPOINT ["java", "-jar", "demo.jar"]
 
+FROM nginx
+COPY angular /usr/share/nginx/html
 
 Image dwonload/upload from repos:
 ---------------------------
@@ -44,6 +46,8 @@ DOCKER RUN:
 
 docker run -d  -p <host_port>:<container_port> --name <container_Name> <image_name>:<Image_version/tag>
 docker run -d -p 9000:8080 --name demo demo:01
+docker run -d -e "spring.profile.active=dev" springboot // pass env variable in docer
+
 docker run -d -p 9000:8080 -m 512m --name demo demo:01
 
 docker run -d --name httpd_server -p 8080:80 httpd:2.

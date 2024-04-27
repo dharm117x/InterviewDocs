@@ -1,11 +1,19 @@
 Spring boot QA
 ===============
+mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profile.active=dev
+
 >>Common Annotaion:
 
 @SpringBootApplication = @Configuration + @EnableAutoConfiguration + @ComponentScan
 
 @ConditionalOnBean Annotation Example
 Use when we want to define conditions based on the presence or absence of a specific bean:
+
+@bean
+@Profile("dev")
+public String getName(){
+syso("Name: "+env.getPropery("user.name"))
+return "dev bean";
 
 @PropertySource("classpath:config.properties")
 

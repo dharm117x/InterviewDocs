@@ -38,6 +38,10 @@ npm install --global lite-server
 # To run:
 lite-server
 
+ng build --watch
+lite-server --baseDir="dist/Angular12Crud"
+
+
 ==========================================
 Anngular build process
 -----------------------
@@ -69,8 +73,25 @@ lite-server
 
 lite-server --baseDir="dist/project-name"
 
-
 ng add @angular/fire
 ng deploy
 
 
+## Deploy on nginx server:
+------------------------
+install nginx on widows:
+
+create folder angular inside nginx install folder.
+
+Build angular aap and copy dist folder data inside nginx angular folder
+
+update config file:
+
+location / {
+	root angular;
+	try_files $uri $uri/ /index.html;
+}
+
+copy angular dist folder inside angular folder.
+start server on cmd by nginx
+stop server: on cmd by TASKKILL /F /IM nginx.exe 

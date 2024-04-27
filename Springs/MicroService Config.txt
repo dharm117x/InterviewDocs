@@ -1,0 +1,317 @@
+General:
+------------
+MVN command:
+------------
+mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profile.active=dev
+
+Propertirs files:
+------------------
+> applciation.properties
+application.yml or application.properties for configuring the application context.
+
+> bootstrap.properties
+bootstrap.yml or bootstrap.properties for configuring the bootstrap context it is the parent context for the main application.
+bootstrap context is responsible for loading configuration properties from the external sources.
+Ex: the configuration server is the point through which we access the application context configuration files.  
+
+spring.application.name=config-client
+spring.profiles.active=development
+spring.cloud.config.uri=http://localhost:8888
+
+POM dependency:
+===============
+
+Spring-cloud -support-for each microservice:
+--------------------------------------------
+<groupId>org.springframework.cloud</groupId>
+<artifactId>spring-cloud-dependencies</artifactId>
+<version>${spring-cloud.version}</version>
+<type>pom</type>
+
+<groupId>org.springframework.cloud</groupId>
+<artifactId>spring-cloud-starter-config</artifactId>
+
+Note: Cloud version should be realated to spring parent version.
+
+Config-server:
+---------------
+<groupId>org.springframework.cloud</groupId>
+<artifactId>spring-cloud-config-server</artifactId>
+
+Eureka-Server:
+--------------
+<groupId>org.springframework.cloud</groupId>
+<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+
+Gatway-server:
+--------------
+<groupId>org.springframework.cloud</groupId>
+<artifactId>spring-cloud-starter-gateway</artifactId>	
+
+Micro-Service:
+-------------
+<groupId>org.springframework.cloud</groupId>
+<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+
+<groupId>org.springframework.cloud</groupId>
+<artifactId>spring-cloud-starter-config</artifactId>
+
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-actuator</artifactId>
+
+<groupId>org.springframework.cloud</groupId>
+<artifactId>spring-cloud-starter-openfeign</artifactId>	
+
+Eureka Server(Service Registrry):
+--------------------------------
+@EnableEurekaServer
+
+SpringApplication.run(MyEurekaServerApplication.class, args);
+
+to secureeureka server implement spring websecurity with httpbasic authetication
+
+eureka:
+  server:
+    waitTimeInMsWhenSyncEmpty: 30
+    renewal-percent-threshold: 0.85 
+  instance:
+    hostname: pear1
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    service-url:
+      defaultZone: http://pear2:8002/eureka,http://pear3:8003/eureka
+
+
+Clinet-Service:
+-------------------
+@EurekaDiscoveryClients (optional)
+
+eureka.client.serviceurl.defaultZone=http://admin:admin@localhost:8671/eureka
+eureka.client.serviceurl.defaultZone=http://${username}:${password}@localhost:8671/eureka
+
+eureka:
+  client:
+    service-url:
+     # defaultZone: http://pear1:8001/eureka, http://pear2:8002/eureka, http://pear3:8003/eureka
+      defaultZone: http://localhost:8761/eureka
+
+Enc/Dec
+---------
+symmentric:
+---------------
+encrypt.key=key-1233
+
+Asymmetric:
+---------------
+encrypt.key-store.location
+encrypt.key-store.password
+encrypt.key-store.alias
+
+In property we use like:
+user.password=(cipher)encryptedpassword
+
+
+ConfigServer:
+-------------
+@EnableConfigServer
+Configure properties files either from file system or git repository.
+
+Properties files config
+------------------------
+GitRepo files(applcation.properties) -> GitRepo files(microservice.properties->microservice-<profile>.properties) -> service application.properties
+Inside sub Folders: service-A/service-A.properties
+
+Insdide Root folder:
+/application.properties --common for all microservice
+/service-A.properties -- only for matching microservice application name.
+
+
+Server-side:
+---------------
+spring.application.name=spring-cloud-config-server
+server.port=9999
+#spring.cloud.config.server.git.uri=file:///D:/programs/microservice/udemy/git-localconfig-repo
+#file:///in28Minutes/git/spring-microservices-v2/03.microservices/git-localconfig-repo
+
+spring.cloud.config.server.git.uri=https://github.com/dharm117x/config-server.git
+spring.cloud.config.server.git.username=
+spring.cloud.config.server.git.password=
+#spring.cloud.config.server.git.search-paths=service-A,service-B
+spring.cloud.config.server.git.clone-on-start=true
+
+Clinet-Side:
+------------
+spring.applcation.name=service-A
+spring.cloud.config.uri=http://localhost:9999 
+or
+
+spring:
+  application:
+    name: service-A
+  cloud:
+    config:
+      enabled: true    
+  config:
+    import:
+    - optional:configserver:http://localhost:9999 
+
+
+Url for properties:
+---------------------
+http://localhost:9999/<file-name>/default
+
+http://localhost:9999/CONFIG-SERVICE/default
+http://localhost:9999/CONFIG-SERVICE/prod
+
+Client side auto update properties:
+-----------------------------------
+1. Add actuator dependency
+2. enable all endpoint to actuator service
+- management.endpoints.web.exposures.include=*
+3. Use @RefreshScope annotaion at class level those have property dependenycy.
+
+@RefreshScope
+@RestContoller
+classs TestController{
+@Value("${app.name: spring boot}")
+String name;
+}
+
+>> call actuator post API to refresh properties: 
+- actuator/refresh
+
+
+Api Gatway Server
+------------------
+
+spring:
+  application:
+    name: APIGATWAY-SERVICE
+  cloud:
+    gateway:
+      routes:
+      - id: USER-SERVICE
+        uri: lb://USER-SERVICE
+        predicates:
+        - Path=/users/**
+        filters:
+        - name: AuthorizationHeaderFilter
+          args:
+            isSecure: false
+       
+      - id: DEPARTMENT-SERVICE
+        uri: lb://DEPARTMENT-SERVICE
+        predicates:
+        - Path=/departments/**
+
+
+Distributed tracing
+---------------------
+Zipkin:
+-----------
+collect:
+Http request method, Response code, Endpoint uri, Exception info
+
+Messure: rate, sum, max, percetile,
+
+Aggregating Logs:
+------------------
+ELK(ElasticSearch, Logstash, Kibana)
+
+
+
+Acutator-Service:
+------------------
+AcutatorService:
+> Added starter actuator dependency in pom file.
+> 
+urls:
+/actuator/helth
+/actuator/mappings
+/actuator/configprops
+/actuator/flyways
+/actuator/circuitebreakerevents
+
+management.endpoints.web.exposures.include=beans, helth, bus-refresh
+management.endpoints.helth.enabled=true
+management.helth.circuitbreaker.enabled=true
+
+
+Microservice communication:
+---------------------------
+RestTemplate:
+---------------
+@Bean
+@LoadBalanced
+public RestTemplate restTempalte(){
+return new RestTemplate()
+}
+
+Feign Clinet:
+---------------
+@EnableFeignClients
+
+@FeignClient(name="user-service")
+interface UserServiceClient{
+@GetMapping("/user/{id}")
+public List<USer> getUser(@PathVariable String id);
+}
+
+
+Circuitbreaker: resillence4j
+--------------------------------------------------
+
+// resillence4j
+Ex:
+@FeignClient(name="user-service")
+interface UserServiceClient{
+
+// multi module of ressilenece4j then order of execution like ciructbreaker -> retry
+@GetMapping("/user/{id}")
+@Retry(name="user-service")
+@Circuitbreaker(name="user-service", fallbackMethod="getUser")
+public List<USer> getUser(@PathVariable String id);
+
+
+public List<USer> getUser(String id, Throwable ex){
+return new ArrayList<>();
+}
+}
+
+>>Core modules:
+CircuitBraker, RateLimiter, Retry, Bulkhead, TimeLimiter, Cache
+
+resilinenece4j.<module>.instances.<circuitbreaker-name>.failure-rate-threshhold=50 //in term of percentage
+Ex:
+resilinenece4j.circuitbraker.instances.user-service.failure-rate-threshhold=50 //in term of percentage
+resilinenece4j.circuitbraker.instances.user-service.automatic.transition.from-open-to-half-open-enabled=true
+resilinenece4j.circuitbraker.instances.user-service.wait-duration-in-open-state=10s //seconds
+resilinenece4j.circuitbraker.instances.user-service.sliding-windo-type=COUNT_BASED
+resilinenece4j.circuitbraker.instances.user-service.sliding-windo-size=2
+
+resilinenece4j.retry.instances.user-service.max-attempts=3
+resilinenece4j.retry.instances.user-service.wait-duration=3s
+
+// the higher value= the heighr priority
+resilinenece4j.circuitbraker.circuitbraker-aspect-order=1
+resilinenece4j.retry.retyr-aspect-order=2
+
+
+
+
+>>CircuitBreaker state:
+
+Closed   : If service up. return actual service method
+Open     : if service down. return falback method
+Half_open:  After certain wait. try with limited call.
+
+@Bulkhead(name="user-service"):
+Certain number of cuncurretn call.
+
+@RateLimiter(name="user-service"):
+Limit Certian amount of request per second, 1 req/sec
+
+@Retry(name="user-service"):
+For certian error we can retry for limited no and then call fallback method call
+

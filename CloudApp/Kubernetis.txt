@@ -37,16 +37,20 @@ kubectl get pods
 kubectl get pods -o wide // pods plcaced on which node.
 kubectl get pods -n kube-system
 
-kubectl describe pod podid
-kubectl delete pod podid
-kubectl explain pods
+kubectl describe pod nginx
+kubectl delete pod nginx
+kubectl explain nginx
 
 kubectl run redis --image=redis123 --dry-run=client -o yaml > redis.yml
 kubectl create -f redis.yml
 kubectl edit pod redis
 
+kubectl expose pod nginx --type=NodePort --name=nginx-svc
+kubectl expose pod nginx --type=NodePort --name=nginx-svc --port=8080
+
 kubectl delete pods --all --all-namespaces
 kubectl delete pods --all -A
+
 
 -----------------REPLICA Controller---------------------Kind: ReplicationController
 kubectl create -f rc-definition.yml
@@ -77,6 +81,8 @@ kubectl create -f deployment.yml
 kubectl create deployment httpd-fronent --image=httpd:2.4-alpine
 kubectl create deployment httpd-fronent --image=httpd:2.4-alpine --replicas=2
 kubectl edit deployment httpd-fronent
+kubectl describe deployment httpd-fronent
+
 kubectl scale  deployment/httpd-fronent --replicas=3
 
 kubectl get deployment
@@ -88,13 +94,26 @@ kubectl get pods
 kubectl get all
 kubectl get svc
 
-kubectl describe deployment myapp-deployment
-
 -------------------Microservice----------docker run --links
+kubectl get endpoints
+kubectl describe service ngnix
+kubectl edit service ngnix
+kubectl delete service ngnix
 
 kubectl get service -o wide
-kubectl delete service db
+kubectl describe service --all-namespaces | grep -i nodeport
 
+
+kubectl logs -f <pod_name>
+kubectl logs --tail=50 <pod_name>
+
+
+---------------PODS STOP--------------------
+
+kubectl delete pod my-pod
+kubectl delete pod my-pod --force
+kubectl scale deployment my-deployment --replicas=0
+kubectl scale deployment/<your-deployment> --replicas=0
 
 
 

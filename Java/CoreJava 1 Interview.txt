@@ -34,3 +34,14 @@ But no gurantee that any of these will run.
 
 >>>2. Serialiaztion:
 ---------------------
+
+
+>>>. java enc and dec
+-------------------------
+Symmetric (shared key)
+Asymmetric(RSA key pair)
+
+Java Crypto graphy extension:
+JCE: UnlimitedJCEPolicyJDK8
+Add thoselib :/ jre/lib/security/
+

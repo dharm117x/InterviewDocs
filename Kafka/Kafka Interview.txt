@@ -101,8 +101,9 @@ Data read in order from low to Heigh offset within each partion.
 Kafa Consumer groups:
 ---------------------
 All consumer in application read data as customer group.
-Each customer in a group read from exclusive partions.
+Each customer in a group read from exclusive partions(don't allow multiple consumers per partions).
 In Kafak multiple customer group in same topic.
+
 
 Kafa Consumer Offset:
 ---------------------
@@ -110,6 +111,7 @@ Kafaka stores the offset at which a customer group has bean reading.
 By default java consumer will automatically commits offset(at least once).
 Partionors.class=Roudrobinpartiona.class
 
+Note: Offset like a topic(consumer_offset) that holds info like partion, group, offset(last reading value).
 
 Kafaka command:
 ==================

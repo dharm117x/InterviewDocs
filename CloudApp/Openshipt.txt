@@ -1,0 +1,32 @@
+Login to Openshit by CLI:
+----------------------
+oc login -u system:admin
+
+Show list of projects and swith bw by:
+oc project project-1
+
+show porjects:
+oc get projects
+oc get users
+
+Crate user and roles:
+-----------------------
+oc adm policy add-to-cluster-touser cluster-admin administrator
+ 
+ Cluseter role: "cluster-admin"
+ added: "administrator"
+
+Build Process:
+-----------------
+Create build -> Download Source -> Build Image -> Push to Repository(Docker regs) 
+-> Deploy
+apiVersion: apps.openshipt.io/v1
+Kind: DeploymentConfig
+
+
+oc rollout latest dc/simple-webapp-docker
+oc rollout history dc/simple-webapp-docker
+oc rollout undo dc/simple-webapp-docker
+
+oc rollout describe dc simple-webapp-docker
+

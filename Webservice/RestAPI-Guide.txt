@@ -1,0 +1,76 @@
+Restfull API:
+-------------------
+POST: crate user /users
+GET: Read user details /users/1
+PUT: Udpate user details /users/1
+Delete: delete user details /users/1
+
+@PathVariable: users/1
+
+@Getmapping(path="{/id}")
+public String getUser(@pathVariable String id){}
+
+@Queryparamneter: users?id=1&sort=asc // id optional , required=false not work with primitive paramaer.
+
+@Getmapping("users")
+public String getUser(@RequestParam(value="id", default=1) int id, @RequestParam(value="sort", default="desc", required=fasle) String sort){}
+
+
+"Accept" header in an HTTP request is used to specify the expected data format in the response i.e json/xml.
+
+@GetMapping(path="users", produces={"application/xml","application/json"})
+public User getUser(){}
+
+"Status" code update in response.
+
+@GetMapping("/users")
+public ResponseEntity<User> getUsers(){
+return ResponseEntity<USer>(data, HttpStatus.ok);
+}
+
+
+RequestBody: USe to read json paylod of user from request body ;
+ContentType: header in an HTTP request is used to specify the expected data format in request body i.e json/xml
+
+@postmapping(path="/user", consumes={"application/xml","application/json"})
+public User crateUser(@RequestBody User user){}
+
+
+Validation:
+public class User{
+@NotNull(message="Username can not be null")
+String username;
+@NotNull(message="Email can not be null")
+@Email
+String email;
+@NotNull(message="Email can not be null")
+@Size(min=2,max=10, message="password should be bw 2 to 10")
+String password;
+}
+
+@postmapping(path="/user")
+public User crateUser(@valid @RequestBody User user){}
+
+
+Exception handling:
+
+@ControllerAdvice
+public class GlbalExceptionHandler extends ResponseEnttiyExceptionhandler{
+
+@Exceptionhandler(value={Exception.class})
+public ResponseEntity<Object> handleException(Exception ex, Request req){
+return ResponseEntity<>(ex, new HttpHeaders(), HttpStatus.NOK);
+}
+
+@Exceptionhandler(value={NullPointerException.class})
+public ResponseEntity<Object> handleNullException(NullPointerException ex, Request req){
+return ResponseEntity<>(ex, new HttpHeaders(), HttpStatus.NOK);
+}
+
+@Exceptionhandler(value={CustomException1.class, CustomException2.class})
+public ResponseEntity<Object> handleAllException(Exception ex, Request req){
+return ResponseEntity<>(ex, new HttpHeaders(), HttpStatus.NOK);
+}
+}
+
+
