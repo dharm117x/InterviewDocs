@@ -1,0 +1,27 @@
+mvn clean install -DskipTests
+
+Plugin:
+----------
+mvn <plugin>:<goal>
+
+mvn <PLUGIN>:help
+
+mvn jaxb2:xjc
+
+mvn jaxb2:help -Ddetail=true -Dgoal=<goal-name>
+mvn jaxb2:help -Ddetail=true -Dgoal=xjc
+
+mvn help:describe -Dcmd=compile
+
+
+Java Setting:
+----------------
+Spring boot:
+<java.version>11<java.version>
+
+others:
+<maven.compiler.source>11</maven.compiler.source>
+<maven.compiler.target>11</maven.compiler.target>
+
+or
+maven-compiler-plugin

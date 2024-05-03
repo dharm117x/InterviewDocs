@@ -1,0 +1,107 @@
+>> Enable new document:
+------------------------
+touch ~/Templates/Document
+
+>> Share folder from vbbox to ubuntu18.04
+-----------------------------------------
+> craete share folder settings from vbox and add windows folder.
+> add cuurent user inside usergroup vboxsf
+> sudo usermod -aG vboxsf dharmendra
+
+
+>> Putty to Ubuntu VM connection:
+==============================
+1. network setting enabled bridge adapter and allow all.
+2. firewall --network=public 
+3. ip addr --> 192.168.1.5/24
+4. Install ssh server
+4. test ssh connection: ssh user@localhost
+5. putty: ip: 192.168.1.5 port-22
+
+>> Host file:
+----------------
+sudo vi hosts
+
+>> Default editor:
+-----------------
+vi ~/.bashrc:
+add below line in last:
+
+export EDITOR=vim
+
+>>Crontab setup:
+----------------
+crontab -l	
+crontab -e
+
+insert below line:
+
+*/3 * * * * /home/dharmendra/Desktop/Linux/script/hello.sh > /tmp/output 2>&1
+
+grep CRON /var/log/syslog
+less /var/log/syslog | grep CRON
+
+>> storage clean:
+-----------------
+sudo apt-get update
+sudo apt-get autoclean
+sudo apt-get clean
+sudo apt-get autoremove
+sudo apt-get remove <pakgname>
+
+sudo du -sh /var/cache/apt
+
+sudo sh -c 'rm -rf /var/lib/snapd/cache/*'
+
+sudo journalctl --disk-usage
+sudo journalctl --vacuum-time=3d //by date
+sudo journalctl --vacuum-size=100M //by date
+
+sudo du -sh /var/lib/snapd/snaps
+sudo du -sh ~/.cache/thumbnails/
+
+
+>> System command:
+------------------
+history
+top
+ps
+
+fdisk -l
+lsblk
+
+ip a
+ip addr
+ip route
+
+df -hai
+du -has
+
+>> Service command:
+-------------------
+sudo systemctl status tomcat
+sudo systemctl start tomcat
+sudo systemctl stop tomcat
+
+systemctl --type=service --state=running
+systemctl --type=service --state=exited
+systemctl --type=service | grep docker
+
+sudo systemctl statu jenkins
+sudo systemctl disable jenkins.service
+
+
+>> Remove GUI from Ubuntu18
+-------------------------
+sudo apt-get -y purge ubuntu-desktop
+sudo apt-get -y purge unity gnome-shell lightdm
+sudo apt-get -y remove ubuntu-desktop
+sudo apt purge ubuntu-desktop -y && sudo apt autoremove -y && sudo apt autoclean
+sudo apt-get -y clean
+sudo apt-get -y autoremove
+sudo apt-get -f install
+
+However if you need to install it again just run the following command:
+
+sudo apt-get install ubuntu-desktop
+

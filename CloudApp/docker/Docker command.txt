@@ -1,23 +1,40 @@
-DockerFile:
-------------
-FROM tomcat:8.0-alpine
-LABEL maintainer="Dharmendra"
-ADD sample.war /usr/local/tomcat/webapps/
-EXPOSE 8080
-CMD ["catalina.sh", "run"]
-----------------------------------
-FROM openjdk:17
-EXPOSE 8080
-ADD target/docker-demo.jar demo.jar
-ENTRYPOINT ["java", "-jar", "demo.jar"]
-
-FROM nginx
-COPY angular /usr/share/nginx/html
-
-Image dwonload/upload from repos:
----------------------------
+1. Docker login:
+--------------
 docker login
+dharm117docker/Cybercom117#
+
+2. Create Dockerfile
+--------------------
+FROM openjdk:11
+EXPOSE 9000
+ADD target/docker-demo.jar docker-demo.jar
+ENTRYPOINT ["java", "-jar", "docker-demo.jar"]
+
+3. Build dokcer from docker file
+------------------------------------
+docker run -d  -p <host_port>:<container_port> --name <container_Name> <image_name>:<Image_version/tag>
+
+docker build -t docker-demo .
+docker build -f demofile -t docker-demo .
+docker run --name=docker-demo -dp9000:9000 -t docker-demo
+docker run --network=localnw --name=docker-demo -dp9000:9000 -t docker-demo
+
+docker images
+---------------
+docker image ls
+docker images -f dangling=true 
+docker search imagename
+docker image hostory imageid
+docker image inspect imageid
+
+
+Docker push to repository
+---------------------------
+docker login -u dharm117docker
 docker login -u "dharm117docker" -p "Cybercom117#" docker.io
+
+docker tag docker-demo dharm117docker/docker-demo
+docker push dharm117docker/docker-demo
 
 docker tag demo:01 dharm117docker/demo:01
 docker push dharm117docker/demo:01
@@ -25,58 +42,103 @@ docker push dharm117docker/demo:01
 docker image pull <image_name>:<image_version/tag>
 docker image pull demo:01
 
-DCOKER BUILD:
-========================
-docker build .
-or
-docker build -f /path/to/a/Dockerfile  -t demo:01 .
 
-docker image ls
-docker image rm -f <Image_id>
-docker image prune -a
+Run locally:
+docker run -p 8080:8080 docekr-demo
 
-docker tag repositry_nmae:1 repostry_name:latest
+Run from docker_repos:
+docker run -p 8080:8080 dharm117docker/docker-demo
 
-docker search imagename
-docker image hostory imageid
-docker image inspect imageid
 
-DOCKER RUN:
-==================
+Docekr logs:
+------------
+docker logs naming-server
 
-docker run -d  -p <host_port>:<container_port> --name <container_Name> <image_name>:<Image_version/tag>
-docker run -d -p 9000:8080 --name demo demo:01
-docker run -d -e "spring.profile.active=dev" springboot // pass env variable in docer
-
-docker run -d -p 9000:8080 -m 512m --name demo demo:01
-
-docker run -d --name httpd_server -p 8080:80 httpd:2.
-docker ps -a
-
-docker run helpre -link app1
-docker run helpre -link app2
+Docker network:
+--------------------
+docker network ls
+docker network create localnw
+docker network inspect docker_currency-network
 
 
 
-docker start/stop <container_id>
-docker rm <container_id>
+docker stop/start all container:
+---------------------------
+docker stop naming-server
+docker start naming-server
+
+docker start $(docker ps -a -f status=exited -q)
+docker stop $(docker ps -a -f status=running -q)
+
+Delete images:
+--------------
+docker image rm dharm117docker/docker-demo -f
+docker rmi <image-id>
+docker rmi $(docker images -a -q)
+docker rmi -f $(docker image ls | awk '{print$3}')
+
+Delete container:
+-----------------
+docker rm <container-id>
+docker rm $(docker ps -a -f status=exited -q)
+docker rm -f $(docker ps -a | awk '{print$1}')
+docker rm -v [container_name] // remove associate volume
 
 Login docker container:
 ---------------------
 docker exec -it <container_Name> /bin/bash
-
 docker container pause/unpause uid
 docker container inspect imageid
-
 dcoekr log -f uid
 docker container ls -a
 
------------------
+Docekr System:
+-------------
 docker stats
 docker events
 docker system df
+docker system prune -a
+
+docker volume ls
+docker volume inspect
+docker volume rm [volume_name] 
+docker volume ls -f dangling=true 
+docker volume prune
 
 
 
 
+
+
+============================================================
+Docker compose for multi service in single file:
+------------------------------------------------
+demo.yml
+
+version: '3'
+
+services:
+
+  myapp1:
+    image: nginx
+    ports:
+      - "8090:80"
+    networks:
+      - demo-network
+
+  myapp2:
+   image: nginx
+
+networks:
+  demo-network:
+
+------------------------
+
+docker-compose up  --default file(docker-compose) to create and run
+
+docker-compose -f demo.yml up -d  -- (d detach run in background)
+
+docker-compose up -d --scale myapp2=4 (scale service)
+
+docker-compose down
 

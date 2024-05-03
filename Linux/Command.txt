@@ -1,3 +1,0 @@
-sudo systemctl statu jenkins
-
-sudo systemctl disable jenkins.service

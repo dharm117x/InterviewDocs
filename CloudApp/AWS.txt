@@ -1,0 +1,26 @@
+1. AWS management console:
+
+Select Region where to craete Ec2 instance.
+All services-> EC2-> Create Instance-> Launch Instance -> Select Amazon Linix(Free version)
+Step1: Choose AMI(Amazon Machine Image) 2nd one- those have java, python, docker, post gress and AWS command line tool.
+Step2: Choose an instnace type. t2.small
+Step3: Configure instance details
+- use default vpc network (Virtual private cloud)
+- Shutdown behavior - stop(reuse same instance), terminate(instnace removed) --select stop.
+- Enable termination policy-false
+ 
+Step4: Add storage (use default 8gb)
+- Delete on termination (true- all files are deleted)
+- Add new Volume button to add more storage
+
+Step5: Add tags (skip for now) - kay -value pair.
+Step6: Confugure Securioty group:
+- Set of fire rule that control the traffic for ur instance.
+- Add rule to add https, mysql 
+
+Step7: Review and launch.
+- Create key-pair to connect instance
+- Launch instance.
+- Start/stop - from action dropdown-> instace setup -> start/stop
+
+

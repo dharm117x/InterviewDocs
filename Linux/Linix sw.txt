@@ -1,0 +1,134 @@
+SNAP:
+------------------
+sudo apt install snapd
+
+sudo snap remove --purge firefox
+
+snap list
+snap connections
+
+ls -l /snap/bin
+ls -l /var/lib/snapd/snaps
+
+lsblk
+
+>> Azure Client:
+-------------
+sudo snap install storage-explorer
+
+sudo snap remove storage-explorer
+
+Eclipse:
+sudo snap install --classic eclipse
+
+Update eclipse.ini
+------------------
+simply copy /snap/eclipse/current/eclipse.ini to ${HOME}/snap/eclipse/current/eclipse.ini, where you can edit it, and it will automatically get picked up by the snap.
+
+>> Java install:
+---------------
+sudo update-alternatives --config javac
+sudo apt install openjdk-8-jdk
+
+>> Maven:
+---------------
+wget https://mirrors.estointernet.in/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+tar -xvf apache-maven-3.6.3-bin.tar.gz
+sudo mv apache-maven-3.6.3 /opt/
+
+>> add below line in user profile
+-----------------------------------
+vi ~/.profile
+
+M2_HOME='/opt/apache-maven-3.6.3'
+if [ -d "$M2_HOME/bin" ] ; then
+  PATH="$M2_HOME/bin:$PATH"
+fi
+
+// reload 
+source .profile
+
+> Global path:
+--------------
+vi /etc/environment
+Update file wiht below line:
+PATH="$PATH:/opt/apache-maven-3.6.3/bin"
+source /etc/environment
+
+Tomcat setup manual:
+--------------------
+1. Download tomcat zip file:
+2. tar -xvf apache-tomcat-9.0.0.M17.tar.gz /opt/tomcat
+3. sudo mv apache-tomcat-9.0.0.M17 apache-tomcat9
+4. sudo lm -s apache-tomcat9/ tomcat
+5. sudo chown -R dharmendra: /opt/tomcat/*
+6. sudo chmod +x /opt/tomcat/bin/*sh
+
+Tomcat service setup:
+----------------------
+cd /etc/systemd/system/
+sudo vi tomcat.service
+
+[Unit]
+Description=Tomcat 9
+After=network.target
+
+[Service]
+Type=forking
+
+Environment="CATALIANA_HOME=/opt/tomcat"
+Environment="CATALIANA_BASE=/opt/tomcat"
+
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
+
+User=dharmendra
+Group=dharmendra
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+Load new serive: by command 7
+--------------------------------
+
+sudo systemctl daemon-reload
+sudo systemctl status tomcat
+sudo systemctl start tomcat
+sudo systemctl stop tomcat
+sudo systemctl enable tomcat
+
+/opt/tomcat/logs$ tail -f catalina.log
+
+
+>> Docker:
+-----------
+
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+
+sudo apt update
+
+apt-cache policy docker-ce
+
+sudo apt install docker-ce -> install docker
+
+sudo systemctl status docker
+
+sudo usermod -aG docker ${USER} --> add user inside usergroup doker: needs logout to reflect
+
+su - dharma
+
+id -nG -> Confirm that your user is now added to the docker group by typing:
+
+
+Docker-Compose:
+----------------
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+

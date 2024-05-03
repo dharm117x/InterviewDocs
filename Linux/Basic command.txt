@@ -1,0 +1,251 @@
+>> sudo login: (superuser do)
+--------------
+su root // switch user to root with same env
+su - root // switch user with target user env
+
+vi /etc/sudors
+add below line:
+<user> ALL=(ALL:ALL) ALL
+
+Root user login:
+sudo -i
+
+>> Add new group: groupadd
+------------------
+sudo groupadd [options] group_name
+
+sudo groupadd test_group
+sudo groupadd -f test_group //force replace existing 
+sudo groupadd -p somepassword test_group
+sudo groupadd -g 1001 test_group
+
+sudo groupdel test_group
+sudo groupdel -f test_group
+sudo groupdel -r test_group
+
+sudo tail /etc/group
+
+>> Modified usergroup:
+----------------------
+groupmod [option] GROUP
+
+groupmod -n group_new group_old
+
+
+>> Add new user: useradd
+------------------------
+sudo useradd [options] [User_name]
+
+sudo useradd test_user
+sudo useradd -g test_group test_user
+
+sudo userdel test_user
+sudo userdel -f test_user // delete logged in user as well
+sudo userdel -r test_user // dlete user and clean home dir
+
+>> Modified user: usermod
+-------------------------
+sudo usermod -a -G <group name> <user name>
+sudo usermod -a -G docker dharmendra
+
+sudo usermod -c "This is test user" test_user
+sudo usermod -g users test_user
+sudo usermod -p test_password test_user // set password
+
+sudo usermod -L test_user //lock
+sudo usermod -U test_user //unlock
+
+>>create command for file or folder:
+------------------------------------
+1. vi filename
+2. mkdir foldername
+
+create file or filder wth -
+using "--" before file or folder.
+
+>> Softlink and hardlink:
+-------------------------
+Soft Links (symbolic links ):
+
+ln -s file1 file1-soft
+
+
+>> File/Folder delete command:
+----------------------------
+
+rm filename
+rm -r mydir
+rm -r -f mydir1 mydir1 
+
+rm -- -foo
+rm ./-foo
+
+>> File or folder copy:
+-----------------------
+
+cp -R source destination/
+
+
+Process command:
+====================
+
+top "q to quit"
+
+ps -e | grep java
+
+tail -f logfile.
+
+Ctrl + c exist from tail command.
+
+
+ls command, show the all file and folder.
+=========================================
+ls -a // include all files and folder
+ls -l // return file info.
+ls -ltrh  // t = sort by time, r= reverse, h=human readable size
+ls -laSrh // s = sort by size
+ls -laRS // files from subdiractory
+
+
+VI commands:
+=====================
+creat  new file
+
+vi filename
+i for insert
+escp use to return
+d for line delete
+
+:q  for quit
+:q! for quit without change.
+:x  quit with change.
+:u  undo last change (can be repeated to undo preceding commands)
+:e! undo all changes.
+
+
+Tar extract command:
+=======================
+
+tar -xvf file.tar
+
+tar -xf file.name.tar -C /path/to/directory
+
+-x : Extract a tar ball.
+-v : Verbose output or show progress while extracting files.
+-f : Specify an archive or a tarball filename.
+-j : Decompress and extract the contents of the compressed archive created by bzip2 program (tar.bz2 extension).
+-z : Decompress and extract the contents of the compressed archive created by gzip program (t
+
+Zip and Unzip command
+--------------------------
+Zip create.
+zip -r zipname.zip folder/
+
+Unzip:
+unzip zipname.zip -d folder/
+
+
+Tar create command:
+========================
+
+tar -cvf output.tar /dirname
+
+tar -cvf output.tar /dirname1 /dirname2 filename1 filename2
+
+tar -czvf name-of-archive.tar.gz /sc
+
+-c : Create a tar ball.
+-v : Verbose output (show progress).
+-f : Output tar ball archive file name.
+-x : Extract all files from archive.tar.
+-t : Display the contents (file list) of an archive.
+-z : Compress the archive with gzip.
+
+--exclude=*.mp4
+
+tar -cvf output.tar /dirname --exclude=*.mp4  //create tar file without mp4 file.
+
+tar -tvf file.tar   // view tar details
+
+
+File permission and user
+===============================
+
+>> chmod command:
+----------------
+> using numbers:
+chmod 777 filename  // all permission to file/folder
+
+> using letters: 
+chmod u+rw,go+r important.txt
+
+So we're saying file owner user gets read and write permissions, group and others get to read.
+
+with the important.sh file being made executable we could just run this:
+
+chmod u+rwx,go+rx important.sh
+
+Permissions can be given to a user who owns the file (u = user), group of said user (g = group), 
+everyone else (o = others) or all users (a). And the basic permissions that can be given 
+include read (r), write (w), and execute (x). 
+
+
+if we're setting permissions to a folder we need to specify the -R option (standing for "recursive"):
+
+chmod -R 644 important-files/
+
+>> chown command:
+-----------------
+
+chown command changes the user and/or group ownership of for given file. The syntax is:
+
+chown owner-user file 
+chown owner-user:owner-group file
+chown owner-user:owner-group directory
+chown options owner-user:owner-group file
+
+chown user filename/directory
+chown user:group filename/directory
+chown options user:group filename/directory
+
+Options:
+
+-R  : Recursively change ownership of directories and their contents.
+
+>> FILE Search:
+---------------
+find . -name thisfile.txt
+
+find /home -type f  -iname thisfile.txt
+find /home -maxdepth 10 -type f -size -1M
+
+find / -type f -ls |grep '10 Sep'
+
+find /home/ -ctime -30
+find /home/ -ls -ctime -1
+
+find . -type f -newerat 2023-10-01 ! -newerat 2023-10-01
+find . -type f -print | xargs grep "scr"
+
+
+>> Locate command for file search
+----------------------------------
+The locate utility works better and faster than the find command counterpart because instead of searching the file system when a file search is initiated, it would look through a database.
+
+locate sample.txt 
+locate "*.html" -n 20
+locate -c [.txt]*
+locate -i *SAMPLE.txt*
+
+>> AWK command:
+---------------
+cat > employee.txt 
+
+awk options 'selection _criteria {action }' input-file > output-file
+
+awk 'END { print NR }' employee.txt
+awk '{print}' employee.txt
+awk '{print$1}' employee.txt
+
+awk '/manager/ {print}' employee.txt 
+awk '{print NR,  $1,  $2}' employee.txt
