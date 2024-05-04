@@ -47,7 +47,8 @@ sudo apt-get update
 sudo apt-get autoclean
 sudo apt-get clean
 sudo apt-get autoremove
-sudo apt-get remove <pakgname>
+sudo apt-get remove <pakgname> // kept configuraion
+sudo apt-get purge <pakgname> // remove everything
 
 sudo du -sh /var/cache/apt
 
@@ -87,7 +88,7 @@ systemctl --type=service --state=running
 systemctl --type=service --state=exited
 systemctl --type=service | grep docker
 
-sudo systemctl statu jenkins
+sudo systemctl status jenkins
 sudo systemctl disable jenkins.service
 
 

@@ -47,6 +47,7 @@ sudo userdel -r test_user // dlete user and clean home dir
 -------------------------
 sudo usermod -a -G <group name> <user name>
 sudo usermod -a -G docker dharmendra
+sudo usermod -aG docker $USER
 
 sudo usermod -c "This is test user" test_user
 sudo usermod -g users test_user
