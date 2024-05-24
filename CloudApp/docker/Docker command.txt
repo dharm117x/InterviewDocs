@@ -1,23 +1,24 @@
-1. Docker login:
+>> Docker login:
 --------------
 docker login
 dharm117docker/Cybercom117#
 
-2. Create Dockerfile
+>> Create Dockerfile
 --------------------
 FROM openjdk:11
 EXPOSE 9000
 ADD target/docker-demo.jar docker-demo.jar
 ENTRYPOINT ["java", "-jar", "docker-demo.jar"]
 
-3. Build dokcer from docker file
-------------------------------------
-docker run -d  -p <host_port>:<container_port> --name <container_Name> <image_name>:<Image_version/tag>
+FROM nginx
+COPY config/nginx.conf /etc/nginx/nginx.conf
+COPY dist/deploy /usr/share/nginx/html
 
+
+>> Build dokcer image from docker file
+--------------------------------------
 docker build -t docker-demo .
 docker build -f demofile -t docker-demo .
-docker run --name=docker-demo -dp9000:9000 -t docker-demo
-docker run --network=localnw --name=docker-demo -dp9000:9000 -t docker-demo
 
 docker images
 ---------------
@@ -43,12 +44,16 @@ docker image pull <image_name>:<image_version/tag>
 docker image pull demo:01
 
 
-Run locally:
-docker run -p 8080:8080 docekr-demo
+Docker run:
+-------------
+docker run -d  -p <host_port>:<container_port> --name <container_Name> <image_name>:<Image_version/tag>
 
-Run from docker_repos:
+docker run -dp9000:9000 --name=docker-demo -t docker-demo:latest
+
+docker run --network=localnw --name=docker-demo -dp9000:9000 -t docker-demo
+
+>Run from docker_repos:
 docker run -p 8080:8080 dharm117docker/docker-demo
-
 
 Docekr logs:
 ------------
@@ -60,8 +65,6 @@ docker network ls
 docker network create localnw
 docker network inspect docker_currency-network
 
-
-
 docker stop/start all container:
 ---------------------------
 docker stop naming-server
@@ -69,20 +72,6 @@ docker start naming-server
 
 docker start $(docker ps -a -f status=exited -q)
 docker stop $(docker ps -a -f status=running -q)
-
-Delete images:
---------------
-docker image rm dharm117docker/docker-demo -f
-docker rmi <image-id>
-docker rmi $(docker images -a -q)
-docker rmi -f $(docker image ls | awk '{print$3}')
-
-Delete container:
------------------
-docker rm <container-id>
-docker rm $(docker ps -a -f status=exited -q)
-docker rm -f $(docker ps -a | awk '{print$1}')
-docker rm -v [container_name] // remove associate volume
 
 Login docker container:
 ---------------------
@@ -105,9 +94,19 @@ docker volume rm [volume_name]
 docker volume ls -f dangling=true 
 docker volume prune
 
+Delete images:
+--------------
+docker image rm dharm117docker/docker-demo -f
+docker rmi <image-id>
+docker rmi $(docker images -a -q)
+docker rmi -f $(docker image ls | awk '{print$3}')
 
-
-
+Delete container:
+-----------------
+docker rm <container-id>
+docker rm $(docker ps -a -f status=exited -q)
+docker rm -f $(docker ps -a | awk '{print$1}')
+docker rm -v [container_name] // remove associate volume
 
 
 ============================================================

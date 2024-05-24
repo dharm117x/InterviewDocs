@@ -1,0 +1,82 @@
+*********Modification of table in Oracke Database************ 
+---------------------------------------------------------------
+-----------------------------
+1)First create simple table:-
+
+
+create table student(
+sid int,
+name char(50));
+
+-------------------------------
+2)Adding the column :-
+
+
+alter table student
+add(phone number,email char(50));
+
+----------------------------------
+3)Modifyingbthe column name:-
+
+
+alter table student
+modify name char(30);
+
+-------------------------------
+or) Droping the column name:-
+
+
+alter table student
+drop column col_name ;
+
+----------------------------
+4)Adding the primary key:-
+
+alter table student
+add primary key (sid);
+
+---------------------------------
+5)Droping the primary key:-
+
+
+alter table student
+drop primary key;
+
+---------------------------------
+6)Addinng the constrent:-
+
+
+alter table student
+add constraint ck email not null;
+
+---------------------------------
+7)droping the constrent:-
+
+
+alter table student
+drop constraint ck;
+
+
+------------------------------------
+8)deleting the record from table
+-----------------------------------
+delete from table_name where condition;
+
+---------------------------------------
+9)updating the record of table
+--------------------------------
+update table_name set ccol1=val1,col2=val2,col2=val2.....where condition;
+
+--------------------------------------
+10)droping the table
+--------------------------------------
+drop table table_name;
+
+----------------------------------------
+11)truncate the table
+-----------------------------------
+truncate table table_name;
+
+------------------------------------
+
+

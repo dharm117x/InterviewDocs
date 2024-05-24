@@ -1,0 +1,118 @@
+>> Connet to server:
+-----------------------
+sqlplus /nolog
+or
+sqlplus "/ as sysdba"
+or
+sqlplus sys/admin as sysdba;
+
+or
+SQL> connect
+Enter user-name: system
+Enter password:admin
+or
+connect <user>/<password>
+
+
+clear scr
+
+>>>Oracle Web Port change:
+--------------------------
+select dbms_xdb.gethttpport from dual;
+exec dbms_xdb.sethttpport('9090');
+commit;
+
+http://127.0.0.1:9090/htmldb/
+
+>>>Creaate Tablespace in oracle
+-------------------------------
+
+create tablespace springts datafile 'C:\oraclexe\app\oracle\oradata\XE\SPRING_TS.dbf' size 200M autoextend on;
+create tablespace projects datafile 'C:\oraclexe\app\oracle\oradata\XE\PROJECT_TS.dbf' size 200M autoextend on;
+   
+select tablespace_name, contents from user_tablespaces;
+   
+select file_name from dba_data_files;
+
+
+>>>Create user and show cureent user:
+------------------------------------
+create user projectdb identified by admin default tablespace projectts;
+create user microservicedb identified by admin default tablespace springts;
+
+create user dkumar identified by admin;
+grant all privileges to dkumar;
+
+
+>>> Show Users:
+--------------
+SQL> show user;
+USER is "ROOT"
+or
+SELECT * FROM ALL_USERS;
+
+>>> Password change for user:/Expired user:
+--------------------------
+select username, account_status from dba_users where ACCOUNT_STATUS LIKE '%EXPIRED%';
+
+alter user root identified by password;
+
+>>> Grant privilege to user for login:
+-------------------------------------
+grant CREATE SESSION to dkumar;
+grant CREATE TABLE, CREATE VIEW, CREATE SYNONYM, CREATE PROCEDURE to dkumar
+
+grant all privileges to dkumar;
+
+revoke CREATE SESSION from dkumar;
+revoke all privileges from dkumar;
+
+
+
+>>> Create profile for user:
+----------------------------
+create profile LIMITED_PROFILE limit
+FAILED_LOGIN_ATTEMPTS 5;
+
+create user jane identified by admin
+profile LIMITED_PROFILE;
+
+grant CREATE SESSION to jane;
+
+After five attempts:Error message.
+
+SQL> connect jane/admin
+ERROR:
+ORA-28000: the account is locked
+
+>>> Unlock account:
+------------------
+alter user jane account unlock;
+
+
+>>> Drop user.
+--------------
+select * from all_users;
+
+drop user jane;
+
+>> if user contains object
+
+drop user jane cascade;
+
+Note: Do not attempt to drop the users SYS or SYSTEM. Doing so will corrupt your database
+
+>>>Create DB dump:
+-------------------
+desc dba_directories
+select * from dba_directories;
+select * from all_users;
+
+mkdir D:\database\orcale\dump;
+create or replace directory dbdump as 'D:\database\orcale\dump';
+
+grant read, write on directory dbdump to sys;
+
+expdp help=y
+expdp system/admin@localhost schemas=dk directory=dbdump dumpfile=scott.dmp logfile=scott.log
+impdp system/admin@localhost schemas=dk directory=dbdump dumpfile=scott.dmp logfile=scott.log

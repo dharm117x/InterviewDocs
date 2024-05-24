@@ -1,0 +1,82 @@
+set serveroutput on;
+
+DECLARE
+cursor table_names is 
+select table_name, owner from all_tables where owner=upper('projectdb') and table_name like 'AP%';
+t_name varchar2(50);
+owner varchar2(20);
+
+BEGIN
+open table_names;
+    Loop
+        FETCH table_names into t_name, owner;
+         EXIT WHEN table_names%NOTFOUND;
+        dbms_output.put_line( 'Table Name  -- > ' || t_name); 
+         
+    End Loop;
+close table_names;
+
+END;
+/
+
+create or replace PROCEDURE DROP_TABLES 
+AS 
+cursor table_names 
+    is 
+    select table_name 
+    from all_tables 
+    where owner = upper('projectdb') and table_name like 'AP%';
+BEGIN
+
+ FOR r_name in table_names
+    LOOP
+        BEGIN
+            dbms_output.put_line( 'Table dropped  -- > ' || r_name.table_name); 
+            EXECUTE IMMEDIATE 'drop table ' || r_name.table_name;
+            EXCEPTION
+                WHEN others THEN
+                dbms_output.put_line( 'Table not drooped  -- > ' || r_name.table_name); 
+        END;
+    END LOOP;
+END DROP_TABLES;
+/
+
+call drop_tables();
+
+
+----------------function-------------------
+create or replace FUNCTION DATE_TO_CHAR 
+(
+  CUR_DATE IN DATE 
+, DATE_FORMAT IN VARCHAR2 DEFAULT NULL
+) RETURN VARCHAR2 AS 
+
+formatDate varchar2(50);
+
+BEGIN
+   formatDate:=to_char(cur_date, nvl(date_format, 'dd/mm/yyyy'));
+   DBMS_OUTPUT.PUT_LINE('v_Return = ' || formatDate);
+   RETURN formatDate;
+END DATE_TO_CHAR;
+
+select DATE_TO_CHAR(sysdate) from dual;
+
+--Function with OUT parameter
+CREATE FUNCTION test_out(
+  value OUT NUMBER
+) RETURN NUMBER
+IS
+BEGIN
+  value := 1;
+  RETURN 2;
+END;
+/
+--You can run this in PL/SQL:
+DECLARE
+  a NUMBER;
+  b NUMBER;
+BEGIN
+  a := test_out( b );
+  DBMS_OUTPUT.PUT_LINE( a || ', ' || b );
+END;
+/

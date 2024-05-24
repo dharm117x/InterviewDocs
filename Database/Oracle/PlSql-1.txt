@@ -1,0 +1,152 @@
+*****************pl/sql******************
+------------------------------------------------------
+1)  in oracle
+---------------
+create table hello(
+id number(5) primary key,
+a number(5) null,
+b number(5) null,
+c number(5) null,
+d number(5) null);
+------------------------------
+2)
+   insert into hello(id,a,b) values(1,10,20);
+   insert into hello(id,a,b) values(2,60,20);
+   insert into hello(id,a,b) values(3,0,0);
+   insert into hello(id,a,b) values(4,-5,20);
+------------------------------------
+-----------------------------------------
+3).create pricedure:-
+------------------------------------------
+create or replace procedure p2(id1 number)
+as
+a1 number(5);
+b1 number(5);
+c1 number(5);
+d1 number(5);
+
+begin
+
+select a,b into a1,b1 from hello where id=id1;
+c1:= a1+b1;
+d1:= a1-b1;
+
+
+update hello set c=c1,d=d1 where id=id1;
+
+
+end;
+-----------------------------------------------------
+call statement:-
+---------------------------
+call p2(1);
+call p2(2);
+call p2(3);
+call p2(4);
+
+--------------------------
+
+1) Displayin the sum of two values.
+------------
+
+declare 
+a int ;
+b int ;
+c int ;
+
+begin
+
+a:=10;
+b:=10;
+c:=a+b;
+
+dbms_output.put_line(c);
+end;
+
+-----------------------------
+for oracle:
+-------------------
+************* display sum *************
+----------------------------------------- 
+declare
+
+a number(4);
+b number(4);
+c number(6);
+
+begin
+
+a:=10;
+b:=10;
+c:=a+b;
+
+dbms_output.put_line(c);
+end;
+------------------------------------------------------
+create table student(
+sid number(4) primary key,
+sname char(4),
+m1 number(4),
+m2 number(4),
+m3 number(4),
+m4 number(4),
+total number(4),
+avrg  number(4),
+status char(10));
+
+-----------------------------------------
+insert into student (sid,sname,m1,m2,m3,m4) values(101,'A',80,30,40,20);
+insert into student (sid,sname,m1,m2,m3,m4) values(102,'B',10,30,40,20);
+insert into student (sid,sname,m1,m2,m3,m4) values(103,'C',80,50,40,20);
+insert into student (sid,sname,m1,m2,m3,m4) values(104,'D',20,30,40,20);
+
+--------------------------------------------
+create table result(
+passed number(3),
+failed number(3));
+----------------------------
+insert into result values(0,0);
+--------------------------------------
+
+
+------------------------------------------------------
+create or replace procedure p3(id number)
+as
+mm1 number(2);
+mm2 number(2);
+mm3 number(2);
+mm4 number(2);
+tot number(3);
+avr number(3);
+sat char(10);
+x number(2);
+begin
+select m1,m2,m3,m4 into mm1,mm2,mm3,mm4 from student where sid=id;
+tot:= mm1+mm2+mm3+mm4;
+
+avr:=tot/4;
+dbms_output.put_line(avr);
+if(avr<50)then
+sat:='failed';
+else
+sat:='passed';
+end if;
+update student set total=tot,avrg=avr,status=sat where sid=id;
+if(sat='passed')then
+select passed into x from result;
+x := x+1;
+update result set passed=x;
+else
+select passed into x from result;
+x := x+1;
+update result set failed=x;
+end if;
+
+end;
+---------------------------------
+call p3(101);
+call p3(102);
+call p3(103);
+call p3(104);
+
+

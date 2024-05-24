@@ -1,0 +1,41 @@
+select * from bricks;
+
+select b.*,(select count(*) from bricks) as total 
+from bricks b;
+
+select b.*, count(*) over() as total 
+from bricks b;
+
+select b.*, 
+count(*) over(PARTITION by b.colour) as total_cr,
+sum(b.weight) over(PARTITION by b.weight) as total_wt 
+from bricks b
+order by weight;
+
+select b.*, 
+       count(*) over (
+         order by brick_id
+       ) running_total, 
+       sum ( weight ) over (
+         order by brick_id
+       ) running_weight
+from   bricks b;
+
+select b.*, 
+    sum(weight) over(
+    PARTITION by colour order by weight)
+    runnung_weight_by_color
+from bricks b
+order by weight desc;
+
+
+select colour, count(*), sum ( weight )
+from   bricks
+group  by colour;
+
+------------------FETCH-----------
+select brick_id,colour, weight
+from bricks
+--order by weight 
+offset 3 rows
+fetch next 3 rows only;

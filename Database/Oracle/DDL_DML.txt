@@ -1,0 +1,99 @@
+drop table CUSTOMER cascade constraints PURGE;
+
+CREATE TABLE Customer(
+    CustomerID number(10) PRIMARY KEY,
+    Name VARCHAR(50),
+    Country VARCHAR(50),
+    City VARCHAR(50),
+    Age number(10),
+    Phone number(10)
+);
+
+>> Create table from exsting table:
+-------------------------------
+Create table customer_history as (select * from customer where 1=1);
+
+>> Index:
+----------
+CREATE INDEX IDX_CUSTOMER_NAME on CUSTOMER (Name)
+CREATE INDEX IDX_CUSTOMER_LOCATION on CUSTOMER (City, Country)
+
+>> Sequence:
+---------------
+CREATE SEQUENCE customers_seq
+ START WITH     100
+ INCREMENT BY   1
+ NOCACHE
+ NOCYCLE;
+
+>> Trigger:
+---------------
+CREATE OR REPLACE TRIGGER Customer_PK_GEN 
+BEFORE INSERT ON Customer FOR EACH ROW
+WHEN ( NEW.CUSTOMERID IS NULL )
+BEGIN 
+SELECT customers_seq.NEXTVAL INTO :NEW.CustomerID  FROM DUAL;
+END;
+
+>> Table Alter:
+---------------
+ALTER TRIGGER Customer_PK_GEN DISABLE;
+
+ALTER TRIGGER Customer_PK_GEN ENABLE;
+
+DROP trigger Customer_PK_GEN;
+
+ALTER TABLE Customer MODIFY phone NUMBER(10,0) DEFAULT 123456789 NOT NULL ENABLE;
+
+ALTER TABLE Customer ADD DOB DATE;
+
+>> DAta insert:
+---------------
+INSERT INTO Customer (Name, Country, Age, Phone)
+VALUES ('Shubham', 'India','23','12345');
+INSERT INTO Customer (Name, Country, Age, Phone)
+VALUES ('Dkumar', 'AUSTR','23','12345');
+INSERT INTO Customer (Name, Country, Age, Phone, dob)
+VALUES ('Vkumar', 'India','24','12345', '11-12-2020');
+
+
+>>SQL order by Sort:
+-----------------------
+first sort buy age and if similar age have diff name then sort by name.
+
+SELECT * FROM Customer ORDER BY age DESC, name ASC;
+
+
+Crreate view:
+---------------
+1)dynamic view :-With primary key:
+ ->We can select insert ,update and delete opration on dynamic view;
+
+2) static view :-Without primary key:
+ ->We can not insert ,update or delete operation on Static view;
+
+Create or replace view customer_view as (select name, dob from customer);
+
+Create or replace view customer_view as (select * from customer where 1=1);
+
+
+
+SQL Union:
+----------
+select name from customer 
+UNION 
+SELECT name from customer_history
+order by name desc;
+
+SQL Case:
+---------
+SELECT Name, Age,
+CASE
+    WHEN Country = 'India' THEN 'Indian'
+    ELSE 'Foreign'
+END AS Nationality
+FROM Customer;
+
+SQL function:
+------------
+

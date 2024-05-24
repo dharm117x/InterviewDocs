@@ -1,0 +1,63 @@
+***************views****************
+---------------------------------------------------------------------------
+In SQL, a view is a virtual table based on the result-set of an SQL statement.
+
+A view contains rows and columns, just like a real table. 
+The fields in a view are fields from one or more real tables in the database.
+
+You can add SQL functions, WHERE, and JOIN statements to a view 
+and present the data as if the data were coming from one single table.
+
+------------------------------------------------------------------------------------
+There are two types of view :-
+
+1) static view :-Without primary key:
+ ->We can not insert ,update or delete operation on Static view;
+
+2)dynamic view :-With primary key:
+ ->We can select insert ,update and delete opration on dynamic view;
+ 
+-------------------------------------
+create table student1(
+sid number(5) primary key,
+sname char(30),
+email char(50),
+phone number(10),
+feepaid number(10),
+total number(10));
+
+
+insert into student1 values(1,'A','a@gmail.com',11111111,1000,10000);
+insert into student1 values(2,'B','b@gmail.com',11111111,1000,20000);
+insert into student1 values(3,'C','c@gmail.com',11111111,1000,30000);
+insert into student1 values(4,'D','d@gmail.com',11111111,1000,40000);
+insert into student1 values(5,'E','e@gmail.com',11111111,1000,50000);
+------------------------------------------------------------------
+
+------------------------------------------------------------------
+sytax for creating views:-
+-----------------------------
+create view ad_view
+as
+select email,phone from student1;
+
+---------------------------------
+create view acc_view
+as
+select sid,feepaid,total from student1;
+
+---------------------------------------
+syntax for update dynamic views ;
+----------------------
+update acc_view set feepaid=2000 where sid=1;
+
+-----------------------------------------------
+syntax for update static views ;
+----------------------
+update ad_view set phone=9334919187;
+
+-----------------------------------------------
+
+
+
+              

@@ -1,0 +1,111 @@
+--------------------------------------
+drop table jlcstudent;
+
+create table jlcstudent(
+sid number(10) primary key,
+sname char(20),
+email char(20),
+phone number(15));
+
+
+insert into jlcstudent values(101,'raaj','r@email',232323);
+insert into jlcstudent values(102,'dharm','d@email',767863);
+insert into jlcstudent values(103,'vikas','v@email',23767863);
+insert into jlcstudent values(104,'shastri','s@email',2365673);
+insert into jlcstudent values(105,'sharma','sh@email',2326757);
+insert into jlcstudent values(106,'sggharma','sh@email',2326757);
+
+---------------------------------------------------
+drop table jlcstudentbackup ;
+
+
+create table jlcstudentbackup(
+sid number(10) primary key,
+sname char(20),
+email char(20),
+phone number(15),
+opration char(10),
+opdate date);
+
+------------------------------
+delete from jlcstudent where sid=101;
+
+update students set sname='dharm' where sid=101;
+
+select *from jlcstudent;
+select *from jlcstudentbackup;
+
+
+-------------------------------------
+set serveroutput on;
+drop trigger t1;
+
+create or replace trigger t1
+before update or delete
+on jlcstudent
+for each row
+declare 
+
+	id number(10);
+	sn char(20);
+	em char(20);
+	ph number(15);
+	op char(10);
+	opd date;
+begin
+	id:= :old.sid;
+	sn:= :old.sname;
+	em:= :old.email;
+	ph:= :old.phone;
+
+	if(inserting) then
+		op:='insert';
+	end if;
+
+	if(updating) then
+		op:='update';
+	end if;
+
+	if(deleting) then
+		op:='delete';
+	end if;
+
+	opd:= sysdate;
+	insert into jlcstudentbackup values(id,sn,em,ph,op,opd);
+
+end;
+
+/
+----------------------------------------------------
+
+set serveroutput on;
+drop trigger t2;
+
+create or replace trigger t2
+after insert
+on jlcstudent
+for each row
+declare 
+
+	id number(10);
+	sn char(20);
+	em char(20);
+	ph number(15);
+	op char(10);
+	opd date;
+begin
+	id:= :new.sid;
+	sn:= :new.sname;
+	em:= :new.email;
+	ph:= :new.phone;
+
+	if(inserting) then
+		op:='insert';
+	end if;
+
+	opd:= sysdate;
+	insert into jlcstudentbackup values(id,sn,em,ph,op,opd);
+
+end;
+
+/

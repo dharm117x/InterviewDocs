@@ -18,6 +18,7 @@ Thankfully, Oracle continues to provide Open JDK releases, which we can download
 
 New String Methods: isBlank, lines, strip, stripLeading, stripTrailing, and repeat.
 New File Methods:readString and writeString static methods from the Files
+
 Collection to an Array:
 List sampleList = Arrays.asList("Java", "Kotlin");
 String[] sampleArray = sampleList.toArray(String[]::new);

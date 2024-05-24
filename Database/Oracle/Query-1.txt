@@ -1,0 +1,208 @@
+select * from table_name;
+
+set serveroutput on;
+--Single row function---
+select 'A' from dual;
+select table_name from all_tables where lower(owner)='projectdb';
+
+select nvl(111, 0) from emp;
+select lpad('hello', 10 , '$') from dual;
+select round(102.99788, 3) from dual;
+select trunc(102.99788, 3) from dual;
+
+select sysdate from dual;
+select systimestamp from dual;
+
+select trunc(systimestamp) from dual;
+select trunc(systimestamp, 'YEAR') from dual;
+
+select to_date('11/11/2021', 'dd/mm/YYYY') as mydate from dual;
+
+----------Sequence-----------
+CREATE SEQUENCE customers_seq
+ START WITH     1000
+ INCREMENT BY   1
+ NOCACHE
+ NOCYCLE;
+ 
+-------SQ------------
+select * from emp order by <col_name> asc|desc default asc
+
+select * from emp order by 1 desc;
+select ename from emp order by 2 asc; -- ORDER BY item must be the number of a SELECT-list expression"
+
+select username, REFERREDBY from appuser where REFERREDBY <> 2;
+-----------------------------------------
+Create table Emp, Dept
+--------------------------
+create table Emp(
+empno number,
+name varchar2(50),
+job varchar2(50),
+phone number(10),
+salry number(10),
+hiredate TIMESTAMP,
+PRIMARY key (empno)
+);
+
+create table Dept(
+empno number,
+name varchar2(50),
+PRIMARY key (deptno),
+deptno number not null,
+CONSTRAINT fk_empno FOREIGN key (empno) references Emp(empno)
+);
+
+
+------Group by function----------
+
+select * from emp;
+
+select job
+from emp
+where job=''
+group by job
+having count(*)=2
+order by name;
+
+
+select d.dname, sum(e.sal) salary  from 
+Emp e join Dept d
+on e.deptno = d.deptno
+group by d.dname
+having sum(e.sal) > 2000
+order by d.dname;
+
+select e.ename, d.dname, sum(e.sal) salary  from 
+Emp e join Dept d
+on e.deptno = d.deptno
+group by e.ename,d.dname
+having sum(e.sal) > 2000
+order by salary;
+
+
+select deptno, count(*)
+from emp
+group by deptno
+having min(deptno)>=10;
+
+select job
+from emp
+group by job;
+
+select job, deptno, count(*)
+from emp
+group by job, deptno;
+
+select job, deptno, count(*)
+from emp
+group by deptno, job;
+
+select ename,mgr, loc from 
+emp join dept using(deptno);
+
+select ename,mgr, loc from 
+emp natural join dept;
+
+
+
+------case-------------------------
+
+SELECT ename, job , (CASE job 
+WHEN 'MANAGER' THEN 'VERY GOOD JOBS'
+WHEN 'CLEARK' THEN 'GOOD JOBS'
+ELSE 'NO COMMENT'
+END ) AS COMMNETS
+FROM EMP;
+
+----------join--------------
+SELECT * FROM EMP e
+INNER JOIN DEPT d 
+ON e.deptno = d.deptno;
+
+SELECT * FROM EMP e
+LEFT JOIN DEPT d 
+ON e.deptno = d.deptno;
+
+SELECT * FROM EMP e
+RIGHT JOIN DEPT d 
+ON e.deptno = d.deptno;
+
+
+SELECT * 
+FROM EMP
+WHERE EXISTS (SELECT '1' FROM DUAL);
+
+SELECT e.ename employe, e.job ejob, m.ename manager,  m.job mjob
+FROM EMP e
+LEFT JOIN EMP m 
+ON  e.mgr =m.empno;
+
+select e.empno emid, m.empno mgrid, e.ename employe,e.job ejob, m.ename manager,m.job mjob
+from emp e
+left join emp m
+on e.mgr = m.empno;
+
+
+
+----------------Key cacacade------------
+create table appuser(
+userid number,
+username VARCHAR(50),
+paswword VARCHAR(50),
+CONSTRAINT user_pk primary key (userid)
+);
+
+create table address(
+addid number,
+street1 VARCHAR2(250),
+street2 VARCHAR2(250),
+state VARCHAR(20),
+pin VARCHAR(20),
+userid number not null,
+CONSTRAINT fk_address FOREIGN key (userid) references appuser(userid)
+);
+
+alter table address
+drop CONSTRAINT fk_address;
+
+alter table address
+add CONSTRAINT fk_address FOREIGN key (userid) references appuser(userid) on delete cascade;
+
+alter table appuser
+add phone number;
+
+alter table appuser
+drop (phone);
+
+--------------------Index-----------
+create table employees(
+empid number,
+name varchar2(50),
+job varchar2(50),
+phone number(10),
+hiredate TIMESTAMP,
+PRIMARY key (empid)
+);
+
+drop index emp_job_hiredate_idx;
+
+create index emp_name_idx
+on employees(name);
+
+create unique index emp_phone_unidx
+on employees(phone);
+
+alter index emp_name_idx
+rebuild compute statistics;
+
+create index emp_job_hiredate_idx
+on employees(job, hiredate)
+compute statistics;
+
+---------------------------VIEW--------------
+create or replace force view User_view as 
+select * from app_user;
+
+create or replace force view Sel_User_view ("user_id","username","password") as 
+select id, username, password from app_user;

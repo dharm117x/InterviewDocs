@@ -47,7 +47,7 @@ Employee, Department
 
 4. UNION and UNION ALL
 -------------------------
-Combine the result of two or more tables.
+The UNION operator combines the results of two or more SELECT queries into a single result set.
 > union:  combined result with same column name and type and avoid duplicate.
 > unions: Add duplicate value as well.
 
@@ -61,6 +61,11 @@ Condition from UNION :
 2. The columns must have same data type.
 3. The column of every select statement must have in same order and same name.
 
+>> Differentiate between the WHERE clause and the HAVING clause in Oracle SQL. 
+
+The WHERE clause filters rows before grouping – that is, before they’re included in the result set. Filtering is also based on certain conditions. 
+The HAVING clause, on the other hand, filters data post-grouping – meaning after aggregation. 
+
 5. Select Query:
 ----------------
 > odd/even data from table:
@@ -68,8 +73,47 @@ Condition from UNION :
 select * from Table where rownumber % 2 ==0 // even row
 select * from Table where rownumber % 2 !=0 // odd row
 
-> Select Max 3 salary from employee:
+> Select Max Nth salary from employee:
+// by dens_rank()
+SELECT * FROM (
+  SELECT emp_name, emp_salary, DENSE_RANK() OVER (ORDER BY emp_salary DESC) AS r
+  FROM emp
+) AS subquery
+WHERE r = 3;
 
- 
+// by limit
+SELECT MIN(sal) FROM Employee WHERE sal IN (
+  SELECT DISTINCT sal
+  FROM Employee
+  ORDER BY sal DESC
+  LIMIT 4
+);
 
+Select emp_sal from Emp order by emp_sal DESC limit 3,1;
 
+// by top
+SELECT * FROM Employee WHERE sal = 
+         (
+            SELECT MIN(sal) FROM Employee 
+            WHERE  sal IN (
+            SELECT DISTINCT TOP N
+            sal FROM Employee 
+            ORDER BY sal DESC
+))
+
+> Write an Oracle SQL query to find the average salary of employees within each department.
+
+SELECT department_id, AVG(salary) AS average_salary
+FROM employees
+GROUP BY department_id;
+
+> max salry by dept.
+
+SELECT DEPT_ID, MAX(SALARY) FROM department GROUP BY DEPT_ID;
+
+> Write an Oracle SQL query to find employees who earn more than their managers.
+
+SELECT emp.*
+FROM Employee emp
+INNER JOIN Employee mgr ON emp.manager_id = mgr.employee_id
+WHERE emp.salary > mgr.salary;

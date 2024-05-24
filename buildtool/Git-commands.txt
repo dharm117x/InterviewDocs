@@ -26,8 +26,6 @@ Git Update:
 git pull
 git pull --rebase --autostash
 
-
-
 Git repositry manage:
 ----------------------
 1. Add all files in git repos:
@@ -46,12 +44,22 @@ git push
 
 GIT branch manage:
 ------------------
-
 git branch feature/test
-
 git checkout -f develop : -f forcefully change with clean
-
 git merge develop
+
+GIT new brach:
+---------------
+git checkout -b feature/springboot_2_to_3
+git push --set-upstream origin feature/springboot_2_to_3
+
+
+GIT cherryPick: commit merger to another branch with specific commit.
+----------------
+git log <branchname>
+git cherry-pick <hashcode>,<hashcode>
+
+
 
 
 GIt Reset
@@ -63,7 +71,9 @@ git reset file/to/overwrite
 git checkout file/to/overwrite
 git checkout -- <file>
 
-git stash
+git stash:
+------------
+
 
 Git Clean
 ----------------
