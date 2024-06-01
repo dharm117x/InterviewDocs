@@ -21,15 +21,16 @@ git remote add origin https://github.com/dharm117x/microservice.git
 git remote set-url origin https://dharm117x:token@github.com/dharm117x/Linux.git
 
 
-Git Update:
+>>>Git Update:
 --------------
 git pull
 git pull --rebase --autostash
 
-Git repositry manage:
+>>>Git repositry manage:
 ----------------------
 1. Add all files in git repos:
 git add --all
+
 git add .
 git status .
 
@@ -42,27 +43,69 @@ git restore --staged  core-customize/hybris/bin/custom/dkshop/dkshopcore/lib/jst
 4. git remote update
 git push
 
-GIT branch manage:
-------------------
-git branch feature/test
-git checkout -f develop : -f forcefully change with clean
-git merge develop
 
-GIT new brach:
+>>>Git branch:
 ---------------
+>>create new bracnh:
+
 git checkout -b feature/springboot_2_to_3
 git push --set-upstream origin feature/springboot_2_to_3
 
+>> Switch branch
 
-GIT cherryPick: commit merger to another branch with specific commit.
+git switch feature/springboot_2_to_3
+
+
+>>>Git cherryPick: commit merger to another branch with specific commit.
 ----------------
 git log <branchname>
+
+got to new branch that needs to merge specific commit.
+
+git log  --oneline | tail -3
+
 git cherry-pick <hashcode>,<hashcode>
 
+git log --pretty=format:'%h' -n 2
+
+git cherry-pick  be4d6db 1635800
+
+git log --pretty=format:'%H' -n 2
+
+git cherry-pick start..end
+
+If you wish to include the start commit as well,
+git cherry-pick start^..end
+
+If you want to cherry-pick all commits from branch dev.
+git cherry-pick ..dev
 
 
+merge-base: command to find where the branch was split from the original branch.
+-------------
+git merge-base A B
+git merge-base master feature/brach_2
 
-GIt Reset
+
+>>>Git Merge:
+------------
+git chekout -b hotfix
+// add some change and change to master branch to add them.
+
+git checkout master
+
+git merge hotfix
+
+// delete locally
+git branch -d hotfix
+git branch -D hotfix -- deleteed even without merge.
+
+
+// delete remotly
+git push origin --delete hotfix
+
+
+>>>Git Reset
 ------------
 git reset --hard
 git checkout HEAD^ file/to/overwrite
@@ -71,12 +114,46 @@ git reset file/to/overwrite
 git checkout file/to/overwrite
 git checkout -- <file>
 
-git stash:
+>>>Git stash:
 ------------
+git stash list
+git stash show n -p (where n=0 is latest)
+
+git stash 
+or
+git stash push
+
+git stash apply n
+
+git stash pop
+
+Remove a single stashed state from the stash list and apply it on top of the current working tree state,
+Applying the state can fail with conflicts; in this case, it is not removed from the stash list:
+
+git stash drop
+
+git stash clear
 
 
-Git Clean
-----------------
+>>>Git Rebase:
+--------------
+git switch feture/branch2
+
+if and change then
+git stash
+
+git rebase master
+
+git stash apply 0
+
+if merge conflict then resolved
+
+git commit and push
+
+
+
+>>>Git Clean:
+-------------
 git clean -n to see a dry run.
 git clean -f to force untracked file deletion.
 git clean -f -d to remove untracked directories.
