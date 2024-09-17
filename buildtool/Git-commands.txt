@@ -6,12 +6,18 @@ git config --global user.name "Dharmendra kumar"
 git config --global core.autocrlf true
 git config --global core.autocrlf false --windows
 
+git config --list
+git config --list --system
+git config --list --global
+
+git config --global --unset user.password
+
 // Pulling first time repositary.
 git clone https://github.com/dharm117x/InterviewDocs.git
 
 Passwrod reset:
 https://github.com/settings/tokens
-genrate token:   
+genrate token: xyz   
 
 git remote -v
 git remote show master
@@ -37,12 +43,15 @@ git status .
 2. Commit locally:
 git commit -m "hybris 6 b2c setup"
 
+2.1. Change message after commit and before push
+git commit --amend -c HEAD .
+
+
 3. Git restore after add:
 git restore --staged  core-customize/hybris/bin/custom/dkshop/dkshopcore/lib/jstl-1.2.jar
 
 4. git remote update
 git push
-
 
 >>>Git branch:
 ---------------
