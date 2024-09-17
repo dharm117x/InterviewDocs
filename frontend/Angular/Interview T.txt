@@ -4,15 +4,14 @@ index.html:   Including the Bootstrap CSS and JavaScript files in the <head> sec
 styles.css:   Importing the Bootstrap CSS file in the global styles.css file of your Angular project with an @import keyword.
 angular.json: Adding the Bootstrap CSS and JavaScript files in the styles and scripts arrays of the angular.json file of your project.
 
-2. Directive: Its is classes that add aditional behavior to element have 3 Type of directive:
+2. Directive: that add aditional behavior to element or classes and have 3 Type of directive:
 
-> Components: directives that include a template that is rendered in the place of the component
+> @Components: it is directives that include a template that is rendered in the place of the component
 
 > Attribute directive:
   NgModel (tow way data binding), NgStyle (add/remove htmlm style), NgClass (add/remove css style)
 
  [ngStyle]="{backgroudcolor: getColor()}"
-
 
 > Structural directive: Which change the DOM lay out by add/remove DOM element its applied with prefix * like *ngIf
   Only one structral directive on same element otherwise error throw.
@@ -44,7 +43,7 @@ angular.json: Adding the Bootstrap CSS and JavaScript files in the styles and sc
 @HostListener('click', ['$event'])
 onHostClick(event: Event) {
     // clicked, `event` available
-  }
+}
 
 
 >Parameter Decorators: injecting primitives into a constructor, where you need to manually tell Angular to inject a particular provider.
@@ -96,6 +95,7 @@ ngAfterViewInit() {
 
 > @ViewChildren: its provides a reference to multiple elements that can be used as an iterative list.
 
+@ViewChildren(ChildDirective) viewChildren!: QueryList<ChildDirective>;
 
 9. What is lazy loading?
 > It is used for lazy loading by asynchronously loading the feature module for routing whenever required using the property loadChildren.
@@ -103,7 +103,8 @@ ngAfterViewInit() {
 9. Observaable, Subject and Promise:
 -------------------------------------
 
-> Observable: its use to handle asynchronous operations and lazy by nature, meaning they do not start emitting values until a subscriber actively listens for them and emit three types of values: onNext (data), onError (error), and onCompleted (completion).
+> Observable: its use to handle asynchronous operations and lazy by nature, meaning they do not start emitting values until a subscriber 
+  actively listens for them and emit three types of values: onNext (data), onError (error), and onCompleted (completion).
 
 Observale: Create, subscribe and unbscribe:
 ---------------------------------------------

@@ -1,0 +1,18 @@
+Google cloud:
+---------------
+on GCP:
+-------
+https://cloud.google.com/free/
+https://cloud.google.com/kubernetes-engine/docs/
+
+Step1: Navigate to kubernetis
+Step2: Craete kubernetis cluster with basic config
+Step3: Connect cluster using connect button of cluster open google cloud shell.
+	git clone https://github.com/kodekloudhub/example-voting-app.git
+
+Step4: Deploy pods and services on gcp
+Step5: Naviagete to Service and ingress in Kubernet engine to show all details.
+
+
+
+

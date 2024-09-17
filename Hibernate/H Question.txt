@@ -1,0 +1,46 @@
+>>> HQL: Hibernate provides its query language (HQL) which is similar to SQL.
+------
+HQL stands for Hibernate Query Language it allows to expression of database queries using entity and property names, 
+rather than relying on traditional SQL that operates on tables and columns.
+
+> Create HQL:
+-------------
+First, create an HQL Query String including entity name, property name, and relationships in the query.
+Create a query Object by using org.hibernate.query.Query interface for creating and executing queries.
+Also, query can be created by using createQuery()
+Set Parameters using setParameter() is optional.
+Execute the Query using methods like list() to retrieve the data or listing of results.
+uniqueResult() for retrieving a single result.
+
+    Session session = sessionFactory.openSession();
+    String hql = "FROM Employee WHERE department.name = :deptName";
+    Query<Employee> query = session.createQuery(hql, Employee.class);
+    query.setParameter("deptName", "Engineering");
+    List<Employee> employees = query.list();
+    for (Employee employee : employees) {
+        System.out.println("Employee Name: " + employee.getName());
+    }
+
+>>> How to solve the N+1 SELECT problem in Hibernate?
+--------
+N+1 SELECT problem occurs in hibernate when calling the collections of entities takes a very large number of single SQL SELECT statements being executed.
+
+>>Resoluation:
+
+1. Batch Size:
+It can be used globally in hibernate configuration or at mapping level by using @BatchSize. 
+It also fetches entities in batches by reducing the number of SELECT statements.
+
+@Entity
+@Table(name = "departments")
+@BatchSize(size = 10) // Batch fetching for employees
+public class Department {
+  
+}
+
+2. Fetch Join:
+It allows to get both main and its related entities in a single result set. 
+In HQL query by using JOIN FETCH syntax you can recover related entities in a single query
+
+String hql = "SELECT d FROM Department d JOIN FETCH d.employees WHERE d.id = :deptId";
+

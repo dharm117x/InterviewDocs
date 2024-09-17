@@ -3,10 +3,14 @@ Why kafa?
 2. Horizantol scalibility(Scale 100s of broker and milions of message per second)
 3. High performance(low letency <10ms)
 
+Fault-tolerance is the process of working of a system in a proper way in spite of the occurrence of the failures in the system.
+Resilinet means ability to prevent damage or recover when damage occurs.
+
 Yes, Zookeeper is must by design for Kafka. Because Zookeeper has the responsibility a kind of managing Kafka cluste
 Since version 2.8.0, Kafka provides an option to run without ZooKeeper, using a feature called Kafka Raft Metadata mode
 
 Use cases:
+----------
 Messeging system
 Activity tracking,
 Gather metrics from diff location
@@ -15,7 +19,7 @@ Stream processing
 De-couple
 Integration with spark
 Microservice
----------------------
+-----------------
 Kafka components:
 =================
 Topics, Partitions, offsets
@@ -41,28 +45,37 @@ Segment comes with 2 indexs:
 1. An offset ot position index: Wher to read message from to find message
 2. A Timestamp to offset index: Find message with speciifc timestamp.
 
->>Offset:As the Kafka partitions are containing the data records or messages, each of these messages within a partition needs to be assigned an incremental ID. This incremental ID is with respect to the position, the message holds inside the Partition. This specific ID has defined an Offset
+>>Offset: The Kafka partitions are containing the data records or messages, each of these messages within a partition needs to be assigned an incremental ID. 
+This incremental ID is with respect to the position, the message holds inside the Partition. This specific ID has defined an Offset
 
 Offser are not reusable even previuos message has been deleted, ordered are guranterd within partion not across.
 
 
->>Schema Registry:: is a simple concept but it’s really powerful in enforcing data governance within your Kafka architecture. Schemas reside outside of your Kafka cluster, only the schema ID resides in your Kafka, hence making schema registry a critical component of your infrastructure. If the schema registry is not available, it will break producers and consumers
+>>Schema Registry:: is a simple concept but it’s really powerful in enforcing data governance within your Kafka architecture. Schemas reside outside of your Kafka cluster,
+ only the schema ID resides in your Kafka, hence making schema registry a critical component of your infrastructure. If the schema registry is not available, 
+it will break producers and consumers
 
 		    [SchemaRegistry : Apache Avro™ ]
 
 Prodcuer -> shemaid+data [kafak] shemaid+data -> Consumer
 
 
-With the schema registry in place, the producer, before sending the data to Kafka, talks to the schema registry first and checks if the schema is available. If it doesn’t find the schema then it registers and caches it in the schema registry. Once the producer gets the schema, it will serialize the data with the schema and send it to Kafka in binary format prepended with a unique schema ID. When the consumer processes this message, it will communicate with the schema registry using the schema ID it got from the producer and deserialize it using the same schema. If there is a schema mismatch, the schema registry will throw an error letting the producer know that it’s breaking the schema agreement.
+With the schema registry in place, the producer, before sending the data to Kafka, talks to the schema registry first and checks if the schema is available. 
+If it doesn’t find the schema then it registers and caches it in the schema registry. Once the producer gets the schema, it will serialize the data with the schema 
+and send it to Kafka in binary format prepended with a unique schema ID. When the consumer processes this message, it will communicate with the schema registry using 
+the schema ID it got from the producer and deserialize it using the same schema. If there is a schema mismatch, the schema registry will throw an error 
+letting the producer know that it’s breaking the schema agreement.
  
 Kafka Error Handling:
 ---------------------
-Dead letter queue is nothing but creating new failure queue in the name of TOPIC.DLT, If consumer not able to process message even after retry those unprocessed message pushed to Dead letter queue.
-Spring boot provides @DltHandler by using this annotation we can able to enable DLT logic for failure message based on Kafka topic.
+Dead letter queue is nothing but creating new failure queue in the name of TOPIC.DLT, If consumer not able to process message even after retry those unprocessed message 
+pushed to Dead letter queue.
+
+ Spring boot provides @DltHandler by using this annotation we can able to enable DLT logic for failure message based on Kafka topic.
 
 Data duplicate:
 ------------------
->>Duplicate messages can occur in the scenario where:
+Duplicate messages can occur in the scenario where:
 
 A Producer attempts to write a message to a topic partition.
 The broker does not acknowledge the write due to some transient failure scenario.
@@ -74,8 +87,22 @@ Elimination of Message Duplication: The idempotent producer ensures that duplica
 
 Ackoledgement stretegy:
 ----------------------
-acks: 0,1 and all
+acks=0 (possible data loss) : Which is the Producer who just sends the data and will not wait for an acknowledgment.
+Ex: Metrics collection, Log collection
 
+acks=1 (limited data loss): 
+
+acks=all (no data loss): 
+min.insync.replicas=2: That means that at least two brokers that are insync replicas, including the leader, must respond that they have the data.
+So, if you want maximum safety, maximum availability, then min.insync.replicas=two, acks=all, and a replication.factor of at least 3.
+
+Avoid duplicate Data:
+---------------------
+max.inflight.requests = 5
+producerProperties.put("enable.idempotence", true)
+
+the acknowledgment never reaches the producer then producer retries again using that request produce ID, the Kafka broker is able to detect that this is a duplicate request. 
+And so Kafka is smart and it is not going to commit the same produce request twice, but this time it will send back an acknowledgment saying, “Yes, we got it once already”
 
 Kafaka Producer: Message serialization:
 ---------------------------------------

@@ -32,8 +32,19 @@ But no gurantee that any of these will run.
 3. CMS
 4. G1(Garbaze first)
 
->>>2. Serialiaztion:
+>>>2. Serialiaztion & Externalizable:
 ---------------------
+Serialiaztion: is a marker inteface and its write every thing in file accept transiant and static variable.
+
+Externalizable: is not marker inteface.
+
+The main advantage of Externalizable over serialization is, everything is taken care of by the programmer and JVM doesn’t have any control
+Transient keywords won’t play any role.
+
+class ExternalizableDemo implements Externalizable{
+public void  writeExternal( ObjectOutput obj ) throws IOException{}
+public void  readExternal(ObjectInput  in )throws IOException , ClassNotFoundException{}
+}
 
 
 >>>. java enc and dec

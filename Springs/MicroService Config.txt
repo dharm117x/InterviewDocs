@@ -262,7 +262,7 @@ public List<USer> getUser(@PathVariable String id);
 Circuitbreaker: resillence4j
 --------------------------------------------------
 
-// resillence4j
+// resillence4j: Is is a lightweight fault tolerance library designed for functional programming.
 Ex:
 @FeignClient(name="user-service")
 interface UserServiceClient{

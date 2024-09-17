@@ -12,5 +12,122 @@ Proxy Design Pattern
 flyweight design pattern
 
 
+>> Spring Annotaions:
+====================
+ 
+@Conditional ,@Profile, @Import, @ImportResource, @PropertySource, @Autowired, @Priamry, @Lookup
+
+>>Predefind conditional: ConditionalOnMissingBean, ConditionalOnProperty, ConditionalOnExpression
+
+@Service
+@ConditionalOnExpression(
+  "${logging.enabled:true} and '${logging.level}'.equals('DEBUG')"
+)
+class LoggingService {
+    // ...
+}
+
+Now Spring will create the oggingService only when both the logging.enabled configuration property is set to true, 
+and the logging.level is set to DEBUG.
+
+>>Create custom condition by extending Condition class.
+
+class IsDevEnvCondition implements Condition {}
+
+@Service
+@Conditional(IsDevEnvCondition.class)
+class LoggingService {
+    // ...
+}
+
+
+@Profile
+==========
+>We have a bean that should only be active during development but not deployed in production.
+
+// getting active prifile name.
+
+@Value("${spring.profiles.active}")
+private String activeProfile;
+
+@Component
+@Profile("dev") or @Profile("!dev") // exclude dev env
+public class DevDatasourceConfig{}
+
+Profile can be set in varius way:
+1. JVM paramenter: -Dspring.profiles.active=dev
+2. Web.xml:
+<context-param>
+    <param-name>spring.profiles.active</param-name>
+    <param-value>dev</param-value>
+</context-param>
+
+3. maven profile
+	pom.xml : 
+	<profile>
+        <id>prod</id>
+            <properties>
+            	<spring.profiles.active>prod</spring.profiles.active>
+             </properties>
+    	</profile>
+
+	Applcaition.properties: spring.profiles.active=@spring.profiles.active@
+	mvn clean package -Pprod
+
+4. linux: export spring_profiles_active=dev // via env variable.
+
+>>Import
+==========
+@Import        : annotation is used to import multiple classes annotated with @Configuration.
+@ImportResource: annotation indicates one or more XML based bean definition files to be imported.
+
+@PropertySource: Annotation providing a convenient and declarative mechanism for adding a PropertySource to Spring's Environment.
+
+@Configuration
+@PropertySource("classpath:app.properties")
+public class AppConfig {
+
+@Autowired
+Environment env;
+
+@Bean
+public String getBean(){
+return env.getProperty("testbean.name");
+}
+
+}
+
+
+@Autowired:
+-----------
+>It can be used on Setter, Field, Constructor or on parameters to do the respective type injections.
+
+>The precedence that this annotation takes is:
+Resolve by Type
+Resolve by Qualifier – using the @Qualifier
+Resolve by Name
+
+>The @Autowired(required=true) annotation takes required as an optional parameter which is always true by default.
+
+@Primary: we need to register more than one bean of the same type.
+--------
+@Primary to give higher preference to a bean when there are multiple beans of the same type.
+it will used With both @bean and @Component 
+
+
+@Lookup:A method annotated with @Lookup tells Spring to return an instance of the method’s return type when we invoke it.
+--------
+
+Example: If we required prottype bean inside singloton bean, then method markerd with @Lookup annotaion. 
+Note: Singltone bean shoud managed with @component its not work with @Bean
+
+@Lazy: there’re cases when we need to create a bean, not at the application context startup, but when we request it.
+-----
+> When we put @Lazy annotation over the @Configuration class, 
+  it indicates that all the methods with @Bean annotation should be loaded lazily.
+
+Note: @lazy should be used on both place @Componet and @Autowired for class.
+
+ 
 
 

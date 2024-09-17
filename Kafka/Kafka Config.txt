@@ -44,7 +44,20 @@ Best Kafak Config:
 enable.idempotence=true
 acks=all
 retries= integer max
-max.in.flight.requests.per.connectio
+max.in.flight.requests.per.connection=5
+
+Apache Kafka – linger.ms and batch.size
+--------------------------------------
+linger.ms=5 // default 0:  Its increase the chances of messages being sent together in a batch with small dely.
+It can increase the throughput, compression, and efficiency of the producer.
+if your batch is full, which is the batch.size setting, before the end of the linger.ms period, then we’ll be sent to Kafka right away
+
+batch.size=16 KB(deafult): any message that is bigger than the batch.size, will not be batched. So if you have a message that’s 100KB, 
+then it won’t be batched. The batch.size, is allocated per partition.
+
+
+
+
 
 >>USe offset Explorere to view kafka details:
 

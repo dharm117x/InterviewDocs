@@ -3,10 +3,89 @@ MicroSerives QA
 >>Microservices is an architectural style that structures an application as a collection of small, loosely coupled, and independently deployable services. 
 Each service represents a specific business capability and can be developed, deployed, and scaled independently
 
+Benifit of microservices:
+-----------------------
+1. independently deployable and decentralized
+2. scalability when and if needed
+3. Use of multiple coding languages
+4. Real-time load balancing
 
->>The three commonly used tools for Microservices are:
+Microservices Design Patterns:
+-------------------------------
+1. Decomposition Patterns
+-------------------------
+a. Decompose by Business Capability
+b. Decompose by Subdomain
+c. Decomposition by transaction:
+d. Strangler Pattern: Most use to incrementally transform a monolith application to microservices.
+
+2. Integration Patterns
+-----------------------
+a. API Gateway Pattern:  it grants a single entry point for a group of microservices by working as a reverse proxy between client apps and the services.
+b. Aggregator Pattern: It is used to collect pieces of data from various microservices and returns an aggregate for processing.
+c. Client-Side UI Composition Pattern
+
+3. Database Patterns
+---------------------
+a. Database per Service: each microservice uses his own database to persists the data and can access to data of others microservice using internal API or CQRS.
+b. Shared Database per Service: the same database is shared by several microservices. (For decomposition of monolethic app into micro service)
+c. Command Query Responsibility Segregation(CQRS): A solution to traditional database issues like data contention risk.
+d. Saga Pattern: It is an alternative solution to other design patterns that allows for multiple transactions by giving rollback opportunities
+                by publish event using (Choreography, Orchestration approach).
+
+4. Observability Patterns
+-------------------------
+a. Log Aggregation
+b. Performance Metrics
+c. Distributed Tracing
+d. Health Check
+
+5. Cross-Cutting Concern Patterns
+---------------------------------
+a. External Configuration
+b. Service Discovery Pattern
+c. Circuit Breaker Pattern(its applied between services that are communicating synchronously)
+d. Blue-Green Deployment Pattern
+
+
+CQRS: (Command Query Responsibility Segregator) Its separates read and update operations for a database.
+Commands: Write operation.
+Queries: Read operation.
+
+its best practices to separate read and write database with 2 database physically.
+
+Then sync these 2 databases by Event-Driven Architecture->
+when something update in write database, it will publish an update event with using message broker systems 
+and this will consume by the read database and sync data according to latest changes.
+
+
+
+SAGA: handling the Distributed Transactions in microservices.
+Maintain data consistency across services using a sequence of local transactions that are coordinated using asynchronous messaging.
+
+Sagas can be implemented in 2 ways.
+
+1. In a choreography based saga, a local transaction publishes events that trigger other participants to execute local transactions. 
+2. In an orchestrated-based saga, a centralized saga orchestrator sends command messages to saga participants telling them to execute local transactions.
+Note: Generally in practice, simple sagas can leverage the concept of choreography and for complex sagas, it is recommended to use the orchestrated version.
+
+
+
+
+>>> 8 Core Components are Microservices Architecture.
+----------------------------------------------------
+Service Discovery.
+Load Balancer.
+API Gateway.
+Service Registry.
+Circuit Breaker.
+Service Monitoring.
+Service Orchestration.
+Configuration Server.
+
+>>>The three commonly used tools for Microservices are:
 ------------------------------------------------------
-Docker: Docker is a tool that lets developers set up apps in lightweight, portable containers in an automated way. It helps put the microservices and their dependencies into containers
+>>Docker: Docker is a tool that lets developers set up apps in lightweight, portable containers in an automated way. It helps put the microservices and their dependencies into containers
 
 >>Kubernetes: Kubernetes is a powerful tool for managing, scaling, and automating the launch of Docker containers.
 

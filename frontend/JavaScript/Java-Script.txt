@@ -1,0 +1,33 @@
+>>>Data types in JavaScript:
+---------------------------
+>>Primitive:
+Numbers
+Strings
+Boolean
+Symbol
+
+>>Trivial:
+Undefined
+Null
+
+>>Composite:
+Objects
+Functions
+Arrays
+
+>> variable type:
+-----------------
+Geeks = 42;
+Geeks = "GeeksforGeeks";
+
+>> What is the use of void(0)?
+The void(0) is used to call another method without refreshing the page during the calling time parameter “zero” will be passed.
+
+>> let vs var
+
+let a =5;
+let a=99; // NOK
+
+var a=5;
+var a='Hello' //OK
+

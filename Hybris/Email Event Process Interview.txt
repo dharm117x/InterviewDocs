@@ -27,7 +27,8 @@
 Create Event and Listner:
 ----------------------------
 1.Event class HelloWorldEvent extend AbstractCommerceUserEvent,AbstractEvent/ClusterAwareEvent/TransactionAwareEvent
-> ClusterawareEvent: Because SAP Commerce can run in a cluster, it's possible to send events from one node to a specific second node or broadcast events  across all nodes of a cluster
+> ClusterawareEvent: Because SAP Commerce can run in a cluster, it's possible to send events from one node to a specific second node 
+or broadcast events  across all nodes of a cluster
 
 we ovverirde publish(int sourceNodeId, int targetNodeId) methods.
 

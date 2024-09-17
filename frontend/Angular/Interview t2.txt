@@ -50,8 +50,18 @@ submit(){
 console.log(this.regForm)
 }
 
+Component:
+----------
+The @Component() decorator identifies the class immediately below it as a component, and provides the template and related component-specific metadata.
+A component controls a patch of screen called a view. It consists of a TypeScript class, an HTML template, and a CSS style sheet. 
+The TypeScript class defines the interaction of the HTML template and the rendered DOM structure, while the style sheet describes its appearance
+
+
 Service:
 -----------
+A service class definition is immediately preceded by the @Injectable() decorator. 
+The decorator provides the metadata that allows other providers to be injected as dependencies into your class.
+
 DI: Constructor injection
 
 constructor(private service: MyService){}

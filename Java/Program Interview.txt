@@ -14,12 +14,11 @@
 			return false;
 	}
 	for (int i = 2; i < test / 2 + 1; i++) {
-			if (test % i == 0) {
-				return false;
+		if (test % i == 0) {
+			return false;
 		}
 	}
-		return true;
-}
+	return true;
 
 3. Find large no:
 	int[] data = { 11, 33, 55, 99, 90, 24, 19 };

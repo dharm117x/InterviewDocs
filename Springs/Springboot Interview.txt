@@ -9,15 +9,8 @@ mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profile.active=dev
 @ConditionalOnBean Annotation Example
 Use when we want to define conditions based on the presence or absence of a specific bean:
 
-@bean
-@Profile("dev")
-public String getName(){
-syso("Name: "+env.getPropery("user.name"))
-return "dev bean";
-
-@PropertySource("classpath:config.properties")
-
 @RequestBody: binds method parameters to the request body.
+@ResponseBody:  is used to convert the domain object into HTTP request in the form of JSON.
 
 
 ->Commonly used Spring boot starters:
@@ -42,7 +35,7 @@ Elegant configuration management
 Spring Boot Actuator
 Easy-to-use embedded servlet container support
 
->>Spring Boot Actuator provides production-ready features for monitoring and managing Spring Boot applications. 
+>>Spring Boot Actuator provides production-ready features for monitoring and managing Spring Boot applications.  
 It offers a set of built-in endpoints and metrics that allow you to gather valuable insights into the health, performance, and management of your application.
 
 Health Monitoring: The actuator exposes a /health, detailed health checks for different components, such as the database, cache, and message brokers.
@@ -55,5 +48,5 @@ Remote Management: Actuator allows you to manage and interact with your applicat
 >>Async call:
 ----------------
 1. Enable by @EnableAsync
-2. Method annoted with @Async and retur type should be CompletableFeature.
+2. Method annoted with @Async and return type should be CompletableFeature.
 

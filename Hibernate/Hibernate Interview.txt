@@ -1,7 +1,21 @@
+>>> Hibernate vs JDBC:
+----------------------
+1. Hibernate ORM where JDBC not.
+2. Database portobality High in hibernate.
+3. Query caching not available in JDBC.
+4. Tansaction management autoamtic in hibernate where jdbc have manual.
+5. Code simplicty.
+
 1. Entity class criteria:
 --------------------------
 > Class annoted with @Entity
-> Must have no arg constructor and should not have final class
+
+> Must have no arg constructor and should not have final class.
+` If no-args constructor is absent, instantiation of objects by hibernate can’t happen properly which leads to errors
+
+  If class have final keyword it can’t be subclassed which affects hibernate’s ability to perform tasks 
+  like: runtime enhancements and proxy generation for lazy loading for certain features
+
 > Must have primary key attribute with @Id and @GenratedValue
 > 
 
@@ -52,16 +66,42 @@ public void deleteUser(Long id) {
     userRepository.delete(user); // Here, the entity is marked for removal and will be deleted from the database at the end of the transaction.
 }
 
+3. Hibernate mapping:
+---------------------
 
-3. Realation (uni and bi direction)
+>Single Table:
+-------------
+Single table created for all subclass property and have discriminator column is used to separate between different subclasses.
+
+// Entity 1
+@Entity @DiscriminatorValue(“car”) public class Car extends Vehicle { private int numberOfDoors; }
+
+// Entity 2
+@Entity @DiscriminatorValue(“motorcycle”) public class Motorcycle extends Vehicle { private boolean hasSideCar; }
+
+
+>Table Per Class
+-----------------
+
+Joined Table Inheritance
+
+
+3.1 Realation (uni and bi direction):
+-------------------------------------
 OneToOne - OneToOne
 OneToMany - ManyToOne
 ManyToMany - ManytoMany
 
 
 4. Caching:
-> FirstLevel caching: Its hold the enetity in current session and its scope inside session only.
-> Second level caching: by default disable, its enable by config properites and third party chace provider like ehache. its avalable for entire      applciation.
+> FirstLevel caching: 
+ It is enabled by default and hold the enetity in current session and its scope inside session only.
+ It also provides data consistency at transaction level
+                       
+> Second level caching: 
+ by default disable, its enable by config properites and third party chace provider like ehache. its avalable for entire applciation.
+
+
  
 Custom properies for L2 cache:
 ---------------------------------
@@ -76,13 +116,56 @@ use_query_cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFa
 calss Person{}
 
   
->> Query Cache enable by QueryHints with @Query:
+>Query Cache enable by @QueryHints with @Query:
+--------------
+Its cache the results of database queries when a cached query is executed again with the same parameters, 
+hibernate can quickly retrieve the results from the cache.
+
+By enabling second-level cache for session factory configurations.
+By enabling caching for a particular query using setCacheable(true)
 
 @QueryHints(value = { @QueryHint(name = "org.hibernate.cacheable", value = "true"),
 			@QueryHint(name = "org.hibernate.cacheMode", value = "NORMAL"),
 			@QueryHint(name = "org.hibernate.cacheRegion", value = "myEhCache") })
 @Query(value = "select u from AppUser u JOIN FETCH u.cars c JOIN FETCH u.books b where u.username =?1")
 Optional<AppUser> findByUsername(String username);
+
 	
 
-5. 
+5.Hibernate Locking(Optimistic and Pessimistic):
+------------------------------------------------
+>Optimistic:
+
+Optimistic locking is a type of locking mechanism that uses the version field from the entities to control any modification on them.
+To use optimistic locking, our entity needs to have a field annotated with the @Version:
+
+Optimistic Lock Mode
+We could use two different optimistic lock modes:
+
+OPTIMISTIC - lock for entities that contain a version attribute.
+OPTIMISTIC_FORCE_INCREMENT - automatically increments the version attribute.
+
+em.find(Item.class, "id", LockModeType.OPTEMISTICK);
+
+>pessimistic:
+
+We could use pessimistic locking in situations where two or more transactions would like to access the same record at the same time.
+
+Same as optimistic locking, JPA defines pessimistic lock modes in the LockModeType class:
+
+PESSIMISTIC_READ - prevents data from being modified.
+PESSIMISTIC_WRITE - prevents other transactions from reading or modifying the data.
+PERRIMISTIC_FORCE_INCREMENT - uses the version attribute
+
+
+em.find(Item.class, "id", LockModeType.OPTEMPESIMISTICK_READ);
+
+
+
+6. Transaction Isoaltion level:
+-------------------------------
+READ UNCOMMITTED - no lock on table, we can read data in the table while writing on it.
+READ COMMITTED - lock on committed data, WE can read the data that was only committed.
+REPEATABLE READ - lock on block of sql(which is selected by using select query), reads the data under some condition.
+SERIALIZABLE - lock on full table(on which Select query is fired), We reads the data and no other transaction can modify the data on the table.
+

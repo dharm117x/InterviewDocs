@@ -1,0 +1,7 @@
+npm install -g create-react-app
+
+or
+
+1. npx create-react-app my-app
+
+2. npm start

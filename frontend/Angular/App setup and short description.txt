@@ -4,6 +4,7 @@ node --version
 npm install --global yarn
 yarn --version
 
+node -v
 npm --v
 ng --version
 npx node -v

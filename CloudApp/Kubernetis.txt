@@ -10,7 +10,38 @@ Google kubeneties Engine(GKE) on Google cloud platform(GCF).
 
 Kubernet not deploy container directly its deploy in pod(unique IP address) and containes multiple container and share same resource as localhost.
 
-Kubernets cluster -> node - > pod(1- n)
+Kubernets cluster -> node(1-n) - > pod(1- n)
+Note: Genrally one node have one container and in some case also add another helper container.
+
+
+https://uklabs.kodekloud.com/courses/labs-kubernetes-for-the-absolute-beginners-hands-on/
+
+https://learn.kodekloud.com/user/dashboard
+
+dharm117.java@gmail.com
+Nokia117#
+Ex: Pod definition:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres
+  labels:
+    tier: db-tier
+spec:
+  containers:
+    - name: postgres
+      image: postgres
+      env:
+        - name: POSTGRES_PASSWORD
+          value: mysecretpassword
+
+{"apiVersion"=>"v1", "kind"=>"Pod", "metadata"=>{"name"=>"postgres", "labels"=>{"tier"=>"db-tier"}}, 
+"spec"=>{"containers"=>[{"name"=>"postgres", "image"=>"postgres", 
+"env"=>[{"name"=>"POSTGRES_PASSWORD", "value"=>"mysecretpassword"}]}]}}
+
+
+
 
 commands:
 ==============
@@ -94,6 +125,8 @@ kubectl get pods
 kubectl get all
 kubectl get svc
 
+kubectl get deployments,svc
+
 -------------------Microservice----------docker run --links
 kubectl get endpoints
 kubectl describe service ngnix
@@ -114,19 +147,3 @@ kubectl delete pod my-pod
 kubectl delete pod my-pod --force
 kubectl scale deployment my-deployment --replicas=0
 kubectl scale deployment/<your-deployment> --replicas=0
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
- 

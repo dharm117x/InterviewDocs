@@ -1,0 +1,63 @@
+Cluster network:
+----------------
+NodePort: ClusterIp: LoadBalancer
+
+Service NodePort: For out side communication
+------------------
+-- NodePort Range: 30000-32767
+
+apiVersion: v1
+kind: Service
+metadata:
+	name: myapp-service
+
+spec:
+     type: NodePort
+     ports:
+	- targetPort: 80 // optional by default same as tagetport
+	  port: 80 //mandatory
+	  nodePort:300008 // radom value from range
+     selector:
+	app: myapp
+	type: front-end
+
+
+kubectl crate -f sevice-def.yml
+
+Service uses random load balancer with all pods in node and cluster levels.
+Service bid with pods using slector.
+
+curl http://192.168.1.2:30008
+
+Service ClusterIp: for backend communication
+-------------------
+
+service-def yml:
+-------------
+apiVersion: v1
+kind: Service
+metadata:
+     name: back-end
+spec:
+     type: ClusterIp
+     ports:
+	- targetPort: 80 
+	  port: 80 
+     selector:
+	app: myapp
+	type: back-end
+
+
+Service Loadbalance:
+--------------------
+apiVersion: v1
+kind: Service
+metadata:
+     name: myapp-service
+spec:
+     type: LoadBalancer
+     ports:
+	- targetPort: 80
+	  port: 80
+	  nodePort:300008
+
