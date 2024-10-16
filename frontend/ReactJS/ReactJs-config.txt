@@ -1,0 +1,29 @@
+npm install -g create-react-app
+
+npm install react-router-dom
+
+or
+
+1. npx create-react-app my-app
+
+2. npm start
+
+3. npm run build
+
+Visual stdio settings:
+----------------------
+settings > Include langauge
+
+key -  javascript
+value- javascriptreact
+
+For lagauge support
+
+------------------
+VSC short cut
+--------------
+rfc - react function component
+clg - console log
+pts - PropTypes.string
+impt - Import PropTypes from 'prop-types
+imrs - import

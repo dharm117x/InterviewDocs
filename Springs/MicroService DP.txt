@@ -1,0 +1,111 @@
+Microservices Design Patterns:
+-------------------------------
+Needs of DP:
+1. Service orchestration
+2. Fault tolerance
+3. Data inconsistency
+4. Service discoverability 
+
+
+1. Decomposition Patterns
+-------------------------
+a. Decompose by Business Capability
+b. Decompose by Subdomain
+c. Decomposition by transaction:
+d. Strangler Pattern: Most use to incrementally transform a monolith application to microservices.
+
+2. Integration Patterns
+-----------------------
+a. API Gateway Pattern:  it grants a single entry point for a group of microservices by working as a reverse proxy between client apps and the services.
+b. Aggregator Pattern: It is used to collect pieces of data from various microservices and returns an aggregate for processing.
+c. Client-Side UI Composition Pattern
+
+3. Database Patterns
+---------------------
+a. Database per Service: each microservice uses his own database to persists the data and can access to data of others microservice using internal API or CQRS.
+b. Shared Database per Service: the same database is shared by several microservices. (For decomposition of monolethic app into micro service)
+c. Command Query Responsibility Segregation(CQRS): A solution to traditional database issues like data contention risk.
+d. Saga Pattern: It is an alternative solution to other design patterns that allows for multiple transactions by giving rollback opportunities
+                by publish event using (Choreography, Orchestration approach).
+
+4. Observability Patterns
+-------------------------
+a. Log Aggregation
+b. Performance Metrics
+c. Distributed Tracing
+d. Health Check
+
+5. Cross-Cutting Concern Patterns
+---------------------------------
+a. External Configuration
+b. Service Discovery Pattern
+c. Circuit Breaker Pattern(its applied between services that are communicating synchronously)
+d. Blue-Green Deployment Pattern
+
+======================Design pattern in details=====================
+>>> Service Discovery/Service Registry:Service Registry serves as a central hub for managing service discovery and communication in a microservices architecture.
+---------------------
+When services starting off they are registering themselves with the discovery service and now the 
+discovery service is maintaining all their information inside a particular map or a list or a database. We called it a Service Registry.
+
+Benifits of service registry: Service Registration,Service Lookup,Health Monitoring,Load Balancing,Dynamic Updates
+
+Client-Side Service Discovery: Netflix Eureka, Zookeeper, Consul
+Server-Side Service Discovery: NGNIX, AWS ELB
+
+Note: The Load Balancer job is to do load balancing while the Service Discovery job is to do discovering service info. 
+When we build Microservices and call other microservices, we need service discovery to find the hosts and IP info and 
+if multiple hosts are available then the load balancer helps to pick one and make a call in a load-balanced way.
+
+
+>>> API gateway pattern: API gateway locate between the client apps and the internal microservices. single entrypoint and route request to internal microservices.
+-----------------------
+It is working as a reverse proxy and routing requests from clients to backend services. 
+It is also provide cross-cutting concerns like: Authentication and authorization, SSL termination, Load balancing, Logging, tracing, correlation and cache.
+
+>Requests aggregation: API Gateway can aggregate multiple internal microservices into a single client request.
+>Reverse proxy or gateway routing: The API Gateway provides reverse proxy to redirect requests to the endpoints of the internal microservices.
+
+>>> Circuit breaker design pattern: It used to handle and prevent cascading failures in microservice architectures. 
+----------------------------------
+It involves monitoring the calls to external services and, if a certain threshold of failures is reached, tripping a circuit breaker to stop further requests and return a fallback response
+
+>There are three states of the circuit breaker pattern:
+
+Open: when the number of failures has exceeded the threshold and gives errors for the calls without executing the desired function.
+Close: its in the default state and all calls are responded to normally.
+Half-Open:Its checking for underlying problems, it remains in a half-open state. Some calls may be responded to normally, but some may not be
+
+
+>>>CQRS: (Command Query Responsibility Segregator) Its separates read and update operations for a database.(help to perform join query)
+---------
+Commands: Write operation.
+Queries: Read operation.
+its best practices to separate read and write database with 2 database physically.
+
+Then sync these 2 databases by Event-Driven Architecture->
+when something update in write database, it will publish an update event with using message broker systems 
+and this will consume by the read database and sync data according to latest changes.
+
+>>>SAGA: handling the Distributed Transactions in microservices.
+--------
+Maintain data consistency across services using a sequence of local transactions that are coordinated using asynchronous messaging.
+
+Sagas can be implemented in 2 ways.
+
+1. In a choreography based saga, a local transaction publishes events that trigger other participants to execute local transactions. 
+2. In an orchestrated-based saga, a centralized saga orchestrator sends command messages to saga participants telling them to execute local transactions.
+Note: Generally in practice, simple sagas can leverage the concept of choreography and for complex sagas, it is recommended to use the orchestrated version.
+
+==========Monolith application to microservices DP==========
+
+>>>Strangler: incrementally transform a monolith application to microservices by replacing old functionality with a new service. 
+-------------
+Once the new service is ready to be executed, the old service is “strangled” so the new one can take over.
+
+>>>Decomposition patterns: break a monolithic application into smaller, more manageable microservices.
+--------------------------
+1. Decomposition by business capability:
+2. Decomposition by subdomain:
+3. Decomposition by transaction:
+

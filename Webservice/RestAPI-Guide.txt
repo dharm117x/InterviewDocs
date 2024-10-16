@@ -33,10 +33,11 @@ RequestBody: USe to read json paylod of user from request body ;
 ContentType: header in an HTTP request is used to specify the expected data format in request body i.e json/xml
 
 @postmapping(path="/user", consumes={"application/xml","application/json"})
-public User crateUser(@RequestBody User user){}
+public User crateUser(@RequestBody @Valid User user){}
 
 
-Validation:
+Data Validation:
+--------------
 public class User{
 @NotNull(message="Username can not be null")
 String username;
@@ -53,7 +54,7 @@ public User crateUser(@valid @RequestBody User user){}
 
 
 Exception handling:
-
+------------------
 @ControllerAdvice
 public class GlbalExceptionHandler extends ResponseEnttiyExceptionhandler{
 

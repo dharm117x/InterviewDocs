@@ -89,10 +89,34 @@ SQL Case:
 ---------
 SELECT Name, Age,
 CASE
-    WHEN Country = 'India' THEN 'Indian'
+    WHEN Country = 'India' 
+     THEN 'Indian'
     ELSE 'Foreign'
 END AS Nationality
 FROM Customer;
+
+SELECT
+  status,
+  CASE
+    WHEN STATUS IN('a1','a2','a3')
+    THEN 'Active'
+    WHEN STATUS = 'i'
+    THEN 'Inactive'
+    WHEN STATUS = 't'
+    THEN 'Terminated'
+  END AS STATUSTEXT
+FROM
+  STATUS
+
+SELECT status,
+       CASE status
+         WHEN 'i' THEN 'Inactive'
+         WHEN 't' THEN 'Terminated'
+         ELSE 'Active'
+       END AS StatusText
+FROM  Status;
+
+ 
 
 SQL function:
 ------------

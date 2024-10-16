@@ -123,6 +123,15 @@ git reset file/to/overwrite
 git checkout file/to/overwrite
 git checkout -- <file>
 
+>>> Git Revert:
+----------------
+git revert <hashcode>
+
+git revert Head
+
+git log --oneline
+
+
 >>>Git stash:
 ------------
 git stash list

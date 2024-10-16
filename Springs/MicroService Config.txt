@@ -297,9 +297,6 @@ resilinenece4j.retry.instances.user-service.wait-duration=3s
 resilinenece4j.circuitbraker.circuitbraker-aspect-order=1
 resilinenece4j.retry.retyr-aspect-order=2
 
-
-
-
 >>CircuitBreaker state:
 
 Closed   : If service up. return actual service method
@@ -315,3 +312,4 @@ Limit Certian amount of request per second, 1 req/sec
 @Retry(name="user-service"):
 For certian error we can retry for limited no and then call fallback method call
 
+ 

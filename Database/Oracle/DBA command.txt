@@ -116,3 +116,9 @@ grant read, write on directory dbdump to sys;
 expdp help=y
 expdp system/admin@localhost schemas=dk directory=dbdump dumpfile=scott.dmp logfile=scott.log
 impdp system/admin@localhost schemas=dk directory=dbdump dumpfile=scott.dmp logfile=scott.log
+
+----------------------------------
+To enable Partitioning shutdown everything in your home and do this.
+$ cd $ORACLE_HOME/rdbms/lib
+$ make -f ins_rdbms.mk part_on
+$ make -f ins_rdbms.mk ioracle

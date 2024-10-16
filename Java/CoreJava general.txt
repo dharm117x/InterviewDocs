@@ -92,8 +92,11 @@ Stream API is a way to express and process collections of objects. Enable us to 
 
 Operation:
 ------------
-Intermediate -> filter, map, sorting, count, 
-Terminate    -> Collect, findAny,firstget,collect,
+Intermediate: Intermediate operations return a new stream and do not produce a final result directly. They are always lazy.
+Ex. filter, map, sorting, count, 
+
+Terminate: Terminal operations produce a result such as a value or a collection.
+Ex. Collect, findAny,firstget,collect,
 
 >> Consumer: is a functional interface that accepts a single input and returns no output
 foreach, return nothing.

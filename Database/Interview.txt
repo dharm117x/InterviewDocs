@@ -43,7 +43,7 @@ Employee, Department
 5. NATURAL
  > Tow tables join using cross join. and both table have at leaset one column with same name and type.
 6. SELF
- > 
+ > A self join is a regular join, but the table is joined with itself.
 
 4. UNION and UNION ALL
 -------------------------
@@ -63,8 +63,31 @@ Condition from UNION :
 
 >> Differentiate between the WHERE clause and the HAVING clause in Oracle SQL. 
 
-The WHERE clause filters rows before grouping – that is, before they’re included in the result set. Filtering is also based on certain conditions. 
-The HAVING clause, on the other hand, filters data post-grouping – meaning after aggregation. 
+The WHERE clause filters rows before grouping – Filtering is also based on certain conditions. 
+The HAVING clause filters rows after grouping – after aggregation. 
+
+5. Case in query:
+-----------------
+>Simple CASE
+SELECT cust_last_name,
+   CASE credit_limit WHEN 100 THEN 'Low'
+   WHEN 5000 THEN 'High'
+   ELSE 'Medium' END
+   FROM customers;
+
+>Searched case:
+SELECT AVG(CASE WHEN e.salary > 2000 THEN e.salary
+   ELSE 2000 END) "Average Salary" FROM employees e;
+
+select * from Status s
+where s.status = (case when s.code='A' then 'Good' else 'Bad' end)
+
+seelct case when s.enddate is not null
+	then s.endate 
+        else s.startdate 
+        end as data_time
+from Status s;
+
 
 5. Select Query:
 ----------------
@@ -74,7 +97,9 @@ select * from Table where rownumber % 2 ==0 // even row
 select * from Table where rownumber % 2 !=0 // odd row
 
 > Select Max Nth salary from employee:
+---------------------------------------
 // by dens_rank()
+
 SELECT * FROM (
   SELECT emp_name, emp_salary, DENSE_RANK() OVER (ORDER BY emp_salary DESC) AS r
   FROM emp
@@ -82,6 +107,7 @@ SELECT * FROM (
 WHERE r = 3;
 
 // by limit
+
 SELECT MIN(sal) FROM Employee WHERE sal IN (
   SELECT DISTINCT sal
   FROM Employee
@@ -92,6 +118,7 @@ SELECT MIN(sal) FROM Employee WHERE sal IN (
 Select emp_sal from Emp order by emp_sal DESC limit 3,1;
 
 // by top
+
 SELECT * FROM Employee WHERE sal = 
          (
             SELECT MIN(sal) FROM Employee 
@@ -101,8 +128,8 @@ SELECT * FROM Employee WHERE sal =
             ORDER BY sal DESC
 ))
 
-> Write an Oracle SQL query to find the average salary of employees within each department.
-
+> Find the average salary of employees within each department.
+--------------------------------------------------------------
 SELECT department_id, AVG(salary) AS average_salary
 FROM employees
 GROUP BY department_id;
@@ -110,10 +137,33 @@ GROUP BY department_id;
 > max salry by dept.
 
 SELECT DEPT_ID, MAX(SALARY) FROM department GROUP BY DEPT_ID;
-
-> Write an Oracle SQL query to find employees who earn more than their managers.
-
+ 
+> Find employees who earn more than their managers.
+---------------------------------------------------
 SELECT emp.*
 FROM Employee emp
 INNER JOIN Employee mgr ON emp.manager_id = mgr.employee_id
 WHERE emp.salary > mgr.salary;
+
+> Find department by salary which greater then 2000
+---------------------------------------------------
+SELECT d.dname, sum(e.sal) salary  
+FROM Employee e 
+join Department d on e.deptno = d.deptno
+group by d.dname
+having sum(e.sal) > 2000
+order by d.dname;
+
+>The PARTITION BY clause sets the range of records that will be used for each "GROUP" within the OVER clause.
+-----------------------------------------------------
+select b.*, 
+count(*) over(PARTITION by b.colour) as total_cr,
+sum(b.weight) over(PARTITION by b.weight) as total_wt 
+from bricks b
+order by weight;
+
+>Select stmt for specific partion:
+--------------------------------
+SELECT *
+FROM   transaction_data_part PARTITION (part1)
+WHERE  product_id = '1234'

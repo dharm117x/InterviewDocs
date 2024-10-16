@@ -86,7 +86,10 @@ ViewChild returns the first matching element and ViewChildren returns all the ma
 @ValidChild: is a  directive to access elements in the view directly.
 > ViewChild(selector: string | Function | Type<any>, opts: { read?: any; static: boolean; }): any
 
+Html
 <input #uname>
+
+TS file:
 @ViewChild('uname') input
 
 ngAfterViewInit() {

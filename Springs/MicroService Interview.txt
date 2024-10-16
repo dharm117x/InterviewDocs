@@ -1,5 +1,3 @@
-MicroSerives QA
-=================
 >>Microservices is an architectural style that structures an application as a collection of small, loosely coupled, and independently deployable services. 
 Each service represents a specific business capability and can be developed, deployed, and scaled independently
 
@@ -30,8 +28,7 @@ c. Client-Side UI Composition Pattern
 a. Database per Service: each microservice uses his own database to persists the data and can access to data of others microservice using internal API or CQRS.
 b. Shared Database per Service: the same database is shared by several microservices. (For decomposition of monolethic app into micro service)
 c. Command Query Responsibility Segregation(CQRS): A solution to traditional database issues like data contention risk.
-d. Saga Pattern: It is an alternative solution to other design patterns that allows for multiple transactions by giving rollback opportunities
-                by publish event using (Choreography, Orchestration approach).
+d. Saga Pattern: It allows for multiple transactions by giving rollback opportunities by publish event using(Choreography, Orchestration approach).
 
 4. Observability Patterns
 -------------------------
@@ -46,30 +43,6 @@ a. External Configuration
 b. Service Discovery Pattern
 c. Circuit Breaker Pattern(its applied between services that are communicating synchronously)
 d. Blue-Green Deployment Pattern
-
-
-CQRS: (Command Query Responsibility Segregator) Its separates read and update operations for a database.
-Commands: Write operation.
-Queries: Read operation.
-
-its best practices to separate read and write database with 2 database physically.
-
-Then sync these 2 databases by Event-Driven Architecture->
-when something update in write database, it will publish an update event with using message broker systems 
-and this will consume by the read database and sync data according to latest changes.
-
-
-
-SAGA: handling the Distributed Transactions in microservices.
-Maintain data consistency across services using a sequence of local transactions that are coordinated using asynchronous messaging.
-
-Sagas can be implemented in 2 ways.
-
-1. In a choreography based saga, a local transaction publishes events that trigger other participants to execute local transactions. 
-2. In an orchestrated-based saga, a centralized saga orchestrator sends command messages to saga participants telling them to execute local transactions.
-Note: Generally in practice, simple sagas can leverage the concept of choreography and for complex sagas, it is recommended to use the orchestrated version.
-
-
 
 
 >>> 8 Core Components are Microservices Architecture.
@@ -132,12 +105,13 @@ Async call:
 
 >>> Spring cloud features:
 ----------------------------
-Spring Cloud focuses on providing good out of box experience for typical use cases and extensibility mechanism to cover others.
+
 Distributed/versioned configuration
 Service registration and discovery
 Routing
 Service-to-service calls
 Load balancing
+Resilience4j-ratelimiter
 Circuit Breakers
 Distributed messaging
 Short lived microservices (tasks)
@@ -154,3 +128,15 @@ Resilience4j instead Hystrix
 eureka.instance.prefer-ip-address=true
 OR
 eureka.instance.hostname=localhost
+
+>>> Best Tools for Microservices Backend Development
+-----------------------------------------------------
+1.  Sentry: open-source platform for error tracking and performance monitoring, allowing teams to quickly identify and resolve application issues.
+2.  Kubernetes: is a container composition system that handles the deployment, scaling, and management of containerized applications, providing resilience and adaptability for microservices architectures.
+3.  AWS Lambda: is a serverless computing platform that helps you to run code without having to deploy or manage servers. This allows for seamless microservice scalability.
+4.  Docker: is a platform and a tool that simplifies the method of creating, deploying, and managing applications using containers.
+5.  Kafka:  open-source distributed event streaming technology used to create real-time data pipelines and streaming applications.
+6.  Sentry: open-source platform for error tracking and performance monitoring, allowing teams to quickly identify and resolve application issues.
+7.  TablePlus:
+8.  Postman:
+9.  Spring

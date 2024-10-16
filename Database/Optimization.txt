@@ -1,0 +1,126 @@
+>Table Index: 
+----------------------------------
+Create index by 3 ways
+1. By Primary 
+2. By unique constraints
+3. By Unique index
+
+DROP INDEX ix_phone_no;
+
+CREATE UNIQUE INDEX ix_phone_no ON Customer(phone) TABLESPACE USERS;--default SYSTEM 
+
+CREATE UNIQUE INDEX ix_phone_no_dob ON Customer(phone,dob);
+
+ALTER INDEX ix_phone_no REBUILD	
+STORAGE (INITIAL 8M NEXT 4M PCTINCREASE 0)
+TABLESPACE SYSTEM;
+
+Note:
+1. When you add an index, it has to be updated whenever a row is inserted, updated, or deleted. This means that writes will be slower.
+
+
+
+>Table Partining:  
+NOTE: ORA-00439: feature not enabled: Partitioning (XE VERSION)
+------------------
+By default table have a single partion we have to create mutiple partiion in single table by may ways.
+1. By Range. Ex by date.
+------
+CREATE TABLE transaction_data_part(
+transactionid varchar2(15),
+country varchar2(15),
+YEAR varchar2(4),
+shop_id varchar2(15),
+product_id varchar2(15),
+sales_data varchar2(15),
+price varchar2(10),
+product_version varchar2(15),
+CONSTRAINT transid_pk PRIMARY KEY (transactionid)
+)
+PARTITION BY RANGE (YEAR)
+( PARTITION part1 VALUES LESS THAN (2023) 
+  TABLESPACE SYSTEM,
+  PARTITION part2 VALUES LESS THAN (MAXVALUE) 
+  TABLESPACE USERS);
+
+
+2. By Hash
+------
+CREATE TABLE transaction_data_part(
+transactionid varchar2(15),
+country varchar2(15),
+YEAR varchar2(4),
+shop_id varchar2(15),
+product_id varchar2(15),
+sales_data varchar2(15),
+price varchar2(10),
+product_version varchar2(15),
+CONSTRAINT transid_pk PRIMARY KEY (transactionid)
+)
+PARTITION BY HASH (YEAR)
+PARTITIONS 2
+STORE IN (SYSTEM,USERS)
+
+Note: No of tablespace in store does not have to eaual the partion no. if more partion then its use round-robin method to assign.
+
+OR
+--
+CREATE TABLE transaction_data_part(
+transactionid varchar2(15),
+country varchar2(15),
+YEAR varchar2(4),
+shop_id varchar2(15),
+product_id varchar2(15),
+sales_data varchar2(15),
+price varchar2(10),
+product_version varchar2(15),
+CONSTRAINT transid_pk PRIMARY KEY (transactionid)
+)
+PARTITION BY HASH (YEAR)
+(PARTITION part1 TABLESPACE SYSTEM,
+PARTITION part2 TABLESPACE USERS)
+
+
+3. List
+-------
+CREATE TABLE transaction_data_part(
+transactionid varchar2(15),
+country varchar2(15),
+YEAR varchar2(4),
+shop_id varchar2(15),
+product_id varchar2(15),
+sales_data varchar2(15),
+price varchar2(10),
+product_version varchar2(15),
+CONSTRAINT transid_pk PRIMARY KEY (transactionid)
+)
+PARTITION BY LIST (product_version)
+( PARTITION part1 VALUES ('simple','advance') 
+  TABLESPACE SYSTEM,
+  PARTITION part2 VALUES ('good','bad') 
+  TABLESPACE USERS);
+
+
+Select stmt for specific partion:
+--------------------------------
+SELECT *
+FROM   transaction_data_part PARTITION (part1)
+WHERE  product_id = '1234'
+
+
+>Table Joins
+----------
+
+
+>. Subquery optimization:
+-----------------------------
+select * from SS where someID in 
+  (select someID from SS where someDate is between date1 and date2)
+
+to
+
+select distinct ss1.*
+from ss ss1
+join ss ss2
+    on ss1.someID = ss2.someID
+     and ss2.someDate is between date1 and date2

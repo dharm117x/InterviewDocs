@@ -6,6 +6,7 @@ from bricks b;
 select b.*, count(*) over() as total 
 from bricks b;
 
+// The PARTITION BY clause sets the range of records that will be used for each "GROUP" within the OVER clause.
 select b.*, 
 count(*) over(PARTITION by b.colour) as total_cr,
 sum(b.weight) over(PARTITION by b.weight) as total_wt 

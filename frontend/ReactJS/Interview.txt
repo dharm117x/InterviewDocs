@@ -1,0 +1,161 @@
+1 Single page appliaction.
+
+2. Function based component 
+----------------------------
+function profile(){
+return (
+<div>
+ <p>Welcome</p>
+</div>
+)
+}
+
+---
+function profile(){
+return (
+<>
+<h1>Hello</h1>
+<div>
+ <p>Welcome</p>
+</div>
+</>
+)
+}
+
+Note: function return only one tag. or wrap with JSX fragment <> </>
+
+3. Class bases component
+-------------------------
+class Profile extends Component{
+render() {
+ <div>
+   <p>Welcome</p>
+ </div>
+}
+}
+
+4. JSX(JavaScript XML) tags:
+-------------
+function profile({name}){
+return (
+<div className="profile-container">
+ <p>Welcome</p>
+ <h2>My name is {name}</h2>
+ <button onClick={alert('Hello react')}></button>
+</div>
+)
+}
+
+5. URL routing:
+----------------
+import {Browserrouter as Router, Route} from 'react-router-dom'
+function App(){
+return (
+<div className="App">
+ <Router>
+   <Route path='/' element={<Home/>}>
+   <Route path='/profile' element={<Profile/>}>
+   <Route path='/product' element={<Product/>}>
+ </Router>
+</div>
+)
+}
+
+6. Props: pass data from one component to another component.
+------------
+Parent:
+---------
+function Tweet(){
+let item={
+ 'author': '',
+ 'tweet': 'My first tweet'
+}
+
+return (
+<div>
+ <Auther/>
+ <Content body={item.tweet}/>
+ <Actions/>
+</div>
+)
+}
+
+Child:
+---------
+function Content(props){
+return (
+<div>
+ <p>{props.body}</p>
+</div>
+)
+}
+
+7. Prop Drilling: pass data into multiple component.
+-----------------
+
+8. State:
+-------
+let [note, setNote] = useState(null)
+
+9. Component LifeCycle:
+-------------------
+Initialization
+Mounting
+updateing
+UnMounting
+
+10. Hooks: its kind of Functions, manage state
+--------
+useHookName()
+
+common hooks:
+useState() // set & update state
+useEffect() // performs side effect in lifecycle
+
+11. StateManagement:
+----------------
+Componenet state:
+
+Global state:Context api , redux
+
+
+12. Virtual Dom:
+---------------
+react update only virtual dom
+
+13. Key Props:
+----------
+<ul>
+ {notes.map(note =>(
+    <li key={note.id}>{note.title}</li>
+ ))}
+<ul/>
+
+
+14. EventListenrs:
+---------------
+<li onClick={openNote}>
+
+15. Forms:
+---------
+<form onSubmit={handleSubmit}>
+<input type='text' onChange={updateNoteValue} value={note}/>
+<input type='submit'>
+</form>
+
+16. CondionRendering:
+-----------------
+if with logicall && opertor
+
+return(
+<div>
+{isAuthenticated && <span>{user.name}</span>}
+</div>
+)
+
+if with Condional operator
+return(
+<div>
+{isAuthenticated? (<span>{user.name}</span>}):(<span>Please login</span>)}
+</div>
+)

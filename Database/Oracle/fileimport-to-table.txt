@@ -1,0 +1,34 @@
+CREATE OR REPLACE  directory ext_dir AS 'D:\data\oracle';
+
+DROP TABLE ext_table_csv;
+
+-- data refreshed once csv file modified;
+CREATE TABLE ext_table_csv(
+transactionid varchar2(15),
+country varchar2(15),
+YEAR varchar2(4),
+shop_id varchar2(15),
+product_id varchar2(15),
+sales_data varchar2(15),
+price varchar2(10),
+product_version varchar2(15)
+)
+ORGANIZATION EXTERNAL(
+ TYPE ORACLE_LOADER     
+    DEFAULT DIRECTORY ext_dir
+    ACCESS PARAMETERS (
+      RECORDS DELIMITED BY NEWLINE
+      FIELDS TERMINATED BY ',')     
+    LOCATION (ext_dir: 'transaction_data.csv')
+) 
+REJECT LIMIT UNLIMITED;
+
+--DELETE FROM ext_table_csv;// not supported
+ALTER TABLE ext_table_csv LOCATION ('transaction_data.csv');
+
+SELECT * FROM ext_table_csv;
+DROP TABLE transaction_data;
+CREATE TABLE transaction_data AS SELECT * FROM ext_table_csv;
+INSERT INTO transaction_data SELECT * FROM ext_table_csv;
+SELECT * FROM transaction_data;
+

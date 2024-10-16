@@ -31,3 +31,37 @@ let a=99; // NOK
 var a=5;
 var a='Hello' //OK
 
+>> Object
+-------------
+let obj= {
+a: this,
+func: function name(){console.log('Test')}
+}
+
+>> function
+-----------------
+function test(name){
+console.log(name)
+}
+
+function test1(name='NA'){
+console.log(name)
+}
+
+test()//nok
+test1()//ok
+
+>> Arrow function
+-------------------
+noraml func
+hello = function() {
+  return "Hello World!";
+}
+
+arrow func
+hello = () => {
+  return "Hello World!";
+}
+
+
+
