@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+<h1>My First JavaScript</h1>
+<button type="button" onclick="showdate()">Display DateTime</button>
+<p id="demo"></p>
+
+<button type="button" onclick="showdata()">Display Data</button>
+<ul id="data"></ul>
+
+
+
+
+<script type="text/javascript">
+
+function Name(fname, lname){
+console.log('function call with --> ', fname, lname)
+ this.fname = fname;
+ this.lname = lname;
+}
+
+console.log(Name('Dharma', 'Kumar'))
+console.log(new Name('Dharma', 'Kumar'))
+
+
+function showdate(){
+    document.getElementById('demo').innerHTML = Date();
+}
+
+let myObj = { x: 1, y: 2, z: 3 };
+
+for (let key in myObj) {
+    console.log(key, myObj[key]);
+}
+
+
+const products = [
+  { title: 'Cabbage', id: 1 },
+  { title: 'Garlic', id: 2 },
+  { title: 'Apple', id: 3 },
+];
+
+function showdata(){
+const listItems = products.map(product =>
+ product.title
+);
+
+document.getElementById('data').innerHTML = listItems;
+
+}
+
+const str = "12345";
+console.log("Sub String:: ",str.substring(6,0)); // swap internally  if start idx> end idx
+
+function showMessage(marks){
+const message = marks || 'Absent'; // || operator 0 means false
+const msg = marks ?? 'Absent'; //  ?? nullish opertor if left value null or undefined then return right value
+
+console.log(`marks ${message} || ${msg}`)
+
+}
+
+showMessage(99);
+showMessage(0);
+showMessage(null);
+
+function check(){
+throw new Error('msg required');
+}
+
+function show(){}
+show = "hello world"
+console.log(show)
+
+
+function checkData(msg = check()){
+console.log(msg)
+}
+
+function sum(){
+
+ return arguments[0]+arguments[1];
+}
+
+function sum(num1, num2){
+'use strict'
+ num1=100;
+ num2=200;
+ return arguments[0]+arguments[1];
+}
+
+console.log('Sum: ', sum(10,20));
+
+try{
+	checkData();
+	
+}catch(e){
+console.log(e)
+}
+
+try{
+	throw new TypeError("Custom error");
+} catch({ name, message}){
+	console.log(name)
+	console.log(message)
+}finally{
+	checkData('hello');
+}
+
+
+
+async function load(){
+ //const data  = await 4;
+ //console.log(data);
+ 
+ return 1; // async always return promise
+ //return Promise.resolve(1); // auto wrapped by javasecrpt if return any value
+}
+
+console.log(load().then((data)=> console.log('Thne block', data)));
+
+
+function fakepromise(){
+console.log('fake promis');
+ return new Promise(function (resolve){
+ setTimeout(()=> { 
+ resolve("Fake promise data");
+ }, 1000);
+ });
+}
+
+async function myAsync(callback){
+try{
+	const data = await callback();
+	return [data, null];
+}catch(e){
+return [data, e];
+}
+
+fakepromise();
+
+}
+</script>
+
+</body>
+</html> 
+

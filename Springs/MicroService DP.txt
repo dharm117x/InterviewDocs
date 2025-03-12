@@ -66,6 +66,13 @@ It is also provide cross-cutting concerns like: Authentication and authorization
 >Requests aggregation: API Gateway can aggregate multiple internal microservices into a single client request.
 >Reverse proxy or gateway routing: The API Gateway provides reverse proxy to redirect requests to the endpoints of the internal microservices.
 
+> Load balancing
+
+> Region and Availabitlty Zone (Multi region and each reagion have multi AGs)
+
+CLinet-> DNS(AWS s3 route)->Multi Region->API gateway->Load Blancer-> MicroServices.
+
+
 >>> Circuit breaker design pattern: It used to handle and prevent cascading failures in microservice architectures. 
 ----------------------------------
 It involves monitoring the calls to external services and, if a certain threshold of failures is reached, tripping a circuit breaker to stop further requests and return a fallback response
@@ -96,6 +103,8 @@ Sagas can be implemented in 2 ways.
 1. In a choreography based saga, a local transaction publishes events that trigger other participants to execute local transactions. 
 2. In an orchestrated-based saga, a centralized saga orchestrator sends command messages to saga participants telling them to execute local transactions.
 Note: Generally in practice, simple sagas can leverage the concept of choreography and for complex sagas, it is recommended to use the orchestrated version.
+
+
 
 ==========Monolith application to microservices DP==========
 

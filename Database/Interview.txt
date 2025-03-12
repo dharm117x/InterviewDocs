@@ -154,6 +154,14 @@ group by d.dname
 having sum(e.sal) > 2000
 order by d.dname;
 
+>Find duplicate by columnn data
+----------------------------------
+select name, count(*) as count
+from Employee
+group by name
+having count>1
+
+
 >The PARTITION BY clause sets the range of records that will be used for each "GROUP" within the OVER clause.
 -----------------------------------------------------
 select b.*, 

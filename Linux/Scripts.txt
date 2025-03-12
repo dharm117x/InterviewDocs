@@ -1,0 +1,56 @@
+1. #!/bin/bash :  start point of script called shebag to interect system
+
+2. basic script exmple:
+
+vi script.sh
+chmod +x script.sh
+
+./script.sh 11
+source sript.sh 100
+
+----------------------
+#!/bin/bash
+
+user="Dharmendra kumar"
+echo "hello linix: $user"
+
+echo "Enter num"
+read num
+
+echo "number is : $num"
+echo "total arg count $# , $1, $2, $3"
+
+if [[ $num > 0 && $num < 100 ]]; then
+ echo "Posetive no"
+elif [[ $num > 100 ]]; then
+ echo "Highest poetive number"  
+else
+ echo "Negetive no"
+fi
+
+
+sum(){
+return $(($1 + $2))
+}
+
+sum 10 20
+ echo "Total is $?"
+
+
+src_dir="."
+
+for file in $src_dir/*; do
+	if [[ -f $file ]]; then
+	  echo "file:: $file"
+	  if [[ $file == *.sh ]]; then
+		  echo "scrip file"
+	  else
+		 echo "other file"    
+	  fi
+	fi
+done
+
+
+
+
+

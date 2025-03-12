@@ -9,15 +9,31 @@ npm --v
 ng --version
 npx node -v
 
+npm install -g typescript
+tsc -v
+tsc Name.ts
+
+
+
 >>Step3: Install aggular cli by command:
 
 npm install -g @angular/cli -- latest version , g for globally
 npm uninstall -g @angular/cli
 
 npm install -g @angular/cli@12.2.0
+npm install -g @angular/cli@18
+
 npm cache verify
 
 npx node -v
+
+angular 18 required node.js 16 above.
+---------------
+
+Angular	Node.js                        		typeScript	RxJS
+19.0.x	^18.19.1 || ^20.11.1 || ^22.0.0,	>=5.5.0 <5.7.0,	^6.5.3 || ^7.4.0
+-----------------
+
 
 
 

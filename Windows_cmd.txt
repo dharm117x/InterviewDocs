@@ -1,0 +1,26 @@
+Windows system cmd:
+------------------
+systeminfo
+hostname
+winver
+wmic
+msinfo32 
+msconfig
+dfrgui
+
+File move from one folder to another
+-------------------------------------
+FORFILES /D 01-01-2025 /C "cmd /c move @file ./2025"
+
+
+Batch cmd:
+-------------
+@echo off
+set /p folder=Enter year:
+
+IF not exist %folder% (mkdir %folder%)
+
+for /R . %%i IN (%folder%*.*) DO (
+MOVE %%i %folder%/
+ECHO %%i
+)

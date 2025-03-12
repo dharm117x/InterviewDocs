@@ -3,6 +3,8 @@
 ng new Lab1 --skip-install
 
 mklink /d node_modules D:\programs\angular12\node_modules
+mklink /d node_modules D:\programs\angular14\node_modules
+
 
 Without folder:
 ng generate component login

@@ -38,10 +38,12 @@ select file_name from dba_data_files;
 >>>Create user and show cureent user:
 ------------------------------------
 create user projectdb identified by admin default tablespace projectts;
-create user microservicedb identified by admin default tablespace springts;
+create user springboot identified by admin default tablespace springts;
 
 create user dkumar identified by admin;
-grant all privileges to dkumar;
+grant all privileges to springboot;
+
+
 
 
 >>> Show Users:
@@ -56,6 +58,7 @@ SELECT * FROM ALL_USERS;
 select username, account_status from dba_users where ACCOUNT_STATUS LIKE '%EXPIRED%';
 
 alter user root identified by password;
+alter user dkumar identified by admin;
 
 >>> Grant privilege to user for login:
 -------------------------------------
