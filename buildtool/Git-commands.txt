@@ -168,6 +168,13 @@ if merge conflict then resolved
 
 git commit and push
 
+>>> Git Cherry-pick
+---------------------
+Used to introduce particular commits from one branch within a repository onto a different branch.
+
+git cherry-pick <commit code>
+git push
+
 
 
 >>>Git Clean:
