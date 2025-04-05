@@ -50,13 +50,42 @@
 	}
 
 	System.out.println("Reves::"+revs);
-	
+
+	int orig = number;
+	int revs = 0;
+	while (number>0) {
+		revs= revs *10 + number%10;
+		number= number/10;
+	}
+
 6. Char count in string:
+   data.chars().mapToObj(m -> (char) m)
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream()
+				.filter(f->f.getValue()>1).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+
 
 7. First not repeated char in string.
+	LinkedHashMap<Character,Long> hashMap = data.chars().mapToObj(m -> Character.toLowerCase((char) m))
+				.collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()));
+		
+		Character charc = hashMap.entrySet().stream().filter(f-> f.getValue()==1L).map(e->e.getKey()).findFirst().get();
 
-8. LCM of two number.
 
+8. LCM and HCF of two number.
+
+static int getLCM(int x, int y){
+	return (x*y)/getHCF(x, y);
+}
+
+static int getHCF(int x, int y){
+	int hcf = 0;
+	for(int i=1;i<=x && i<=y;i++) {
+		if(x%i==0 && y%i==0) {
+			hcf= i;
+		}
+	}
+	return hcf;
+}
 
 
 	
