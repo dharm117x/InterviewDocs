@@ -1,0 +1,60 @@
+>> LLD (Low level design pattern)
+----------------------------------------
+🔹 Purpose: Provides a detailed design for individual components and modules.
+🔹 Focus: Covers implementation details, class structure, algorithms, and design patterns.
+🔹 Key Elements:
+
+Class diagrams and sequence diagrams
+Data flow diagrams
+Database indexing strategies
+API request/response models
+Code-level design patterns (Factory, Singleton, Strategy, etc.)
+Error handling, logging, and retry mechanisms
+
+--------------------
+
+1. Understand Requirements
+Functional & non-functional requirements
+Inputs, outputs, constraints, and edge cases
+
+2. Identify Entities and Relationships
+Define key objects and how they interact
+Use class diagrams to represent objects
+
+3. Define Class Structure
+Use OOP principles (SOLID, DRY, KISS)
+Identify necessary attributes and methods
+
+4. Select Design Patterns
+Factory Pattern (for object creation)
+Singleton Pattern (for single-instance objects)
+Observer Pattern (for event-driven architecture)
+Strategy Pattern (for interchangeable behaviors)
+
+5. Database Design
+Define schema with primary and foreign keys
+Optimize using indexing and normalization
+
+6. Sequence Diagrams
+Define how components interact step by step
+
+7. API Contracts
+Define request/response structure
+Mention error handling & retry mechanisms
+
+
+>> HLD (High level design pattern)
+----------------------------------
+🔹 Purpose: Provides an overview of the system architecture and major components.
+🔹 Focus: Describes how different modules interact at a higher level without going into implementation details.
+🔹 Key Elements:
+
+Architecture diagrams (Microservices, Monolith, Layered, etc.)
+Database schema (Entity-Relationship Model)
+API definitions (REST endpoints, GraphQL, etc.)
+Tech stack selection (Java, Spring Boot, Kafka, etc.)
+Communication flow (between services, databases, etc.)
+Security considerations (Authentication, Authorization, OAuth, etc.) 
+
+---------------
+

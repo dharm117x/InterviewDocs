@@ -24,3 +24,4 @@ Step7: Review and launch.
 - Start/stop - from action dropdown-> instace setup -> start/stop
 
 
+ 

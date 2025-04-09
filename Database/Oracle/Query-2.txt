@@ -34,6 +34,12 @@ select colour, count(*), sum ( weight )
 from   bricks
 group  by colour;
 
+-------------select nth max salry in emp table.-----------
+
+select sal from(
+selct dense_rank() over (order by sal desc) as rnk, sal from emp
+) where rnk=3;
+
 ------------------FETCH-----------
 select brick_id,colour, weight
 from bricks

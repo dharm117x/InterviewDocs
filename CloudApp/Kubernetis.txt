@@ -1,9 +1,41 @@
 Kuberneties:Container Orchestration.
 =====================================
-Its is orchestratiaon and manage 1000 of microserive instnace.
+Its is orchestratiaon tools its follow master worker architecture.
+Master node manage cluster and orchestrates operation, while woker node host the continer.
+
+Key componenets:
+Api Server
+Scheduler
+Contoller manager
+etcd
+kublet
+kube-proxy
 
 Feature: Auto scaling, Service Dicscovery, Load Balancing, Self healing, Zero down time.
 
+Service: Is an abstaqrction that define set of pods and policy which access by them with endpoints.
+Its can be exposed internally in cluster and externlly to the internate.
+
+Namespace: Its virtual cluster within Kubernatives cluster its useful or oraganising and isolating resources, managing access control and avoid naming colision.
+
+Labels: Its key-value pairs attached to objects like, pods, service and deployments
+Selectors: its used to query the object based on label.
+
+labels and selectores are used for grouping, organizing and selecting object for operation like: scaling, deployment and service discovery
+
+Rolling Update: Allow changes to applied on deployemnt with min downtime by gradually replacing old pods with new one.
+Rollback: revert to previous version of deployemnt in case of failure.
+
+ConfigMap: Is an API Onject used to store none-sensetive config data in key-value pair, It can be mounted as volumes or exposed as env variable in pods.
+
+Ingress: Is an APi obj that manage external access to service within k cluster, It provide http or https routing, load balancing, SSL termination,
+And name based virtual hosting.
+
+Horizontal pod autoscaler(HPA): Automatially adjust the number of replicas of deployment or replica set based on CPU utiliazation.
+   
+RBAC: is a security mechanisam that regulates access to kubernates based on roles and permission.
+
+ 
 Cloud Neutrel: its work any cloud plateform.
 
 Google kubeneties Engine(GKE) on Google cloud platform(GCF).
@@ -13,9 +45,7 @@ Kubernet not deploy container directly its deploy in pod(unique IP address) and 
 Kubernets cluster -> node(1-n) - > pod(1- n)
 Note: Genrally one node have one container and in some case also add another helper container.
 
-
 https://uklabs.kodekloud.com/courses/labs-kubernetes-for-the-absolute-beginners-hands-on/
-
 https://learn.kodekloud.com/user/dashboard
 
 dharm117.java@gmail.com
@@ -41,109 +71,3 @@ spec:
 "env"=>[{"name"=>"POSTGRES_PASSWORD", "value"=>"mysecretpassword"}]}]}}
 
 
-
-
-commands:
-==============
-kubectl version --client
-kubectl version --client --output=yaml
-
-install minicube on local machine.
------------------------------
-minikube start
-minikube start --no-vtx-check
-minikube ssh -v 7
-ssh -i ~/.minikube/machines/minikube/id_rsa docker@192.168.59.100
-
-minikube kubectl -- get po -A
-kubectl version
-kubectl cluster-info
-
-kubectl run nginx --image nginx
-kubectl create -f pod-definition.yml
-or
-kubectl apply -f pod-definition.yml
-
-kubectl get pods
-kubectl get pods -o wide // pods plcaced on which node.
-kubectl get pods -n kube-system
-
-kubectl describe pod nginx
-kubectl delete pod nginx
-kubectl explain nginx
-
-kubectl run redis --image=redis123 --dry-run=client -o yaml > redis.yml
-kubectl create -f redis.yml
-kubectl edit pod redis
-
-kubectl expose pod nginx --type=NodePort --name=nginx-svc
-kubectl expose pod nginx --type=NodePort --name=nginx-svc --port=8080
-
-kubectl delete pods --all --all-namespaces
-kubectl delete pods --all -A
-
-
------------------REPLICA Controller---------------------Kind: ReplicationController
-kubectl create -f rc-definition.yml
-kubectl get rc
-kubectl delete rc nginx
-
-
------------------REPLICA SET---------------------Kind: ReplicaSet
-kubectl create -f replicaset-definition.yml
-kubectl replace -f replicaset-definition.yml // with file update with replcas=6
-
-kubectl get replicaset
-or
-kubectl get rs
-kubectl get rs -o wide
-
-kubectl describe replicaset myapp-replicaset
-kubectl edit replicaset myapp-replicaset
-kubectl scale replicaset myapp-replicaset --replicas=2
-kubectl delete replicaset myapp-replicaset
-kubectl delete rs myapp-replicaset
-
-
-------------------DEPLOYMENT---------Kind: Deployment
-kubectl create deployment --help
-kubectl create -f deployment.yml
-
-kubectl create deployment httpd-fronent --image=httpd:2.4-alpine
-kubectl create deployment httpd-fronent --image=httpd:2.4-alpine --replicas=2
-kubectl edit deployment httpd-fronent
-kubectl describe deployment httpd-fronent
-
-kubectl scale  deployment/httpd-fronent --replicas=3
-
-kubectl get deployment
-or
-kubectl get deploy
-
-kubectl get rs
-kubectl get pods
-kubectl get all
-kubectl get svc
-
-kubectl get deployments,svc
-
--------------------Microservice----------docker run --links
-kubectl get endpoints
-kubectl describe service ngnix
-kubectl edit service ngnix
-kubectl delete service ngnix
-
-kubectl get service -o wide
-kubectl describe service --all-namespaces | grep -i nodeport
-
-
-kubectl logs -f <pod_name>
-kubectl logs --tail=50 <pod_name>
-
-
----------------PODS STOP--------------------
-
-kubectl delete pod my-pod
-kubectl delete pod my-pod --force
-kubectl scale deployment my-deployment --replicas=0
-kubectl scale deployment/<your-deployment> --replicas=0

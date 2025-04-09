@@ -77,8 +77,6 @@ git cherry-pick <hashcode>,<hashcode>
 
 git log --pretty=format:'%h' -n 2
 
-git cherry-pick  be4d6db 1635800
-
 git log --pretty=format:'%H' -n 2
 
 git cherry-pick start..end
@@ -89,6 +87,11 @@ git cherry-pick start^..end
 If you want to cherry-pick all commits from branch dev.
 git cherry-pick ..dev
 
+git cherry-pick <commits>
+
+git cherry-pick  be4d6db 1635800
+
+git push
 
 merge-base: command to find where the branch was split from the original branch.
 -------------
@@ -167,14 +170,6 @@ git stash apply 0
 if merge conflict then resolved
 
 git commit and push
-
->>> Git Cherry-pick
----------------------
-Used to introduce particular commits from one branch within a repository onto a different branch.
-
-git cherry-pick <commit code>
-git push
-
 
 
 >>>Git Clean:

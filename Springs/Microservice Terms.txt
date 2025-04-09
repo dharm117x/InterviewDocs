@@ -1,0 +1,45 @@
+Glossary of Terms
+Microservices Architecture: A design approach to build a single application as a suite of small services, each running in its own process and communicating with lightweight mechanisms, often an HTTP-based API.
+
+Monolithic Systems: A traditional model of software design where all components of the application are tightly coupled and deployed as a single entity.
+
+Spring Boot: A project within the Spring framework that simplifies the development of new Spring applications through convention over configuration. It aims to reduce development time and increase productivity by providing defaults for code and annotation configurations.
+
+Spring Cloud: A collection of tools from the Spring framework designed to simplify some of the common patterns in distributed systems (e.g., configuration management, service discovery, circuit breaking).
+
+Service Orchestration: The process of integrating two or more services together to automate a particular workflow or a business process.
+
+Configuration Management: The practice of handling changes systematically so that a system maintains its integrity over time. In microservices, it often involves externalizing configuration from the application itself.
+
+RESTful Endpoints: Interfaces in a web service that adhere to the principles of Representational State Transfer (REST). They allow for interaction with services through standard HTTP methods such as GET, POST, PUT, DELETE.
+
+Service Discovery: The automatic detection of devices and services offered by these devices on a computer network. In microservices, it refers to the ability of services to find and communicate with each other without hard-coding their locations.
+
+Netflix Eureka: An AWS Service Registry for resilient mid-tier load balancing and failover, part of Netflix’s OSS suite of services. It’s commonly used in microservices architectures for service discovery.
+
+Spring Cloud Config: A Spring Cloud project that provides server and client-side support for externalized configuration in a distributed system.
+
+API Gateway: A server that acts as an entry point for clients to access different services in a microservices architecture. It provides a unified interface to a set of individual services.
+
+Circuit Breaker: A design pattern used in microservices to prevent a failure in one service from cascading to other services. It does this by “breaking” the circuit when failures reach a certain threshold, thus preventing further failures.
+
+Resilience4J: A fault tolerance library designed for Java8 and functional programming that helps build resilient applications by offering solutions for circuit breaking, rate limiting, bulkheading, and more.
+
+Spring MVC: A model-view-controller framework that provides an elegant solution for building web applications and RESTful (representational state transfer) web services.
+
+Synchronous vs. Asynchronous Communication: Synchronous communication requires the processes to operate at the same time, whereas asynchronous communication allows processes to operate independently without waiting for each other.
+
+REST Template: A Spring framework class that provides templates for client-side HTTP access. It simplifies the interaction with HTTP servers and enforces RESTful principles.
+
+Feign Client: A declarative web service client that makes writing web service clients easier and more concise. It’s part of the Spring Cloud Netflix project.
+
+WebClient: A non-blocking, reactive client for performing HTTP requests, part of the Spring WebFlux framework. It’s intended to replace the older RestTemplate.
+
+Spring Cloud Stream: A framework for building message-driven microservices. It provides support for persistent pub/sub semantics, consumer groups, and stateful partitions.
+
+Kafka: A distributed streaming platform that is used for building real-time data pipelines and streaming apps. It is often used in conjunction with Spring Cloud Stream for handling asynchronous message communication in microservices.
+
+Microservices
+Spring Boot
+Spring Cloud
+

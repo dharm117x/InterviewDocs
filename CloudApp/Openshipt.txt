@@ -1,3 +1,24 @@
+What is openshipt?
+> Is a fully managed Pass Service offered by ReadHat. its allow to building and deploying applicagtions.
+
+What is Operator?
+> Are custom managed Autoamted tools that managed comlex kubernetisapplciation operator extedn
+
+What is CRDs(Custom Resource definition)
+>Its extend kunbernetis API by defining custom resources.
+
+MCM(Multi-cluster management) support multi cloud deployment
+
+ConfigMaps allow to inject confiuration data into pods.
+
+BuildConfig define how open shift build an applcation using, docker file, S2I or Binary Inputs.Its autmate build process.
+
+DeploymentConfig support auto rollaback if deployment failed.
+
+NetworkPolicy ensure nw policy between pods.
+
+Tekton pipelines used to integrate external CI/CD pipeline
+
 Login to Openshit by CLI:
 ----------------------
 oc login -u system:admin
@@ -29,4 +50,9 @@ oc rollout history dc/simple-webapp-docker
 oc rollout undo dc/simple-webapp-docker
 
 oc rollout describe dc simple-webapp-docker
+
+------------------
+oc expose: Create route and view
+oc scale: Scale up or down no of replica in openshift deployemnt config
+oc admin: is used to administrative task to manage users, policies nodes and cluster level configuration.
 

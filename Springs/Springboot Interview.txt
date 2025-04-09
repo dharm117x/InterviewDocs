@@ -1,17 +1,42 @@
+Spring Boot 3.0 will require Java 17, 
+
 Spring boot QA
 ===============
 mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profile.active=dev
+
+Properties/yml file:
+--------------------
+bootstrap context that is the parent of the application context
+
+The bootstrap context is searching for a bootstrap.properties or a bootstrap.yaml file, 
+whereas the application context is searching for an application.properties or an application.yaml file.
+
+the configuration properties of the bootstrap context load before the configuration properties of the application context.
 
 >>Common Annotaion:
 
 @SpringBootApplication = @Configuration + @EnableAutoConfiguration + @ComponentScan
 
+@Configuration – Marks a class as a configuration class.
+
+@Bean – Declares a Spring-managed bean within a configuration class (@Configuration).
+
 @ConditionalOnBean Annotation Example
 Use when we want to define conditions based on the presence or absence of a specific bean:
 
-@RequestBody: binds method parameters to the request body.
+@RequestBody: Binds request payloads (JSON, XML) to Java objects.
+
 @ResponseBody:  is used to convert the domain object into HTTP request in the form of JSON.
 
+@PropertySource – Loads properties from external files.
+
+@Async – Enables asynchronous execution.
+
+@SpringBootTest – Loads the full application context for testing.
+
+@MockBean – Mocks a Spring bean for testing purposes.
+
+@WebMvcTest – Tests Spring MVC components.
 
 ->Commonly used Spring boot starters:
 spring-boot-starter: core starter, including auto-configuration support, logging, and YAML

@@ -1,0 +1,76 @@
+MQ installation on Windows:
+https://ibm.biz/mqdevwindows
+
+start /wait msiexec /i "C:\Users\username\Downloads\mqadv_dev930_windows\MQServer\MSI\IBM MQ.msi" /l*v "C:\Users\username\install.log" /q RESPONSE="C:\Users\username\Downloads\mqadv_dev930_windows\MQServer\Response.ini" TRANSFORMS="1033.mst" AGREETOLICENSE="yes" ADDLOCAL="Server"
+
+cd "C:\Program Files\IBM\MQ\bin"
+set path:
+setmqenv -s
+
+Show info:
+dspmqver
+
+crate queue managers:
+crtmqm QM1
+
+strmqm QM1
+
+
+Configure ur QM
+curl -o mq-dev-config.mqsc https://raw.githubusercontent.com/ibm-messaging/mq-dev-samples/master/gettingStarted/mqsc/mq-dev-config.mqsc
+
+create the MQ objects and add the folder location:
+runmqsc QM1<"D:\InterviewDocs\Messaging\IBMMQ\mq-dev-config.mqsc"
+
+endmqm -i QM1
+
+strmqweb
+
+https://localhost:9443/ibmmq/console/login.html
+Username: mqadmin Password: mqadmin
+admin/passw0rd
+
+
+dspmqweb status
+
+endmqweb 
+
+crtmqdir -a
+crtmqdir -s -f
+
+
+----------------
+Linux:	
+cd /opt/mqm/web/mq/samp/configuration
+cp basic_registry.xml /var/mqm/web/installations/Installation1/servers/mqweb
+
+mv mqwebuser.xml mqwebuser.xml.old
+mv basic_registry.xml mqwebuser.xml
+
+IN Windows:
+------------
+C:\Program Files\IBM\MQ\web\mq\samp\configuration
+C:\ProgramData\IBM\MQ\web\installations\Installation1\servers\mqweb
+File: mqwebuser.xml
+
+Testing:
+------------
+lusrmgr.msc
+
+Create a Windows group mqclient
+Create a Windows user app who is the member of the mqclient group. Set the password to passw0rd
+
+setmqaut -m QM1 -t qmgr -g mqclient +connect +inq
+setmqaut -m QM1 -n DEV.** -t queue -g mqclient +put +get +browse +inq
+
+set MQSERVER=DEV.APP.SVRCONN/TCP/localhost(1414)
+set MQSAMP_USER_ID=app
+
+cd C:\Program Files\IBM\MQ\tools\c\Samples\Bin64
+
+amqsputc DEV.QUEUE.1 QM1
+
+paswd:: passw0rd
+
+amqsgetc DEV.QUEUE.1 QM1
+

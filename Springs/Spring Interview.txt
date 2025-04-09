@@ -1,3 +1,5 @@
+Spring Framework 6.0, Spring requires Java 17+. 
+
 Spring QA
 ============
 The Spring IOC container is responsible for instantiating, configuring, and assembling the Spring beans. 
@@ -116,6 +118,7 @@ it will used With both @bean and @Component
 
 
 @Lookup:A method annotated with @Lookup tells Spring to return an instance of the method’s return type when we invoke it.
+EX: You need a new prototype bean instance inside a singleton bean.
 --------
 
 Example: If we required prottype bean inside singloton bean, then method markerd with @Lookup annotaion. 

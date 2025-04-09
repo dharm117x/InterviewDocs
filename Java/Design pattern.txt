@@ -1,0 +1,40 @@
+1. Creational Design Patterns (Object Creation Mechanisms)
+----------------------------------------------------------
+>>Factory Method Design Pattern
+This pattern is typically helpful when it's necessary to separate the construction of an object from its implementation.
+
+>>Abstract Factory Method Design Pattern
+Abstract Factory pattern is almost similar to Factory Pattern and is considered as another layer of abstraction over factory pattern.
+
+>>Singleton Method Design Pattern
+Of all, the Singleton Design pattern is the most straightforward to understand.
+
+>>Prototype Method Design Pattern
+Prototype allows us to hide the complexity of making new instances from the client.
+
+
+2. Structural Design Patterns (Class/Object Composition)
+---------------------------------------------------------
+>>Adapter Pattern
+The adapter design pattern is one of the structural design patterns and is used so that two unrelated interfaces can work together. 
+
+>>Proxy Pattern
+The proxy pattern provides a placeholder for another Object to control access to it. 
+
+3. Behavioral Design Patterns (Object Interaction & Responsibility)
+-------------------------------------------------------------------
+>> Observer Pattern
+An observer design pattern is useful when you are interested in the state of an Object and want to get notified whenever there is any change
+the Object that watches the state of another Object is called observer, and the Object that is being watched is called subject.
+
+>> Strategy Pattern
+Strategy pattern is used when we have multiple algorithms for a specific task, and the client decides the actual implementation be used at runtime
+
+>> Iterator Pattern
+It is used to provide a standard way to traverse through a group of objects.
+
+>> Template Method Pattern
+It is used to create a method stub and to defer some of the steps of implementation to the subclasses. 
+//template method, final so subclasses can't override
+Template method defines the steps to execute an algorithm and it can provide default implementation that might be common for all or some of the subclasses
+
