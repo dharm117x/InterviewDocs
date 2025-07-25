@@ -104,5 +104,19 @@ https://localhost:9002/rest/v2/swagger-ui.html.
 
 https://localhost:9002/authorizationserver/oauth/token?grant_type=password&username=admin&password=nimda
 
+------------------------------
+MAil setup
+----------------
+
+=============================
+ mail.from=test@hybris.de
+ mail.replyto=test@hybris.de
+ mail.smtp.server=smpt.gmail.com
+ mail.smtp.port=587
+
+ mail.smtp.user=
+ mail.smtp.password=
+ mail.use.tls=true
+
 
 

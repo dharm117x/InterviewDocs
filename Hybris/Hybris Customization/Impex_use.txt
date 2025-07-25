@@ -1,3 +1,15 @@
+Change delimiter and update dummy product.
+-------------------------------------------
+#% impex.setTargetFileDelimiter('|');
+#% impex.setTargetFileQuoteCharacter('"');
+
+INSERT_UPDATE CatalogVersion|catalog(id)[unique=true]|version[unique=true]
+                            |Default                |Staged
+
+INSERT_UPDATE Product|code[unique=true]|name|catalogVersion(catalog(id), version)|description
+                    |"prod-001"|"Product 1"|"Default:Staged"|"Generated product | number 1"
+                    |"prod-002"|"Product 2"|"Default:Staged"|"Generated product number 2"
+
 ##Update all item #############
 -------------------------------
 UPDATE Employee[batchmode=true];itemtype(code)[unique=true];name

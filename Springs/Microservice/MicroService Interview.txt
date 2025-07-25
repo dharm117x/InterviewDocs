@@ -1,0 +1,142 @@
+>>Microservices is an architectural style that structures an application as a collection of small, loosely coupled, and independently deployable services. 
+Each service represents a specific business capability and can be developed, deployed, and scaled independently
+
+Benifit of microservices:
+-----------------------
+1. independently deployable and decentralized
+2. scalability when and if needed
+3. Use of multiple coding languages
+4. Real-time load balancing
+
+Microservices Design Patterns:
+-------------------------------
+1. Decomposition Patterns
+-------------------------
+a. Decompose by Business Capability
+b. Decompose by Subdomain
+c. Decomposition by transaction:
+d. Strangler Pattern: Most use to incrementally transform a monolith application to microservices.
+
+2. Integration Patterns
+-----------------------
+a. API Gateway Pattern:  it grants a single entry point for a group of microservices by working as a reverse proxy between client apps and the services.
+b. Aggregator Pattern: It is used to collect pieces of data from various microservices and returns an aggregate for processing.
+c. Client-Side UI Composition Pattern
+
+3. Database Patterns
+---------------------
+a. Database per Service: each microservice uses his own database to persists the data and can access to data of others microservice using internal API or CQRS.
+b. Shared Database per Service: the same database is shared by several microservices. (For decomposition of monolethic app into micro service)
+c. Command Query Responsibility Segregation(CQRS): A solution to traditional database issues like data contention risk.
+d. Saga Pattern: It allows for multiple transactions by giving rollback opportunities by publish event using(Choreography, Orchestration approach).
+
+4. Observability Patterns
+-------------------------
+a. Log Aggregation
+b. Performance Metrics
+c. Distributed Tracing
+d. Health Check
+
+5. Cross-Cutting Concern Patterns
+---------------------------------
+a. External Configuration
+b. Service Discovery Pattern
+c. Circuit Breaker Pattern(its applied between services that are communicating synchronously)
+d. Blue-Green Deployment Pattern
+
+
+>>> 8 Core Components are Microservices Architecture.
+----------------------------------------------------
+Service Discovery.
+Load Balancer.
+API Gateway.
+Service Registry.
+Circuit Breaker.
+Service Monitoring.
+Service Orchestration.
+Configuration Server.
+
+>>>The three commonly used tools for Microservices are:
+------------------------------------------------------
+>>Docker: Docker is a tool that lets developers set up apps in lightweight, portable containers in an automated way. It helps put the microservices and their dependencies into containers
+
+>>Kubernetes: Kubernetes is a powerful tool for managing, scaling, and automating the launch of Docker containers.
+
+>>Spring Boot: is a framework built on top of the Spring framework that simplifies the development of Java applications, including microservices. 
+It provides a convention-over-configuration approach, auto-configuration, and embedded servers, allowing developers to quickly create production-ready microservices
+
+>>In Spring Boot, microservices can communicate with each other using various mechanisms:
+
+>>> Synchronous HTTP/REST: Microservices can communicate via HTTP using RESTful APIs, exchanging data in JSON or XML formats. 
+
+>>> Messaging: Asynchronous communication can be achieved using message queues or message brokers like RabbitMQ or Apache Kafka. 
+
+>>> Service Discovery: Microservices can use service discovery mechanisms like Netflix Eureka or Spring Cloud Consul to locate and communicate with other services dynamically. 
+
+>> Service registration and discovery is a mechanism that allows microservices to register themselves with a service registry and discover other services.
+ 
+Service registries maintain a registry of available services, including their network locations and metadata. 
+Service discovery clients can query the registry to obtain the necessary information to communicate with other services.
+
+>> Spring Cloud is a framework that provides a set of tools and libraries to simplify the development of microservices using Spring Boot. 
+It offers features like service discovery, client-side load balancing, distributed tracing, circuit breakers, and more
+pom dependency:<spring-cloud.version>2020.0.4</spring-cloud.version>
+
+
+>> Circuit breaking is a design pattern used to handle and prevent cascading failures in microservice architectures. It involves monitoring the calls to external services and, 
+if a certain threshold of failures is reached, tripping a circuit breaker to stop further requests and return a fallback response.
+n Spring Boot, circuit breaking can be implemented using libraries like Netflix Hystrix or Resilience4j.
+
+>> API Gateway is a service that acts as an entry point for all client requests in a microservices architecture. It sits between the clients and the microservices,
+routing requests, handling authentication/authorization, enforcing security, and providing additional cross-cutting concerns like rate limiting, logging, and monitoring.
+
+
+>>> Rest servive call in microservice:
+---------------------------------
+Sync call:
+1. Using RestTempalte : RestTemplate uses Java Servlet API and is therefore synchronous and blocking
+2. FinClinet(openfeign)
+
+Async call:
+--------------
+1. Using CompletableFuture feature and @EnableAsync annotaion and @Async methodlevel.
+2. WebClient: WebClient is asynchronous and will not block the executing thread while waiting for the response to come back
+3. Kafka message
+
+>>> Spring cloud features:
+----------------------------
+
+Distributed/versioned configuration
+Service registration and discovery
+Routing
+Service-to-service calls
+Load balancing
+Resilience4j-ratelimiter
+Circuit Breakers
+Distributed messaging
+Short lived microservices (tasks)
+Consumer-driven and producer-driven contract testing
+
+>>>Spring microserive new:3
+------------------------
+Spring cloud load blance instead of ribbon
+Spring cloud gatway instead of Zull
+Resilience4j instead Hystrix
+
+>>>  Debugging Guide:
+-------------------
+eureka.instance.prefer-ip-address=true
+OR
+eureka.instance.hostname=localhost
+
+>>> Best Tools for Microservices Backend Development
+-----------------------------------------------------
+1.  Sentry: open-source platform for error tracking and performance monitoring, allowing teams to quickly identify and resolve application issues.
+2.  Kubernetes: is a container composition system that handles the deployment, scaling, and management of containerized applications, providing resilience and adaptability for microservices architectures.
+3.  AWS Lambda: is a serverless computing platform that helps you to run code without having to deploy or manage servers. This allows for seamless microservice scalability.
+4.  Docker: is a platform and a tool that simplifies the method of creating, deploying, and managing applications using containers.
+5.  Kafka:  open-source distributed event streaming technology used to create real-time data pipelines and streaming applications.
+6.  Sentry: open-source platform for error tracking and performance monitoring, allowing teams to quickly identify and resolve application issues.
+7.  TablePlus:
+8.  Postman:
+9.  Spring

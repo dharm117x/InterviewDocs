@@ -1,0 +1,100 @@
+Converter, Populator, and ReversePopulator are part of the data transformation pattern used to convert between Model and DTO (Data Transfer Object), especially in facade and web service layers (OCC).
+
+
+A. Populator – Model → DTO
+
+public class ProductPopulator implements Populator<ProductModel, ProductData> {
+    @Override
+    public void populate(final ProductModel source, final ProductData target) {
+        target.setCode(source.getCode());
+        target.setName(source.getName());
+    }
+}
+
+B. ReversePopulator – DTO → Model
+
+public class ProductReversePopulator implements Populator<ProductData, ProductModel> {
+    @Override
+    public void populate(final ProductData source, final ProductModel target) {
+        target.setCode(source.getCode());
+        target.setName(source.getName());
+    }
+}
+
+
+1. Craete bean with populator class
+
+	<alias name="defaultCurrencyPopulator" alias="currencyPopulator"/>
+	<bean id="defaultCurrencyPopulator" class="de.hybris.platform.commercefacades.storesession.converters.populator.CurrencyPopulator"/>
+		
+2. Crate convertor with populators
+        // Exsting convertor
+	<bean id="abstractPopulatingConverter" class="de.hybris.platform.converters.impl.AbstractPopulatingConverter" abstract="true"/>
+
+	<bean id="searchResultStudentPopulator" class="com.dkshop.facades.custom.populators.SearchResultStudentPopulator"/>
+	
+	<bean id="searchResultStudentConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.dkshopocc.data.student.StudentData"/>
+		<property name="populators">
+			<list>
+				<ref bean="searchResultStudentPopulator"/>
+			</list>
+		</property>
+	</bean>
+
+3. Add additional populator in exsting convertor
+	<alias name="defaultB2BUnitConverter" alias="b2bUnitConverter"/>
+	<bean id="defaultB2BUnitConverter" parent="abstractPopulatingConverter" >
+		<lookup-method name="createTarget" bean="b2bUnitData"/>
+		<property name="populators">
+			<list>
+				<ref bean="b2bUnitPopulator"/>
+			</list>
+		</property>
+	</bean>
+
+	// Exsting beans
+	<bean id="modifyPopulatorList" class="de.hybris.platform.converters.impl.ModifyPopulatorList" abstract="true"/>
+	
+	<alias name="defaultB2BUnitApprovalPopulator" alias="b2bUnitApprovalPopulator" />
+	<bean id="defaultB2BUnitApprovalPopulator" class="de.hybris.platform.b2bapprovalprocessfacades.company.converters.populators.B2BUnitApprovalPopulator" >
+	</bean>
+
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="b2bUnitConverter"/>
+		<property name="add" ref="b2bUnitApprovalPopulator"/>
+	</bean>
+
+4. Custom java convertor
+public class ProductConverter extends AbstractConverter<ProductModel, ProductData> {
+    // Just inject populator
+}
+
+
+
+
+1. With Default parent converter
+
+   <bean id="defaultCartConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="de.hybris.platform.commercefacades.order.data.CartData"/>
+        <property name="populators">
+            <list>
+                <ref bean="cartPopulator"/>
+                <ref bean="pickupOrderEntryGroupPopulator"/>
+                <ref bean="deliveryOrderEntryGroupPopulator"/>
+                <ref bean="orderAppliedVouchersPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+2. Extend exsting convertor and add addtional populator
+
+   <alias name="b2bCartConverter" alias="cartConverter"/>
+   <bean id="b2bCartConverter" parent="defaultCartConverter">
+	<property name="populators">
+ 	  <list merge="true">
+		<ref bean="groupOrderEntryPopulator"/>
+	  </list>
+	</property>
+   </bean>
+

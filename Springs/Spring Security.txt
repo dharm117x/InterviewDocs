@@ -10,6 +10,101 @@ Type of auhentication:
 -> JWT
 -> Auth
 
+Basic Config:
+--------------
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+	    .csrf(csrf -> csrf.disable())        // Disable CSRF for APIs
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No sessions
+            )
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/public/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .anyRequest().authenticated()
+            )
+            .httpBasic(); // formLogin(Customizer.withDefaults()); // enables login form
+        
+        return http.build();
+    }
+}
+
+/public/** endpoints are open.
+/admin/**	Only ADMIN users
+/user/**	USER or ADMIN
+.anyRequest().authenticated()	All other requests require authentication (logged-in users)
+Basic Authentication (Authorization: Basic <base64> header) is used.
+
+
+Method Level security:
+----------------------
+@Configuration
+@EnableMethodSecurity  // (Spring Security 6+)
+public class SecurityConfig {
+    // your SecurityFilterChain bean etc.
+}
+
+
+Security Annotations on Methods
+-------------------------------
+Now you can annotate your service/repository/controller methods.
+Examples:
+
+@PreAuthorize	Checks before method execution using SpEL (most powerful)
+@PostAuthorize	Checks after method execution (rare but useful for some use cases)
+@Secured	Checks roles before execution (simple, not SpEL)
+@RolesAllowed	Like @Secured, from Jakarta EE, simple
+@PostFilter     removes unauthorized items from the result list automatically. 
+
+@Service
+public class ProductService {
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteProduct(Long productId) {
+        // only ADMINs can delete products
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public void updateProduct(Long productId, ProductDto productDto) {
+        // ADMIN or MANAGER can update
+    }
+
+    @PreAuthorize("#userId == authentication.principal.id")
+    public UserProfile getUserProfile(Long userId) {
+        // a user can only see their own profile
+    }
+}
+
+@Secured("ROLE_ADMIN")
+public void deleteUser(Long userId) {
+    // Only ADMIN can call this
+}
+
+@RolesAllowed({"ROLE_ADMIN", "ROLE_MANAGER"})
+public void createOrder(Order order) {
+    // Only ADMIN or MANAGER
+}
+
+@PostAuthorize("hasRole('ADMIN') or returnObject.owner == authentication.name")
+public Document getDocument(Long docId) {
+    return documentRepository.findById(docId)
+        .orElseThrow(() -> new EntityNotFoundException("Document not found"));
+}
+
+returnObject = the object returned by the method (UserProfile here).
+authentication.name = the current logged-in username.
+
+@PostFilter("filterObject.owner == authentication.name")
+public List<Document> getAllDocuments() {
+    return documentRepository.findAll();
+}
+
 
 
 Security attacks and soln

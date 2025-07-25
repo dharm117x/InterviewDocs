@@ -1,0 +1,48 @@
+
+
+
+
+# Macros / Replacement Parameter definitions
+$productCatalog=dkshopUSProductCatalog
+$productCatalogName=Dkshop US Product Catalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$classCatalogVersion=catalogversion(catalog(id[default='DkshopUSClassification']),version[default='1.0'])[unique=true,default='DkshopUSClassification:1.0']
+$classSystemVersion=systemVersion(catalog(id[default='DkshopUSClassification']),version[default='1.0'])[unique=true]
+$class=classificationClass(ClassificationClass.code, $classCatalogVersion)[unique=true]
+$supercategories=source(code, $classCatalogVersion)[unique=true]
+$categories=target(code, $catalogVersion)[unique=true]
+$attribute=classificationAttribute(code,$classSystemVersion)[unique=true]
+$unit=unit(code,$classSystemVersion)
+
+$clAttrModifiers=system='DkshopUSClassification',version='1.0',translator=de.hybris.platform.catalog.jalo.classification.impex.ClassificationAttributeTranslator,lang=EN
+
+INSERT_UPDATE ClassificationClass;$classCatalogVersion;code[unique=true];name[lang=en];allowedPrincipals(uid)[default='customergroup']
+;;HW;Hardware;
+;;SW;Software;
+
+# Links ClassificationClasses to Categories
+INSERT_UPDATE CategoryCategoryRelation;$categories;$supercategories
+;10001;HW
+;10001;SW
+
+# Insert Classification Attributes
+INSERT_UPDATE ClassificationAttribute;$classSystemVersion;code[unique=true];name[lang=en]
+;;RAM;Size in GB
+;;CPU;spped in GHz
+;;OS;Operating system
+
+INSERT_UPDATE ClassificationAttributeUnit;code[unique=true];symbol;unitType;name[lang=en];$classSystemVersion[unique=true]
+;MEMORY;GB;MEMORY;Gigabyte; 
+;CPUSPEED;Ghz;CPUSPEED;Gigaheartz; 
+;OSTYPE;OS;OSTYPE;Operating system
+
+INSERT_UPDATE ClassAttributeAssignment;$class;$attribute;position;$unit;attributeType(code[default=string]);multiValued[default=false];range[default=false];localized[default=true]
+;HW;RAM;0;MEMORY;;true;;
+;HW;CPU;1;CPUSPEED;;;;
+;SW;OS;2;OSTYPE;;;;
+
+$feature1=@RAM[$clAttrModifiers];
+$feature2=@CPU[$clAttrModifiers];
+$feature3=@OS[$clAttrModifiers];
+INSERT_UPDATE Product;code[unique=true];$feature1;$feature2;$feature3;$catalogVersion;
+;90001;16GB,8GB;2.5Ghz;Windows

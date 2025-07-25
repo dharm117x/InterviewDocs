@@ -82,7 +82,9 @@ The broker does not acknowledge the write due to some transient failure scenario
 The Producer should retry as it does not know whether the write succeeded or not.
 If the Producer is not idempotent and the original write did succeed then the message would be duplicated.
 
-Elimination of Message Duplication: The idempotent producer ensures that duplicate messages are prevented from being written to Kafka. 
+Elimination of Message Duplication: 
+The idempotent producer ensures that duplicate messages are prevented from being written to Kafka. 
+Use Manual offset commit after message processing.
 
 
 Ackoledgement stretegy:
@@ -118,9 +120,20 @@ Data read in order from low to Heigh offset within each partion.
 
 Kafa Consumer groups:
 ---------------------
+
 All consumer in application read data as customer group.
-Each customer in a group read from exclusive partions(don't allow multiple consumers per partions).
 In Kafak multiple customer group in same topic.
+Each customer in a group read from exclusive partions(don't allow multiple consumers per partions).
+Each partions is consume by only one customer group.
+
+Partion to consumer mapping:
+--------------------------    
+Topic have 6 pations:
+If group has:
+1. 2 consumer: each consumer gets 3 partion.
+2. 6 consumer: each gets 1 parion.
+3. 8 consumer: 2 consumer will be idel.
+
 
 
 Kafa Consumer Offset:

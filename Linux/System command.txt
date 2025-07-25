@@ -87,6 +87,7 @@ sudo systemctl stop tomcat
 systemctl --type=service --state=running
 systemctl --type=service --state=exited
 systemctl --type=service | grep docker
+systemctl show -p ExecStart docker.service
 
 sudo systemctl status jenkins
 sudo systemctl disable jenkins.service

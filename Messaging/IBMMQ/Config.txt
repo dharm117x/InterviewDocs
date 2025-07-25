@@ -1,0 +1,109 @@
+IBM MQ works a bit differently from Kafka — it’s message queue–based, not log-based
+
+application.yml
+spring:
+  jms:
+    pub-sub-domain: false
+  ibm:
+    mq:
+      queueManager: QM1
+      channel: DEV.APP.SVRCONN
+      connName: localhost(1414)
+      user: app
+      password: passw0rd
+      queue: DEV.QUEUE.1
+      dlq: SYSTEM.DEAD.LETTER.QUEUE
+
+
+1. Producer:
+
+@Service
+public class MQSender {
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
+    @Value("${spring.ibm.mq.queue}")
+    private String queue;
+
+    public void send(String message) {
+        jmsTemplate.convertAndSend(queue, message);
+        System.out.println("Sent: " + message);
+    }
+}
+
+
+2. Consumer:
+
+@Component
+public class MQReceiver {
+
+    @JmsListener(destination = "${spring.ibm.mq.queue}")
+    public void receive(String message) {
+        System.out.println("Received: " + message);
+    }
+}
+
+For Manual handling:
+
+@Configuration
+public class JmsConfig {
+
+    @Bean
+    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(ConnectionFactory connectionFactory) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setSessionAcknowledgeMode(Session.CLIENT_ACKNOWLEDGE); // Manual ack
+        return factory;
+    }
+}
+
+
+@Component
+public class MQConsumer {
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
+    @Value("${spring.ibm.mq.dlq}")
+    private String dlqName;
+
+    private final int MAX_RETRIES = 3;
+
+    @JmsListener(destination = "${spring.ibm.mq.queue}", containerFactory = "jmsListenerContainerFactory")
+    public void receive(Message message, Session session) throws JMSException {
+        String payload = ((TextMessage) message).getText();
+        int retryCount = 0;
+
+        while (retryCount < MAX_RETRIES) {
+            try {
+                System.out.println("🔁 Processing: " + payload);
+
+                // Simulate a failure condition
+                if (payload.contains("fail")) {
+                    throw new RuntimeException("Simulated failure");
+                }
+
+                // ✅ Success — ACK message
+                message.acknowledge();
+                System.out.println("✅ Success, message acknowledged.");
+                return;
+
+            } catch (Exception e) {
+                retryCount++;
+                System.out.println("⚠️ Retry #" + retryCount + " failed: " + e.getMessage());
+
+                try {
+                    Thread.sleep(1000); // backoff
+                } catch (InterruptedException ignored) {}
+            }
+        }
+
+        // 🪣 Max retries hit → send to DLQ
+        System.out.println("❌ Max retries exceeded. Sending to DLQ.");
+
+        jmsTemplate.convertAndSend(dlqName, payload);
+        session.recover(); // Message not acknowledged — will not be redelivered
+    }
+}
+

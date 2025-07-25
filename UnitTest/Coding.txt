@@ -1,0 +1,47 @@
+1. Basic Mock:
+
+@ExtendWith(MockitoExtension.class)
+class Test{	
+@Mock
+DataService dataService;
+@InjectMocks
+SomeBussinessImpl someBussiness;
+
+@Test
+public void test(){
+when(dataService.retriveAllData()).thenReturn(new int[] {55});
+int result = someBussiness.findGretestValue();
+assertEquals(55, result);
+}
+}
+
+
+1. Static mock:
+----------------
+public class DateUtils {
+    public static LocalDate today() {
+        return LocalDate.now();
+    }
+}
+
+public class ReportService {
+    public String generateReportDateString() {
+        return "Report Date: " + DateUtils.today().toString();
+    }
+}
+
+try (MockedStatic<DateUtils> mockedStatic = mockStatic(DateUtils.class)) {
+
+            // Define the static method's mock behavior
+            mockedStatic.when(DateUtils::today).thenReturn(LocalDate.of(2023, 12, 25));
+
+            // Create service and call method
+            ReportService service = new ReportService();
+            String result = service.generateReportDateString();
+
+            // Assert
+            assertEquals("Report Date: 2023-12-25", result);
+
+            // Verify static method was called
+            mockedStatic.verify(DateUtils::today);
+}

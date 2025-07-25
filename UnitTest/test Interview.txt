@@ -5,26 +5,9 @@ Junit 5 and Mocito 5
 
 Stubbing can be defined as configuring a mock and defining the actions to be taken when a specific method of the mock is invoked. Mockito offers two methods of stubbing, namely, when-thenReturn and doReturn-when methods
 
-class annotated with:
-@ExtendWith(MockitoExtension.class)
-class Test{	
-@Mock
-DataService dataService;
-@InjectMocks
-SomeBussinessImpl someBussiness;
-
-@Test
-public void test(){
-when(dataService.retriveAllData()).thenReturn(new int[] {55});
-int result = someBussiness.findGretestValue();
-assertEquals(55, result);
-}
-}
-
-
 
 Non Void Return Type:: Method return type is not void, we can use when().thenThrow():
-----------
+--------------------
 Ex::
  when(dictMock.getMeaning(anyString())).thenThrow(NullPointerException.class);
  assertThrows(NullPointerException.class, () -> dictMock.getMeaning("word"));
@@ -34,6 +17,28 @@ Void Return Type:: if our method returns void, we’ll use doThrow():
 Ex::
 doThrow(IllegalStateException.class).when(dictMock).add(anyString(), anyString());   
 assertThrows(IllegalStateException.class, () -> dictMock.add("word", "meaning"));
+
+doNothing().when(emailService).sendEmail(anyString(), anyString());
+verify(emailService).sendEmail("test@example.com", "Welcome!");
+doThrow(new RuntimeException("fail")).when(emailService).sendEmail(anyString(), anyString());
+
+
+For both void and non-void
+---------------------------
+doAnswer(invocation -> {
+    // Access arguments
+    String arg1 = invocation.getArgument(0);
+    String arg2 = invocation.getArgument(1);  
+    return null; // must return null for void methods
+}).when(emailService).sendEmail(anyString(), anyString());
+
+
+when(mathUtils.add(anyInt(), anyInt()))
+    .thenAnswer(invocation -> {
+        int a = invocation.getArgument(0);
+        int b = invocation.getArgument(1);
+        return a * b; // custom logic — multiplication instead of addition
+    });
 
 Exception as an Object:
 -------------------

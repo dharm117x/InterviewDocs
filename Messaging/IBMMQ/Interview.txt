@@ -1,0 +1,22 @@
+> What is IBM MQ?
+IBM MQ is a message-oriented middleware that enables asynchronous communication between systems using queues.
+
+> What are the main components of IBM MQ?
+Queue Manager(QM1)
+Queues (Local, Alias, Remote)
+Channels
+Listeners
+Messages
+
+> Difference between Local Queue and Remote Queue?
+
+Local Queue	        Remote Queue
+Exists on local QM	Points to queue on remote QM
+Used to store messages	Used to route messages
+
+> What is a Queue Manager (QMGR)?
+A Queue Manager is responsible for managing queues and facilitating message transfer.
+
+>How does IBM MQ handle message ordering?
+BM MQ guarantees FIFO (First-In, First-Out) message delivery per queue — as long as only one consumer is processing messages from that queue.
+

@@ -1,0 +1,37 @@
+1. User Management
+ - S-User id
+   Roles - 	CUSTOMER_SYS_ADMIN, - Log, Build, Deploy, Create users
+		CUSTOMER_DEV_ADMIN, - Log, Build, deploy
+		CUSTOMER_LOG_ADMIN, - Log
+
+1. Environemt
+  - Public endpoint (backoffice, Storefront)
+  - Filerring and restirction
+  - SSL certificate
+  - Default admin account (Env->Select Env (d1, s1, p1) -> Services- hcs_properties)
+
+1. Repositary
+ - Git repositry- Configure Git repo details
+
+1. Security:
+ - IP restrinction for site(backoffice, hac, etc)
+ - SSL certificate -  (craete with key and file)  attcahed those cert to backoffice, storefront url.
+ - Trusted certificate - 3rd party
+
+1. Build
+ - Create with branch and put name anything
+
+1. Deploy
+ - Deplloy to env like d1, s1, p1
+ - Data migration data- No Migrstion(If java, jsp change), Migrate(If Item.xml chaage), Initilize data(First time)
+ - Deployment Mode - Rolling update(slow node by node, No down time), Recreate(Fastest, with downtime)
+
+1. Monitor
+ - Kibana
+
+1. Maintaenence
+ - Env d1 - > basic config -> maintenenncePage
+
+5. Url re-write
+6. Data backup and move to anohter env
+

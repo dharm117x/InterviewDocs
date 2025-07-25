@@ -55,10 +55,155 @@ if your batch is full, which is the batch.size setting, before the end of the li
 batch.size=16 KB(deafult): any message that is bigger than the batch.size, will not be batched. So if you have a message that’s 100KB, 
 then it won’t be batched. The batch.size, is allocated per partition.
 
-
-
-
-
 >>USe offset Explorere to view kafka details:
 
+
+Kafak producer and consumer:
+------------------------------
+Producer: 
+1. With key: All messages with the same "my-key" will go to the same partition
+kafkaTemplate.send("my-topic", "my-key", "message payload");
+
+2. Without Key: Message got round robin based partion.
+kafkaTemplate.send("my-topic", "message payload");
+
+Avoid dupicate:
+spring.kafka.producer.properties.enable.idempotence=true
+Always use a unique key (like a business ID) per logical message:
+Store Sent Message IDs in database to avoid after crashed.
+
+3. With trancation ID:
+application.yml
+
+spring:
+  kafka:
+    producer:
+      properties:
+        enable.idempotence: true
+        acks: all
+        retries: 2147483647
+        max.in.flight.requests.per.connection: 5
+        transactional.id: tx-producer-1
+
+
+@Bean@Service
+public class MyProducer {
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Transactional
+    public void sendTransactionalMessage() {
+        kafkaTemplate.executeInTransaction(kt -> {
+            kt.send("my-topic", "key1", "value1");
+            kt.send("my-topic", "key2", "value2");
+            return true;
+        });
+    }
+}
+
+
+public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory) {
+    return new KafkaTemplate<>(producerFactory);
+}
+
+ 
+
+Cosnumer: @KafkaListener or Kafka’s consumer API with group ID, Kafka automatically assigns partitions to consumers in the group 
+application.yml
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: my-group
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+
+
+@KafkaListener(topics = "my-topic", groupId = "my-group")
+public void listen(String message) {
+    System.out.println("Received: " + message);
+}
+
+
+1. Static partion consumer
+
+@KafkaListener(
+    topicPartitions = @TopicPartition(
+        topic = "my-topic",
+        partitions = {"0", "2"}
+    ),
+    groupId = "my-group"
+)
+public void listenToPartition(String message) {
+    System.out.println("Received: " + message);
+}
+
+
+2. Manual offset commit:
+
+@KafkaListener(topics = "my-topic", groupId = "my-group", ackMode = "MANUAL")
+public void listen(String message, Acknowledgment ack) {
+    try {
+        process(message);
+        ack.acknowledge(); // commit after processing
+    } catch (Exception e) {
+        // Don't commit – message will be retried
+    }
+}
+
+Retryable Consumer:
+---------------------
+
+1. With Retryable Topic:
+
+@RetryableTopic(
+    attempts = 3,
+    backoff = @Backoff(delay = 2000),
+    dltTopicSuffix = "-dlt"
+)
+@KafkaListener(topics = "my-topic", groupId = "my-group")
+public void listen(String message) {
+    if (shouldFail(message)) {
+        throw new RuntimeException("Temporary issue");
+    }
+    System.out.println("Processed: " + message);
+}
+
+
+2. Manul approch with more controll:
+
+@KafkaListener(topics = "my-topic", groupId = "my-group")
+public void listen(String message, Acknowledgment ack) {
+    int maxRetries = 3;
+    int attempts = 0;
+    boolean success = false;
+
+    while (attempts < maxRetries) {
+        try {
+            process(message);
+            success = true;
+            break;
+        } catch (Exception e) {
+            attempts++;
+            try {
+                Thread.sleep(2000); // delay
+            } catch (InterruptedException ignored) {}
+        }
+    }
+
+    if (success) {
+        ack.acknowledge(); // commit offset
+    } else {
+        // log or send to manual DLQ
+    }
+}
+
+3. USing DLT configure:
+
+spring.kafka.listener.retry.dlt-topic-suffix: -dlt
 

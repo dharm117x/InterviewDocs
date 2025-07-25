@@ -1,0 +1,25 @@
+1. Batch update:
+--------------------
+int batchSize = 500;
+int start = 0;
+List<ProductModel> products;
+
+do {
+    products = flexibleSearchService.search(
+        "SELECT {pk} FROM {Product} WHERE {catalogVersion} = ?catalogVersion",
+        Map.of("catalogVersion", myCatalogVersion),
+        ProductModel.class,
+        batchSize,
+        start
+    ).getResult();
+
+    for (ProductModel product : products) {
+        product.setName(product.getCode() + "_UPDATED");
+    }
+
+    modelService.saveAll(products);
+    modelService.detachAll(); // Important for memory
+    start += batchSize;
+
+} while (!products.isEmpty());
+
