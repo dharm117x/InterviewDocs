@@ -1,10 +1,25 @@
 >> Create project myapp
 --------------------------
-ng new Lab1 --skip-install
+ng new Lab3 --skip-install
 
-mklink /d node_modules D:\programs\angular12\node_modules
-mklink /d node_modules D:\programs\angular14\node_modules
+mklink /J node_modules D:\programs\angular18\node_modules
 
+
+
+
+Example:
+cd /d d:\projects\springboot_angular\angular-frontend
+mklink /J node_modules D:\programs\angular12\node_modules
+
+Remove:
+rmdir <Link> (directory) or del <Link> (file).
+
+
+# then restart dev server
+ng serve
+ng serve --configuration production
+
+ng test
 
 Without folder:
 ng generate component login
@@ -15,6 +30,10 @@ ng g c login --skip-tests // without test file.  spec.ts
 ng g c register --inline-style // inline css no css file
 
 ng g c menue --inline-template // inline tempalte no html file
+
+env setup:
+------------
+ng generate environment
 
 
 With folders:
@@ -33,6 +52,7 @@ ng serve
 --http://localhost:4200
 
 ng serve --prot 9001
+ng serve --configuration production
 
 Genrate angluar item with CLI:
 ---------------------------------

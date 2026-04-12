@@ -1,0 +1,72 @@
+AWS storage:
+--------------
+Block storage:
+------------------
+Instance store
+EBS persistence storage
+EBS snapshot
+
+OBkect Storage:
+------------------
+Simple storage service -s3
+S3 storage types: Stnadrad, Stnadrad IA, INtelligent tiering.
+
+File storage: EFS
+-------------
+Sharing the storaage bettween multiple ec2 even in diffrent AZs
+ONly works in Liniux system
+
+AWS database
+----------------
+RDS: Relational database managed by amazon.
+Amazon Aurora- AWS -Mysql, Oracle, MariaDB, Postgress.
+Aurora Global database: to handle aws regin disater by Aurora Replica in Anotehr AWS region (by 5 secondary regions).
+IAM Database Authentication allow to IAM user to access database without creating seperate user in db. (Oracle not support)
+Encrypt an Encryped RDS DB by creating snapshot of unecrypted RDS DB , copy then encrypt then restore.
+RDS custom orcale for full cutomization.
+
+
+Aurora Cluster:
+-------------------
+Multi-AZ: 
+allow to same conntion string for any database, 
+Use synchronus relications
+
+Read Replica:
+Have own dns host so needs diff connection string. 
+used to perform analytical query to not impact main prod RDS database.
+Used Asynchronus replications.
+FOR RDS database upto 15 Read replica.
+
+Aurora serverless: 
+Used for need basiss.
+
+Amazon Aurora support both MySql and Postgress
+
+
+Non relationl database:
+---------------------
+Structure database - key-value pairs- support horizontal scaling.
+Amzon DynmoDB
+
+Neptune:
+-------------
+ 
+ElastiCache;
+-------------
+USed session store to same as sticky session for users, toretice users states.
+Using IAM Authentication to enhance security of ElastiCache Redis cluster.
+
+
+Additional services.
+-------------------
+ReadShift
+Document DB
+Neptune -Graphically
+QLDB
+BlockChain
+ElastiCache
+DynboDb Accelaraotor.
+RDS proxy: reduce filover time by 66% and keeps connection active.
+On demand backup: for Aurora database for longterm and custom audits.
+Aurora cloning: allow developer to perform testing on producion data.

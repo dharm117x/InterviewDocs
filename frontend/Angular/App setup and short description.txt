@@ -8,6 +8,8 @@ node -v
 npm --v
 ng --version
 npx node -v
+npx ng serve
+
 
 npm install -g typescript
 tsc -v
@@ -22,6 +24,7 @@ npm uninstall -g @angular/cli
 
 npm install -g @angular/cli@12.2.0
 npm install -g @angular/cli@18
+
 
 npm cache verify
 
@@ -44,7 +47,9 @@ yarn add lite-server --dev # or yarn
 
 # Inside package.json...
   "scripts": {
-    "dev": "lite-server"
+    "dev": "lite-server",
+    "build": "ng build --output-path=dist"
+
   },
 
 npm run dev
@@ -91,7 +96,10 @@ lite-server
 lite-server --baseDir="dist/project-name"
 
 ng add @angular/fire
+
 ng deploy
+
+ng add @angular/material
 
 
 ## Deploy on nginx server:

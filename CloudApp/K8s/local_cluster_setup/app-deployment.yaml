@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-app
+  template:
+    metadata:
+      labels:
+        app: springboot-app
+    spec:
+      containers:
+      - name: springboot-app
+        image: dharm117docker/springboot-app:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9001
+
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: dev
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:mysql://mysql-service:3306/mydb
+        - name: SPRING_DATASOURCE_USERNAME
+          value: appuser
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: apppass
+
+        volumeMounts:
+        - name: log-volume
+          mountPath: /app/logs
+
+      volumes:
+      - name: log-volume
+        hostPath:
+          path: /app/logs
+          type: DirectoryOrCreate

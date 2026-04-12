@@ -16,13 +16,23 @@ DELETE from composedtypes where InternalCode = 'B2BUnitActive'
 
 2. Update license 
 -------------------
-select * from users;
-
-UPDATE users set createdTS = NOW();
-or
 license.bat -show
 license.bat -temp CPS_SQL
 license.bat -delete CPS Y4989890650 CPS_SQL
+
+OR
+
+java -jar hsqldb-2.4.1.jar
+
+connect as stanadalone server.
+
+jdbc:hsqldb:file:D:\projects\hybris11-b2b\hybris\data\hsqldb\mydb
+sa
+
+select * from users;
+
+UPDATE users set createdTS = NOW();
+
 
 
 3. difference between custom-property and attributes

@@ -1,0 +1,58 @@
+1. General AWS Abbreviation
+
+| Abbreviation | Full Form                           |
+| ------------ | ----------------------------------- |
+| AWS          | Amazon Web Services                 |
+| EC2          | Elastic Compute Cloud               |
+| S3           | Simple Storage Service              |
+| RDS          | Relational Database Service         |
+| VPC          | Virtual Private Cloud               |
+| IAM          | Identity and Access Management      |
+| EBS          | Elastic Block Store                 |
+| ELB          | Elastic Load Balancer               |
+| ALB          | Application Load Balancer           |
+| NLB          | Network Load Balancer               |
+| EFS          | Elastic File System                 |
+| SNS          | Simple Notification Service         |
+| SQS          | Simple Queue Service                |
+| CloudWatch   | AWS CloudWatch (Monitoring Service) |
+| CloudTrail   | AWS CloudTrail (Logging Service)    |
+| Lambda       | AWS Lambda (Serverless Compute)     |
+| ECS          | Elastic Container Service           |
+| EKS          | Elastic Kubernetes Service          |
+| Fargate      | AWS Fargate (Serverless containers) |
+| Route 53     | DNS & Domain Management             |
+| CloudFront   | Content Delivery Network (CDN)      |
+| ACM          | AWS Certificate Manager             |
+| KMS          | Key Management Service              |
+| WAF          | Web Application Firewall            |
+| SSM          | Systems Manager                     |
+| Glue         | AWS Glue (ETL service)              |
+| Athena       | AWS Athena (SQL on S3)              |
+| EMR          | Elastic MapReduce                   |
+| DMS          | Database Migration Service          |
+| MQ           | Managed Message Queue (Amazon MQ)   |
+
+---------------------------------------------------------
+2. AWS DevOps Tools – Abbreviations & Full Forms
+
+| Abbreviation          | Full Form / Description                                                 |
+| --------------------- | ----------------------------------------------------------------------- |
+| **CodeCommit**        | AWS CodeCommit – Git-based source control                               |
+| **CodeBuild**         | AWS CodeBuild – Build and test automation                               |
+| **CodeDeploy**        | AWS CodeDeploy – Automates application deployment                       |
+| **CodePipeline**      | AWS CodePipeline – CI/CD orchestration                                  |
+| **CodeStar**          | AWS CodeStar – Unified interface for DevOps projects                    |
+| **CloudFormation**    | AWS CloudFormation – Infrastructure as Code (IaC)                       |
+| **OpsWorks**          | AWS OpsWorks – Configuration management using Chef/Puppet               |
+| **Elastic Beanstalk** | Platform as a Service (PaaS) for deploying applications                 |
+| **CloudWatch**        | AWS CloudWatch – Monitoring and logging                                 |
+| **CloudTrail**        | AWS CloudTrail – Tracks user activity and API usage                     |
+| **SSM**               | AWS Systems Manager – Automates OS patching, inventory, remote commands |
+| **ECR**               | Elastic Container Registry – Docker image repository                    |
+| **ECS**               | Elastic Container Service – Container orchestration                     |
+| **EKS**               | Elastic Kubernetes Service – Managed Kubernetes                         |
+| **Fargate**           | AWS Fargate – Serverless container hosting                              |
+| **IAM**               | Identity and Access Management – Role and user permission control       |
+| **KMS**               | Key Management Service – Manages encryption keys                        |
+

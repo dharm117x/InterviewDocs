@@ -1,0 +1,73 @@
+Kuberneties:Container Orchestration.
+=====================================
+Its is orchestratiaon tools its follow master worker architecture.
+Master node manage cluster and orchestrates operation, while woker node host the continer.
+
+Key componenets:
+Api Server
+Scheduler
+Contoller manager
+etcd
+kublet
+kube-proxy
+
+Feature: Auto scaling, Service Dicscovery, Load Balancing, Self healing, Zero down time.
+
+Service: Is an abstaqrction that define set of pods and policy which access by them with endpoints.
+Its can be exposed internally in cluster and externlly to the internate.
+
+Namespace: Its virtual cluster within Kubernatives cluster its useful or oraganising and isolating resources, managing access control and avoid naming colision.
+
+Labels: Its key-value pairs attached to objects like, pods, service and deployments
+Selectors: its used to query the object based on label.
+
+labels and selectores are used for grouping, organizing and selecting object for operation like: scaling, deployment and service discovery
+
+Rolling Update: Allow changes to applied on deployemnt with min downtime by gradually replacing old pods with new one.
+Rollback: revert to previous version of deployemnt in case of failure.
+
+ConfigMap: Is an API Onject used to store none-sensetive config data in key-value pair, It can be mounted as volumes or exposed as env variable in pods.
+
+Ingress: Is an APi obj that manage external access to service within k cluster, It provide http or https routing, load balancing, SSL termination,
+And name based virtual hosting.
+
+Horizontal pod autoscaler(HPA): Automatially adjust the number of replicas of deployment or replica set based on CPU utiliazation.
+   
+RBAC: is a security mechanisam that regulates access to kubernates based on roles and permission.
+
+ 
+Cloud Neutrel: its work any cloud plateform.
+
+Google kubeneties Engine(GKE) on Google cloud platform(GCF).
+
+Kubernet not deploy container directly its deploy in pod(unique IP address) and containes multiple container and share same resource as localhost.
+
+Kubernets cluster -> node(1-n) - > pod(1- n)
+Note: Genrally one node have one container and in some case also add another helper container.
+
+https://uklabs.kodekloud.com/courses/labs-kubernetes-for-the-absolute-beginners-hands-on/
+https://learn.kodekloud.com/user/dashboard
+
+dharm117.java@gmail.com
+Nokia117#
+Ex: Pod definition:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres
+  labels:
+    tier: db-tier
+spec:
+  containers:
+    - name: postgres
+      image: postgres
+      env:
+        - name: POSTGRES_PASSWORD
+          value: mysecretpassword
+
+{"apiVersion"=>"v1", "kind"=>"Pod", "metadata"=>{"name"=>"postgres", "labels"=>{"tier"=>"db-tier"}}, 
+"spec"=>{"containers"=>[{"name"=>"postgres", "image"=>"postgres", 
+"env"=>[{"name"=>"POSTGRES_PASSWORD", "value"=>"mysecretpassword"}]}]}}
+
+

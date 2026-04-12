@@ -1,0 +1,73 @@
+Debian CLI OS
+---------------
+https://saimei.ftp.acc.umu.se/debian-cd/current/amd64/iso-cd/debian-13.4.0-amd64-netinst.iso
+
+Install On VM
+select only- Standard system utilities
+-------------
+systemctl get-default
+
+If still have desktop remove by cli
+--------------------------------------
+sudo apt purge task-gnome-desktop gnome-shell -y
+Ctrl + Alt + F2
+
+sudo apt autoremove -y
+sudo apt purge gdm3 -y
+sudo apt autoremove --purge -y
+
+reboot
+sudo systemctl set-default multi-user.target
+
+
+Switch to root	su -
+Install sudo	apt install sudo
+Add user	usermod -aG sudo dharmendra
+
+
+Virtual BOX:
+--------------
+SSH connection:Bridge adapter-cable connect.
+----------------------------------------------
+ssh dharmendra@192.168.1.9
+
+Host to VM
+scp *.jar dharmendra@192.168.1.9:/home/dharmendra/docker/target/
+VM to HOST
+scp -r dharmendra@192.168.1.9:/home/dharmendra/apps/* .
+
+
+ssh -L 9001:localhost:9001 dharmendra@192.168.1.9
+
+
+SSH connection:NAT adapter-cable connect-port forwar rule added.
+-------------------------------
+ssh dharmendra@10.0.2.15 -p 2222
+
+sudo mount /dev/cdrom /media/cdrom
+cd /media/cdrom
+sudo sh VBoxLinuxAdditions.run
+
+Software install
+------------------------
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl wget git vim net-tools htop -y
+
+
+sudo apt install openjdk-17-jdk -y
+sudo apt install default-jre-headless -y
+java -version
+
+sudo apt install docker.io -y
+sudo systemctl start docker
+sudo usermod -aG docker $USER
+
+
+sudo apt update
+sudo apt install docker-compose -y
+docker-compose version
+
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+kubectl version --client

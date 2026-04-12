@@ -3,6 +3,15 @@
 docker login
 dharm117docker/Cybercom117#
 
+>>> Docker search:
+-------------------
+dcoker search openjdk // use only OK image.
+docker pull openjdk:22-jdk
+
+docker exec <container_name> ls -a
+docker cp taget/demo.jar <container-name>:/tmp
+
+
 >> Create Dockerfile
 --------------------
 FROM openjdk:11
@@ -17,8 +26,13 @@ COPY dist/deploy /usr/share/nginx/html
 
 >> Build dokcer image from docker file
 --------------------------------------
-docker build -t docker-demo .
+docker build -t springboot/docker-demo:v1 .
+
 docker build -f demofile -t docker-demo .
+
+docker push dharm117docker/springboot:tagname
+
+
 
 docker images
 ---------------
@@ -75,6 +89,7 @@ docker stop $(docker ps -a -f status=running -q)
 
 Login docker container:
 ---------------------
+docker exec <conatiner-name> ls -a
 docker exec -it <container_Name> /bin/bash
 docker container pause/unpause uid
 docker container inspect imageid
@@ -107,37 +122,4 @@ docker rm <container-id>
 docker rm $(docker ps -a -f status=exited -q)
 docker rm -f $(docker ps -a | awk '{print$1}')
 docker rm -v [container_name] // remove associate volume
-
-
-============================================================
-Docker compose for multi service in single file:
-------------------------------------------------
-demo.yml
-
-version: '3'
-
-services:
-
-  myapp1:
-    image: nginx
-    ports:
-      - "8090:80"
-    networks:
-      - demo-network
-
-  myapp2:
-   image: nginx
-
-networks:
-  demo-network:
-
-------------------------
-
-docker-compose up  --default file(docker-compose) to create and run
-
-docker-compose -f demo.yml up -d  -- (d detach run in background)
-
-docker-compose up -d --scale myapp2=4 (scale service)
-
-docker-compose down
 

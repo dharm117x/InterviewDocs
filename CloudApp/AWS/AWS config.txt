@@ -1,0 +1,34 @@
+Github Codespace setup:
+======================
+
+EC2:
+---------
+
+
+Access key:
+-----------------
+
+----------AWS----------
+aws --version
+
+aws confiure
+setup with access key and creadentail with us-east-1
+
+aws s3 ls
+
+----------Terrform-------
+terraform --version
+
+Got teerform fomlder and run belo command:
+--------------------------------------------
+AMI: ami-08a6efd148b1f7504
+SG: sg-0564146373b75e1cc
+
+
+terraform init
+terraform plan
+terraform apply
+terraform destroy
+
+
+

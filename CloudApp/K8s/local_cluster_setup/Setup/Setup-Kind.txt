@@ -1,0 +1,124 @@
+Host inside vm:  debian.mydebian.com
+
+Kind-Setup-k8s
+-----------------
+1. Kind setup:
+-----------------
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/latest/kind-linux-amd64
+
+chmod +x kind
+sudo mv kind /usr/local/bin/kind
+
+2. Crate simple cluster
+---------------------------
+kind create cluster
+kind create cluster --name dev-cluster
+
+kind get clusters
+
+kubectl get nodes
+
+3. Crate multi node cluster
+-----------------------------
+nano kind-config.yaml
+---------------------
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+  - role: worker
+  - role: worker
+
+kind create cluster --name dev-cluster --config kind-config.yaml
+
+4. Create cluster with port mapping
+------------------------------------
+nano kind-config.yaml
+----------------------
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+
+kind create cluster --config kind-config.yaml --name my-cluster
+
+5. Deployed simpl app
+----------------------
+Ingress Controller:
+-------------------
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+
+kubectl get pods -n ingress-nginx
+
+Deploy service:
+---------------
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl apply -f kind-ingress.yaml
+
+kubectl get all
+
+Access to host machine:
+-----------------------
+http://localhost:<NodePort> --inside VM
+
+http://<VM-IP>:<NodePort>   -- Inside Host
+http://192.168.1.9:30007
+
+Locahost dns setup:
+--------------------
+VM machine:
+--------------
+sudo nano /etc/hosts
+127.0.0.1 debian.mydebian.com
+
+HOst machine:
+-------------
+C:\Windows\System32\drivers\etc
+192.168.1.9 debian.mydebian.com
+
+5.1 Load image inside kind
+-------------------------------
+kind load docker-image my-app:latest
+
+6. Cleaned all Resources
+---------------------------
+1. Delete Kubernetes Resources (Inside Cluster)
+-----------------------------------------------
+kubectl delete ingress demo-ingress
+kubectl delete service springboot-service
+kubectl delete deployment springboot-deployment
+or
+kubectl delete all --all
+
+2. Delete Ingress Controller
+kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+
+3. Delete cluster
+kind get clusters
+
+kind delete cluster
+kind delete cluster --name my-cluster
+
+4. Check docekr contianer and remove:
+docker ps -a
+docker system prune -f
+docker system prune -a -f
+
+5. Clean kubeconfig (Optional)
+kubectl config get-contexts
+kubectl config delete-context kind-kind
+
+6. Cleaned everything:
+----------------------
+kind delete cluster && docker system prune -f
+
+

@@ -46,3 +46,4 @@ $feature2=@CPU[$clAttrModifiers];
 $feature3=@OS[$clAttrModifiers];
 INSERT_UPDATE Product;code[unique=true];$feature1;$feature2;$feature3;$catalogVersion;
 ;90001;16GB,8GB;2.5Ghz;Windows
+

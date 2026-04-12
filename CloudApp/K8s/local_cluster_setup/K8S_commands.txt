@@ -1,0 +1,87 @@
+---------My Docker repos---------
+dharm117docker/springboot-app:1.0
+imagePullPolicy: IfNotPresent / Never / Always
+
+
+Doker test
+---------------------
+docker build -t springboot-app:latest .
+docker run -d -p 9001:9001 --name boot-app springboot-app:latest 
+
+docker build -t springboot-app:latest .
+
+-----------Create---------------
+kubectl apply -f mysql-deployment.yaml
+kubectl apply -f mysql-service.yaml
+
+kubectl apply -f app-deployment.yaml
+kubectl apply -f app-service.yaml
+
+kubectl apply -f k3d-ingress.yaml
+
+
+kubectl get all
+kubectl get pods
+kubectl get svc
+kubectl logs -f <pod_name>
+
+kubectl port-forward svc/springboot-service 9001:9001
+Ctrl + C -stop prot forwarding.
+
+or
+minikube service springboot-service
+kubectl expose deployment springboot-service --type=NodePort --port=9001
+
+kubectl describe svc springboot-service
+
+---------Restart---------
+kubectl rollout restart deployment springboot-deployment
+
+
+-------------Delete-------------
+kubectl delete deployment springboot-deployment
+kubectl delete svc springboot-service
+
+kubectl get all
+
+-----------Debug-----------
+curl -H "Host: debian.mydebian.com" http://localhost
+
+kubectl get pods -o wide
+kubectl get pods -n kube-system
+kubectl get pods -n ingress-nginx
+kubectl get pods --show-labels
+
+kubectl get svc
+kubectl get svc springboot-service -o yaml
+kubectl get endpoints springboot-service
+
+kubectl get ingress
+kubectl get ingressclass
+
+kubectl logs -n ingress-nginx <nginx-pod>
+
+kubectl describe ingress app-ingress
+
+--------------Pods----------------
+kubectl rollout restart deployment <deployment-name>
+kubectl delete pods --all
+
+kubectl logs <pod-name>
+kubectl describe pod <pod-name>
+
+# Find pods
+kubectl get pods
+
+# Stop app safely
+kubectl scale deployment springboot-deployment --replicas=0
+
+# Start again
+kubectl scale deployment springboot-deployment --replicas=1
+
+kubectl rollout restart deployment springboot-deployment
+
+
+-----------Remove resource-------------
+docker system prune -f
+

@@ -24,10 +24,20 @@ sudo vi hosts
 
 >> Default editor:
 -----------------
-vi ~/.bashrc:
-add below line in last:
+vi ~/.bashrc
 
+>add below line in last:
 export EDITOR=vim
+
+>some more ls aliases
+alias ll='ls -latrh'
+#alias la='ls -A'
+#alias l='ls -CF'
+
+>Reload file to udpate change:
+
+source ~/.bashrc
+
 
 >>Crontab setup:
 ----------------

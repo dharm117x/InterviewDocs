@@ -1,0 +1,64 @@
+Helm: Package manager for kuberneties.
+
+To pacakge yaml files.
+and distribute them private and public repositery
+
+Helm charts:
+---------------
+Bundle of yaml files
+Create Helm charts with Helm and push them Helm repos
+
+Tempalting Engine:
+------------------
+
+template.yaml
+-------------
+apiVersion:v1
+kind: Pod
+container:
+	name: {{.values.name}}
+Spec:
+   container:
+ 	- name: {{.values.container.name}}
+ 	  iamge: {{.values.container.iamge}}
+ 	  port: {{.values.container.port}}
+
+
+values.yaml(default values)
+-----------
+name:my-app
+container:
+	name: my-app-container
+	image: my-ap-image
+	port: 9001
+	version: 1.0
+
+values-test.yaml(override values)
+----------------
+version:  2.0
+
+
+Helm Charts Structure:
+---------------------
+Directory structure:
+
+mychart/      --> Folder name of charts
+ cahrt.yaml	> Meta info about charts
+ values.yaml	>Values for tempated files
+ charts/	> chart dependency
+ tempalte/	> Actual template files
+
+
+helm install <chartname>
+ 
+
+value injection into tempalte file:
+------------------
+helm install --values=values-test.yaml <chartname>
+
+Relase mgmt:
+--------------
+
+
+
+

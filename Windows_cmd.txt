@@ -9,6 +9,14 @@ msconfig
 dfrgui
 lusrmgr.msc
 
+C:\Users\dharm>wmic
+wmic:root\cli>path softwareLicensingService get OA3xOriginalProductKey
+OA3xOriginalProductKey
+V8R3X-RN9CG-DQJK4-7B9C2-HH64C
+
+BackupProductKeyDefault
+BBHB3-GNRMD-48PJ9-QKYKJ-7FR72
+
 File move from one folder to another
 -------------------------------------
 FORFILES /D 01-01-2025 /C "cmd /c move @file ./2025"

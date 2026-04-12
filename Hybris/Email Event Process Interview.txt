@@ -30,8 +30,21 @@ Create Event and Listner:
 > ClusterawareEvent: Because SAP Commerce can run in a cluster, it's possible to send events from one node to a specific second node 
 or broadcast events  across all nodes of a cluster
 
-we ovverirde publish(int sourceNodeId, int targetNodeId) methods.
+public boolean publish(int sourceNodeId, int targetNodeId) {
+	//causes events to be published only to the source node of the event
+	return (sourceNodeId == targetNodeId);
+}
 
+public boolean canPublish(final PublishEventContext publishEventContext	{
+	Objects.requireNonNull(publishEventContext, "publishEventContext is required");
+    
+    //decide which cluster node should process that event
+    return publishEventContext.getSourceNodeId() != publishEventContext.getTargetNodeId();  //process on a different cluster node only
+   
+    //return publishEventContext.getSourceNodeId() < 5 && publishEventContext.getTargetNodeId() >= 5; //process on any event from any cluster node 1-4 to the cluster nodes 5-?
+    //return true; //allow processing on all cluster nodes
+
+}
  
 2. public class HelloWorldEventListener extends AbstractEventListener<HelloWorldEvent> {
    protected void onEvent(HelloWorldEvent helloWorldEvent) { 

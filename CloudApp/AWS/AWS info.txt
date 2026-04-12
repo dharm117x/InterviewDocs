@@ -1,0 +1,51 @@
+
+AWS-linux
+------------
+ifconfig
+
+yum install -y
+yum install -y httpd
+
+systemctl status/start/stop/enable httpd
+
+New EC2 Instance setup:
+------------------------
+
+
+
+Amazon s3
+-----------
+Update Ec2 instace role with s3full access.
+by: EC2-> Actions->Security->Modify IAM role.
+
+aws s3 ls
+aws s3 mb s3://dkbuket_1
+
+
+Add addtional EBS in exsting EC2 instance.
+
+Amazon EBS(Elastic Block system) volume create and mount
+--------------------------------------------------------
+aws 
+lsblk -e7 // Show storate volume in EC2 machine.
+
+1. Create new EBS volume via EC2 Dashbord.
+   Then Attched to EC2 instance Action-> attached volume
+2. Create File system on the EBS volume
+sudo mkfs -t ext4 /dev/xvdf
+sudo mkfs -t ext4 /dev/sdf
+
+3. Craete mount point for EBS volume.
+sudo mkdir /data
+4. Mount the EBS volume to mount point.
+sudo mount /dev/xvdf /data
+sudo mount /dev/sdf /data
+
+5. Make volume persist.
+sudo nano /etc/fstab
+
+add below line :
+/dev/xvdf /data ext4 default,nofail 0 2
+/dev/sdf /data ext4 default,nofail 0 2
+
+

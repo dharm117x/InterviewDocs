@@ -1,0 +1,96 @@
+AWS Priceing:
+------------------
+PAY AS U GO>
+PAY LESS WHEN U RESERVE>
+PAY LESS WITH VOLUME BASED DISCOUNTS>
+
+	
+Lambda Pricing:
+------------------
+
+EC2 Pricing:
+---------------
+> Free tier:
+-------------
+Compute: 750 hours of t2.micro or t3.micro (depending on region).
+Storage: 30 GB of EBS (Elastic Block Store) – SSD or Magnetic.
+Snapshots: 2 GB of storage for backups.
+Public IPv4: While the instance is free, AWS now charges $0.005/hour (~$3.60/month) for all public IPv4 addresses, even on the Free Tier.
+
+> After Free Tier:
+----------------------
+Instance Type 	Specs (vCPU/RAM)	Linux Price	Windows Price
+t3.micro	2 vCPU / 1 GiB	~$0.0104/hr	~$0.0162/hr
+t3.small	2 vCPU / 2 GiB	~$0.0208/hr	~$0.0324/hr
+
+EBS Storage: ~$0.08–$0.11 per GB-month (30GB = ~$3.00/month).
+Data Transfer: $0.00 for data coming in; ~$0.09 per GB for data going out to the internet (after the first 100GB/month free).
+EBS Snapshots: ~$0.05 per GB-month. 
+
+
+RDS Pricing:
+-----------------
+Compute: 750 hours of a Single-AZ db.t3.micro (or db.t4g.micro/db.t2.micro) instance.
+Storage: 20 GB of General Purpose SSD (gp2) storage.
+Storage Type: Only gp2 is free. Selecting gp3, Provisioned IOPS, or exceeding 20 GB will result in charges
+Multi-AZ: Enabling Multi-AZ deployment is not free
+Public IPv4: AWS now charges for all public IPv4 addresses. Even on free tier RDS, a public IP can cost ~$0.005/hour.
+Region Aggregation: The 750 hours are total across all regions. Running one instance in two different regions will consume your free hours in 15 days.
+
+
+S3 Pricinig:
+------------------
+> Free Tier Entitlements
+----------------------------
+Private Repositories: New customers get 500 MB of storage per month for one year.
+Public Repositories: All customers (new and existing) get 50 GB of "Always Free" storage per month.
+
+>After Free tier:
+---------------------
+Standard Storage: $0.10 per GB-month.
+Data Transfer IN: Always free.
+Data Transfer OUT (Private):
+ To other AWS services in the same region: Free.
+ To the Internet (tiered): Starts at $0.09 per GB for the first 10 TB/month.
+Data Transfer OUT (Public):
+ To any AWS Region: Free.
+ To the Internet (Authenticated with AWS account): Free up to 5 TB/month; then $0.09 per GB.
+ To the Internet (Anonymous): Free up to 500 GB/month. 
+
+
+
+Consolidate billing:
+--------------------------
+Availabe in organization
+
+AWS budgets:
+---------------
+Set threshhold for usages and costs.
+
+AWS Cost explorer:
+---------------------
+Visulise the cost and usages.
+
+AWS Billing:
+-------------
+
+AWS support plan:
+---------------------
+Develper           - Basic
+Bussiness          - Access trusted adviser
+Enterprise-On Ramp - Support TAM
+Enterprise 		   - Dedidated TAM
+
+
+AWS Marketplace:
+--------------------
+Catalogs that provides list of software runs on AWS.
+
+
+AWS Pricing calculator:
+----------------------------
+
+
+	
+
+

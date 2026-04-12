@@ -13,6 +13,13 @@ mvn jaxb2:help -Ddetail=true -Dgoal=xjc
 
 mvn help:describe -Dcmd=compile
 
+Multi module project setup:
+--------------------------
+root-fokder:
+mvn archetype:generate -DgroupId="com.project" -DartifactId=fullstack-parent -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+inside frontend:
+mvn archetype:generate -DgroupId=com.example -DartifactId=backend -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
 
 Java Setting:
 ----------------

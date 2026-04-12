@@ -1,0 +1,84 @@
+1. K3D Setup
+-----------
+curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+
+k3d version
+
+
+2. Cluster setup
+----------------
+2.1 Basic cluster
+--------------------
+k3d cluster create mycluster
+
+2.2 Create Cluster (WITH Port Mapping)
+-------------------------------------
+k3d cluster create mycluster -p "80:80@loadbalancer"
+
+k3d cluster create mycluster -p "80:80@loadbalancer" -p "443:443@loadbalancer"  -v ~/apps/logs:/app/logs
+
+k3d cluster create mycluster --agents 2
+
+
+--Disable internal ingress
+k3d cluster create mycluster -p "80:80@loadbalancer" --k3s-arg "--disable=traefik@server:0"
+
+k3d cluster create mycluster --agents 2 -p "80:80@loadbalancer"
+
+Its create with below setup:
+1 master + 2 worker nodes
+Exposes LoadBalancer on port 8081
+
+
+
+k3d cluster list
+
+
+3. Install Imgress controller (Optional)-use inbuild, ingressClassName: traefik 
+--------------------------------------------------------------------------------
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+or
+kubectl apply -f k3d-ingress-nginx.yaml
+
+kubectl get pods -n ingress-nginx
+kubectl get pods -n ingress-nginx -w
+kubectl get svc -n ingress-nginx
+
+
+4. Deploy service:
+-------------------------------
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl apply -f k3d-ingress.yaml
+
+
+kubectl get all
+
+
+
+http://<VM-IP>:8080
+
+
+Load local iamge:
+----------------
+docker build -t my-app:latest .
+k3d image import my-app:latest -c mycluster
+
+
+1. Delete Kubernetes Resources (Inside Cluster)
+---------------- 
+kubectl delete ingress demo-ingress
+kubectl delete service springboot-service
+kubectl delete deployment springboot-deployment
+or
+kubectl delete all --all
+
+2. Delete Ingress Controller
+kubectl delete -f  https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
+
+3. Delete cluster:
+---------------
+k3d cluster delete mycluster && docker system prune -f
+
+

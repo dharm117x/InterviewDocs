@@ -1,0 +1,186 @@
+A. In SAP Hybris, the items.xml file is crucial for defining data models (types, attributes, relations). 
+
+Basic files:
+-------------
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="items.xsd">
+    <atomictype class="de.hybris.platform.core.order.EntryGroup" extends="java.lang.Object" autocreate="true"/>
+    <collectiontypes>
+        <collectiontype code="ExampleCollection" elementtype="Item" autocreate="true" generate="false"/>
+    </collectiontypes>
+	
+    <enumtypes>
+    </enumtypes>
+    
+    <maptypes>
+    </maptypes>
+
+
+    <itemtypes>
+    </itemtypes>
+
+</items>
+
+
+
+| Attribute    | Description                                                              			 |
+| ------------ | ------------------------------------------------------------------------------------------------|
+| `code`       | Name of the type (e.g., `Book`)                                                                 |
+| `autocreate` | If `true`, Hybris will auto-create this type in the DB                                          | - Deafult - true
+| `generate`   | If `true`, Hybris will generate the Java class (BookModel.java)                                 | - Deafult - true
+| `type`       | Java type (e.g., `String`, `Integer`, `Date`, or another itemtype)                              | - Deafult - true
+| `qualifier`  | The attribute name (like a field name)                                    			 |
+| `optional`   | If `false`, the field is mandatory                                        			 |
+| `unique`     | Marks the attribute as a unique key (often used in primary keys or codes) 			 |
+| `localized`  | If `true`, this field supports i18n values                                			 |
+| 'search'     | Defines if this attribute is searchable by a FlexibleSearch.		   			 | - Deafult - true
+| 'initial'    | If 'true', the attribute will only be writable during the item creation.                        | - Deafult - false and write="false"
+| 'partOf'     | Defines if the assigned attribute value only belongs to the current instance of this type	 | - Deafult - false
+| `extends`    | Defines the class, which will be extended. Default is 'GenericItem'.				 |
+
+                                                               |
+A. Basic Item type (By extending type with "GenericItem")
+
+<itemtype code="Address"
+                  extends="GenericItem"
+                  jaloclass="de.hybris.platform.jalo.user.Address"
+                  autocreate="true"
+                  generate="true">
+            <deployment table="Addresses" typecode="23" propertytable="AddressProps"/>
+            <attributes>
+                <attribute autocreate="true" qualifier="original" type="Address">
+                    <modifiers read="true" write="false" initial="true" search="true" optional="true"/>
+                    <persistence type="property"/>
+                </attribute>
+	   </attributes>
+
+</itemtype>
+
+ 
+ attributes-sub elemnts - defaultvalue?, description?, persistence?, modifiers?, custom-properties?, model?
+ <persistence type="property"/>
+ <modifiers read="true" write="true" search="true" initial="true" optional="false" unique="true"/>
+ <custom-properties/>
+
+A.1 Catalog aware item types by defining custom-property.
+
+			<custom-properties>
+				<property name="catalogItemType">
+					<value>java.lang.Boolean.TRUE</value>
+				</property>
+				<property name="catalogVersionAttributeQualifier">
+					<value>"catalogVersion"</value>
+				</property>
+				<property name="uniqueKeyAttributeQualifier">
+					<value>"uid"</value>
+				</property>
+			</custom-properties>
+
+
+
+B. Relation bw items:
+-----------------------
+1. One to One (1-1 not suport as relation, we can use directly assigned in attribute)
+	<Itemtype code = "" .....>	
+	   <attributes>	
+		<attribute autocreate="true" qualifier="defaultPaymentAddress" type="Address" isSelectionOf="addresses">
+                    <persistence type="property"/>
+                    <modifiers read="true" write="true" search="false" optional="true"/>
+                </attribute>
+	   </attributes>
+	</Itemptype>
+
+2. One to Many
+
+       <relation code="User2Addresses" generate="true" localized="false" autocreate="true">
+            <sourceElement type="User" cardinality="one" qualifier="owner">
+                <modifiers read="true" write="false" initial="true" search="true" removable="false" optional="false"/>
+            </sourceElement>
+            <targetElement type="Address" cardinality="many" qualifier="addresses">
+                <modifiers read="true" write="true" search="true" optional="true" partof="true"/>
+                <custom-properties>
+                    <property name="condition.query">
+                        <value>"{original} is null"</value>
+                    </property>
+                </custom-properties>
+            </targetElement>
+        </relation>
+
+3. Many to Many
+
+	<relation code="StoresForCMSSite" generate="true" localized="false" autocreate="true">
+		<deployment table="Stores4Site" typecode="1092" />
+		<sourceElement qualifier="cmsSites" type="BaseSite" cardinality="many" />
+		<targetElement qualifier="stores" type="BaseStore" cardinality="many" collectiontype="list" ordered="true" />
+	</relation>
+		
+
+
+
+C. Atomic Types, Composed Types, Enum Types and MapType:
+
+<atomictype code="EmailAddress" class="java.lang.String" generate="false"/>
+
+<itemtype code="Customer" extends="User" autocreate="true" generate="true">
+    <attributes>
+        <attribute qualifier="email" type="EmailAddress"/>
+        <attribute qualifier="address" type="Address"/>
+    </attributes>
+</itemtype>
+
+<enumtype code="EncodingEnum" autocreate="true" generate="true" dynamic="true"/>
+
+<enumtype code="FeedbackRating" autocreate="true" generate="true">
+    <value code="GOOD"/>
+    <value code="AVERAGE"/>
+    <value code="BAD"/>
+</enumtype>
+
+<maptype code="localized:java.lang.String"
+                 argumenttype="Language"
+                 returntype="java.lang.String"
+                 autocreate="true"
+                 generate="false"/>
+
+
+| Use Case                            | Type to Use       |
+| ----------------------------------- | ----------------- |
+| A basic value like name or price    | **Atomic Type**   |
+| A full entity like product or order | **Composed Type** |
+| A fixed list of options like status | **Enum Type**     |
+
+
+
+D. Update exsting item with addtional attribute(should be autocreate="false" generate="false")
+
+	<itemtype code="AbstractOrder" autocreate="false" generate="false">
+		<description>Extending AbstractOrder type with additional attributes.</description>
+			<attributes>
+				<attribute qualifier="purchaseOrderNumber" type="java.lang.String">
+					<description>PO number is a string up to 255 chars.</description>
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="paymentType" type="CheckoutPaymentType">
+					<description>Payment type for Checkout summary</description>
+					<persistence type="property"/>
+					<defaultvalue>em().getEnumerationValue("CheckoutPaymentType","CARD")</defaultvalue>
+				</attribute>
+			</attributes>
+	</itemtype>
+
+E. Create new Item Type by extending with exsting one (With New tables by defining deployment).
+
+  <itemtype code="User"
+                  extends="Principal"
+                  jaloclass="de.hybris.platform.jalo.user.User"
+                  autocreate="true"
+                  generate="true">
+            <deployment table="Users" typecode="4" propertytable="UserProps"/>
+            <attributes>
+                <attribute autocreate="true" qualifier="currentTime" type="java.util.Date">
+                    <modifiers read="true" write="false" search="false" optional="false"/>
+                    <persistence type="dynamic"/>
+                </attribute>
+	    </attributes>
+ </itemtype>
+
+

@@ -1,0 +1,23 @@
+AWS CloudWatch:
+--------------------
+MOnitoring service: Provide insight of resource in real time.
+CPU utilizaation
+Memory moniter
+Alarm
+
+Cloud trail:
+-------------------
+Tracking user activity(Who, When ann permission change) and API trace.
+Security, Trouble and compliance
+
+Trust Advisor:
+---------------
+Provide real time guide lines.
+
+Cost optimization.
+PErformace
+Security.
+Server limit
+Operatiooonal excellence
+Resilience
+

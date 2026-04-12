@@ -1,0 +1,72 @@
+on AWS
+------------
+Tools setup on Ec2 instance:
+----------------------------
+ON CLI command:
+---------------
+1. Create Ec2 instance and add admin role
+
+Launch new Ubuntu VM using AWS Ec2 ( t2.micro )
+
+Connect to machine and install kubectl using below commands
+curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin
+kubectl version --short --client
+
+Install AWS CLI latest version using below commands
+sudo apt install unzip
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+aws --version
+
+Install eksctl using below commands
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl version
+
+
+2. EKS setup by client ec2 instance (Paid service)
+
+2.1 Crate cluser:
+
+eksctl create cluster --name dk-cluster-1 --region us-east-1 --node-type t2.medium  --zones us-east-1a,us-east-1b
+
+kubectl get nodes
+kubectl get pods
+
+Ex:
+kubectl create deployment my-nginx --image=nginx:latest
+kubectl expose deployment my-nginx --port=80 --type=LoadBalancer
+
+kubectl get pod,svc
+
+expose url:
+--------------
+http://ad9e5da8dc836446d8786ba7bce42db6-403983596.us-east-1.elb.amazonaws.com/
+
+
+3. Delete cluster:
+
+eksctl delete cluster --name dk-cluster-1 --region us-east-1
+
+
+
+
+on GCP:
+-------
+https://cloud.google.com/free/
+https://cloud.google.com/kubernetes-engine/docs/
+
+Step1: Navigate to kubernetis
+Step2: Craete kubernetis cluster with basic config
+Step3: Connect cluster using connect button of cluster open google cloud shell.
+	git clone https://github.com/kodekloudhub/example-voting-app.git
+
+Step4: Deploy pods and services on gcp
+Step5: Naviagete to Service and ingress in Kubernet engine to show all details.
+
+
+
+

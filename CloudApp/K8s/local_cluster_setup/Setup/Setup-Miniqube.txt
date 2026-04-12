@@ -1,0 +1,59 @@
+1. Minikube setup
+-----------------------
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+minikube start --driver=docker # required 4gb space.
+
+minikube start --memory=2048 --cpus=2 --driver=docker
+
+minikube start --memory=2560 --driver=docker
+
+minikube stop
+minikube status
+
+minikube image build -t springboot-app:latest .
+minikube image load springboot-app:latest
+
+minikube service springboot-service --expose inside vm os
+
+minikube addons enable ingress
+kubectl get pods -n ingress-nginx
+
+minikube logs
+
+minikube ip
+
+minikube delete
+
+
+Build iamge inside minikube
+-----------------------------
+eval $(minikube docker-env)
+docker build -t springboot-app:latest .
+
+Chaking iamge inside miniqube:
+----------------------------
+minikube ssh
+docker images
+
+---------Access Service------
+Pod → Service → Minikube → VM → Windows Host
+---------------------------------------------
+kubectl get svc
+minikube service springboot-service --url
+http://192.168.49.2:30007
+
+// works only inside vm
+sudo iptables -t nat -A PREROUTING -p tcp --dport 30007 -j DNAT --to-destination 192.168.49.2:30007
+
+minikube ip
+http://<minikube-ip>:<nodeport>
+
+// Works in host machine
+kubectl port-forward svc/springboot-service 9001:9001 --address 0.0.0.0
+http://192.168.1.9:9001
+
+
+
+

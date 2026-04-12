@@ -1,0 +1,84 @@
+AWS-
+-----------
+A compnay has a 5 accounts (prod, stage, dev, security, logging) Under single billing account.
+
+AWS Cloud
+---------------
+private - Individual infra 
+hybris - Cloud + private
+public
+
+Service Types:
+-----------------------
+Iaas - Infra as a service (EC2)
+Pass - Platforma as service (AWS lamada)
+sass -Softearew as service
+Cass - Code as a service- Tools that used for cloud architedets and bussiness to creatae cloud naticve apps or migrarte native app to cloud.
+Iac  -  Infra as code (Cloud Formation).
+
+
+AWS Global:
+-------------------
+AWS (Data center) - > AZ (Availbaleity zone) -> Region
+
+Datasenter  - Where actual server resides.
+AZ 			- Collections of datacenters
+Regions 	- Collection of AZ min-3
+
+Edge location: Small DC, Used to site optimized to conteent delivery and reduce latency
+----------------
+CloudFRont(CDN) Code content delivery.
+Route53 (DNS) REsponse form nearest edge locaion.
+Global Accelarator
+Lamada
+
+AWS Outputs:
+-----------------
+Its fully managed hybris cloud servoce that brings infa, services, APIs, tools to your on-primase data center , co -location space, edge locations.
+
+EC2: VM
+-------------
+Compute optimized, Memory optimized, Accelarated computing, Storage optimized.
+
+
+Pricing:
+------------------
+On demand  - short term.
+Spot       - Cost effi and flexible.
+Reserved   - Bii discount, for 1-3 years.
+Compute saving plan:
+Dedicate instance - EC2 run in vpc
+Dedicate Host - Physical server with EC2.
+
+Auto scaling:
+-----------------
+
+
+ELB: Elastice load balancing:
+------------------
+ 
+SNS:Simple notifiation service 
+------------
+
+SQS:Simple Queue Service
+-----------
+
+Lamada: Serveless computing:
+----------------------
+Server are managed by AWS.
+pay only for comute time.
+
+AWS contianer service:
+-----------------------
+AWS Fargate: is a serveless compute engine for containers.
+
+ECS: Elastic container service.
+
+EKS: Elastic kenrneties service
+
+-------------------
+
+
+ 
+
+

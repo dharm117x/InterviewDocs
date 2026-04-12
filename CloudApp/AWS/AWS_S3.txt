@@ -1,0 +1,29 @@
+AWS S3: Used for storage 
+---------------------
+Replication policy:
+1. Must enable versoning
+2. Cross-Region Replication (CRR) -used for low latency, replication acrros accounts.
+3. Same Region Replication (SRR) - used for log aggreagaon
+4. Bucket can be in diff aws accounts
+5. Copy is Async
+6. Must have proper IAM permission.
+ 
+
+Delete:
+----------
+1. Eanble to versoning to rollback
+2. Destination s3 bucket set by replication rule.
+3. Delete versin file, not undone.
+
+
+Storage Classes:
+---------------
+1. S3 Standred - Genral purpose.
+2. S3 Standred-infrequent Access IA
+3. S3 One Zone-infrequent Access
+4. S3 Glacier Instant Retrival
+5. S3 Glacier Flexible Retrival
+6. S3 Glacier Deep Archive
+7. S3 Intelligent Tiering.
+
+

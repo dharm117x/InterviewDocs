@@ -1,0 +1,63 @@
+AWS tips and tools:
+--------------------
+AWS EFS:
+
+AWS SQS:
+
+AWS SNS:
+
+AWS lambda:
+
+AWS PVC:
+
+AWS RDS:
+
+AWS S3:
+
+AWS EC2:
+
+AWS EFS:
+
+AWS EBS:
+
+AWS ELB:
+
+AWS Trusted advisor:
+
+AWS CloudTrail:
+
+AWS CloudWatch:
+
+AWS cloudFront:
+
+AWS ELasiCache:
+
+AWS Batch:
+
+AWS Direct Connect:
+
+AWS Elastic Beanstalk:
+
+AWS Gateway:
+- Transit Gateway
+
+AWS Global Accelrator:
+
+AWS Cost Explorer:
+
+
+
+====================================
+
+Amazon Athena:
+
+Amazon Inspector:
+
+Amazon Aurora:
+
+Amazon DynmoDB:
+
+Amazon DocumentDB:
+
+Amazon Connect:
+

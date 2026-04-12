@@ -1,0 +1,51 @@
+AWS Priceing:
+------------------
+PAY AS U GO>
+PAY LESS WHEN U RESERVE>
+PAY LESS WITH VOLUME BASED DISCOUNTS>
+
+	
+Lambda Pricing:
+------------------
+
+EC2 Pricing:
+---------------
+
+S3 Pricinig:
+------------------
+
+Consolidate billing:
+--------------------------
+Availabe in organization
+
+AWS budgets:
+---------------
+Set threshhold for usages and costs.
+
+AWS Cost explorer:
+---------------------
+Visulise the cost and usages.
+
+AWS Billing:
+-------------
+
+AWS support plan:
+---------------------
+Develper           - Basic
+Bussiness          - Access trusted adviser
+Enterprise-On Ramp - Support TAM
+Enterprise 		   - Dedidated TAM
+
+
+AWS Marketplace:
+--------------------
+Catalogs that provides list of software runs on AWS.
+
+
+AWS Pricing calculator:
+----------------------------
+
+
+	
+
+
