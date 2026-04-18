@@ -1,24 +1,9 @@
 kubectl version --client
 kubectl version --client --output=yaml
 
-install minicube on local machine.
------------------------------
-minikube start
-minikube start --no-vtx-check
-minikube ssh -v 7
-ssh -i ~/.minikube/machines/minikube/id_rsa docker@192.168.59.100
-
-minikube kubectl -- get po -A
-minikube dashbord
-
 kubectl version
 kubectl cluster-info
 
-
-minikube service my-nginx
-------------------
-
-kubectl version
 kubectl get nodes -o wide
 
 kubectl run nginx --image nginx
@@ -88,6 +73,11 @@ kubectl get all
 kubectl get svc
 
 kubectl get deployments,svc
+
+Intercitive mode to access inside pods:
+-------------------------------------
+kubectl exec -it <pod-name> -- /bin/bash
+
 
 -------------------Microservice----------docker run --links
 kubectl get endpoints

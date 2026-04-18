@@ -26,6 +26,12 @@ sudo vi hosts
 -----------------
 vi ~/.bashrc
 
+removed visual mode:
+vim ~/.vimrc
+set mouse=
+
+
+
 >add below line in last:
 export EDITOR=vim
 

@@ -1,0 +1,42 @@
+OS-VM connect:
+-----------------
+ssh dharmendra@192.168.1.9
+
+ssh -i Ec2_keyPair.pem ec2-user@100.53.11.191
+
+scp -i Ec2_keyPair.pem *.jar ec2-user@3.80.140.48:/home/ec2-user/docker/target/
+
+
+ON - VM Machine
+-----------------
+kubectl port-forward svc/mysql-service 3307:3306
+mysql -h 127.0.0.1 -u root -p
+
+IN- Side pods
+----------------
+kubectl exec -it <pod-name> -- mysql -u root -p
+kubectl exec -it mysql-deployment-8ccbf8579-2qmd5 -- mysql -u root -p
+
+
+
+App-Deploy and Service
+------------------------
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+
+Re-start pod:
+kubectl delete pod <pod-name>
+or
+kubectl rollout restart deployment <deployment-name>
+or
+kubectl scale deployment <deployment-name> --replicas=0
+kubectl scale deployment <deployment-name> --replicas=<original-count>
+
+Get Info
+----------
+kubectl get all
+kubectl get pods,svc
+
+
+
+

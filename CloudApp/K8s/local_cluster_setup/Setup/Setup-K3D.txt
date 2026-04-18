@@ -13,12 +13,11 @@ k3d cluster create mycluster
 
 2.2 Create Cluster (WITH Port Mapping)
 -------------------------------------
+k3d cluster create mycluster -p "80:80@loadbalancer" -p "443:443@loadbalancer"  -p "3307:30036@server:0"  -v ~/apps/logs:/app/logs
+
+
 k3d cluster create mycluster -p "80:80@loadbalancer"
-
-k3d cluster create mycluster -p "80:80@loadbalancer" -p "443:443@loadbalancer"  -v ~/apps/logs:/app/logs
-
 k3d cluster create mycluster --agents 2
-
 
 --Disable internal ingress
 k3d cluster create mycluster -p "80:80@loadbalancer" --k3s-arg "--disable=traefik@server:0"
@@ -29,7 +28,9 @@ Its create with below setup:
 1 master + 2 worker nodes
 Exposes LoadBalancer on port 8081
 
-
+Port forward:
+----------------
+kubectl port-forward svc/mysql-service 3307:3306
 
 k3d cluster list
 
@@ -54,7 +55,9 @@ kubectl apply -f k3d-ingress.yaml
 
 kubectl get all
 
-
+kubectl get pods --watch
+kubectl exec -it <pod-name> -- /bin/bash
+kubectl exec -it myapp-springboot-app-68ff864d89-tglw4 -- /bin/bash
 
 http://<VM-IP>:8080
 
@@ -77,8 +80,10 @@ kubectl delete all --all
 kubectl delete -f  https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
 
-3. Delete cluster:
+3. Stop/Delete cluster:
 ---------------
+k3d cluster start/stop/edit mycluster
+
 k3d cluster delete mycluster && docker system prune -f
 
 

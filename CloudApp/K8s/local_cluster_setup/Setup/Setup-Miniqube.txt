@@ -9,8 +9,16 @@ minikube start --memory=2048 --cpus=2 --driver=docker
 
 minikube start --memory=2560 --driver=docker
 
+minikube start --no-vtx-check
+minikube ssh -v 7
+ssh -i ~/.minikube/machines/minikube/id_rsa docker@192.168.59.100
+
 minikube stop
 minikube status
+
+
+minikube kubectl -- get po -A
+minikube dashbord
 
 minikube image build -t springboot-app:latest .
 minikube image load springboot-app:latest

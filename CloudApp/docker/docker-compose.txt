@@ -27,5 +27,6 @@ docker-compose -f demo.yml up -d  -- (d detach run in background)
 
 docker-compose up -d --scale myapp2=4 (scale service)
 
-docker-compose down
+docker-compose down -v
+
 
