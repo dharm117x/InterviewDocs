@@ -1,0 +1,11 @@
+environments:
+  dev:
+    values:
+      - environments/dev.yaml
+---
+releases:
+  - name: springboot-app
+    namespace: default
+    chart: ./charts/springboot-app
+    values:
+      - environments/dev.yaml

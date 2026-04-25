@@ -13,20 +13,18 @@ k3d cluster create mycluster
 
 2.2 Create Cluster (WITH Port Mapping)
 -------------------------------------
-k3d cluster create mycluster -p "80:80@loadbalancer" -p "443:443@loadbalancer"  -p "3307:30036@server:0"  -v ~/apps/logs:/app/logs
+mkdir -p ~/apps/mysql_data ~/apps/logs
+
+k3d cluster create mycluster \
+  -p "80:80@loadbalancer" \
+  -p "443:443@loadbalancer" \
+  -p "3307:30036@server:0" \
+  -v ~/apps/logs:/app/logs@server:0 \
+  -v ~/apps/mysql_data:/var/lib/mysql@server:0
 
 
-k3d cluster create mycluster -p "80:80@loadbalancer"
 k3d cluster create mycluster --agents 2
 
---Disable internal ingress
-k3d cluster create mycluster -p "80:80@loadbalancer" --k3s-arg "--disable=traefik@server:0"
-
-k3d cluster create mycluster --agents 2 -p "80:80@loadbalancer"
-
-Its create with below setup:
-1 master + 2 worker nodes
-Exposes LoadBalancer on port 8081
 
 Port forward:
 ----------------
@@ -61,6 +59,12 @@ kubectl exec -it myapp-springboot-app-68ff864d89-tglw4 -- /bin/bash
 
 http://<VM-IP>:8080
 
+Flush DNS Cache:
+ipconfig /flushdns
+
+By pass dns:
+curl -H "Host: debian.mydebian.com" http://192.168.1.3
+
 
 Load local iamge:
 ----------------
@@ -86,4 +90,7 @@ k3d cluster start/stop/edit mycluster
 
 k3d cluster delete mycluster && docker system prune -f
 
+4. Uninstall
+--------------
+sudo rm /usr/local/bin/k3d 
 

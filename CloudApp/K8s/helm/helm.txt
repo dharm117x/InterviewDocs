@@ -10,6 +10,10 @@ helm upgrade myapp . -f values-dev.yaml
 
 helm list
 
+helm plugin list
+
+
+
 helm delete myapp
 
 helm uninstall myapp

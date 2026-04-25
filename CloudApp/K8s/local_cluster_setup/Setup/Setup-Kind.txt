@@ -122,3 +122,6 @@ kubectl config delete-context kind-kind
 kind delete cluster && docker system prune -f
 
 
+7. Uninstall Kind
+--------------------
+sudo rm /usr/local/bin/kind 

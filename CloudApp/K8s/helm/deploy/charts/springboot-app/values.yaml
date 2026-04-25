@@ -1,0 +1,27 @@
+replicaCount: 2
+
+image:
+  repository: dharm117docker/springboot-docker
+  tag: "1.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 9001
+
+ingress:
+  enabled: true
+  className: traefik
+  host: debian.mydebian.com
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+
+env:
+  SPRING_PROFILES_ACTIVE: test

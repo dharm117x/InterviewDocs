@@ -29,7 +29,7 @@ Virtual BOX:
 --------------
 SSH connection:Bridge adapter-cable connect.
 ----------------------------------------------
-ssh dharmendra@192.168.1.9
+ssh dharmendra@192.168.1.3
 
 Host to VM
 scp *.jar dharmendra@192.168.1.9:/home/dharmendra/docker/target/
@@ -37,7 +37,7 @@ VM to HOST
 scp -r dharmendra@192.168.1.9:/home/dharmendra/apps/springboot-app .
 
 
-ssh -L 9001:localhost:9001 dharmendra@192.168.1.9
+ssh -L 9001:localhost:9001 dharmendra@192.168.1.3
 
 
 SSH connection:NAT adapter-cable connect-port forwar rule added.
@@ -49,6 +49,7 @@ update hostname:
 sudo nano /etc/hosts
 
 http://debian.mydebian.com/
+
 http://dk.company.com/
 Software install
 ------------------------
@@ -56,29 +57,80 @@ sudo mount /dev/cdrom /media/cdrom
 cd /media/cdrom
 sudo sh VBoxLinuxAdditions.run
 
+Utility tools install:
+----------------------
 sudo apt update && sudo apt upgrade -y
-sudo apt install curl wget git vim net-tools htop -y
+sudo apt install tree curl wget git vim net-tools htop -y
 
-
+Java install:
+---------------
 sudo apt install openjdk-17-jdk -y
 sudo apt install default-jre-headless -y
 java -version
 
+Docekr install:
+-----------------
 sudo apt install docker.io -y
 sudo systemctl start docker
 sudo usermod -aG docker $USER
 
 
+Docker Compose install:
+-----------------------
 sudo apt update
 sudo apt install docker-compose -y
 docker-compose version
 
 
+Kubctl install:
+-----------------
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 kubectl version --client
+
+Helm Install:
+---------------
+sudo apt-get install curl gpg apt-transport-https --yes
+curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/helm.gpg] https://packages.buildkite.com/helm-linux/helm-debian/any/ any main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
+
+
+Helmfile install:
+----------------
+step 1. curl -LO https://github.com/helmfile/helmfile/releases/download/v1.4.4/helmfile_1.4.4_linux_amd64.tar.gz
+
+Step 2. tar -zxvf helmfile_1.4.4_linux_amd64.tar.gz
+
+Step 3. sudo mv helmfile /usr/local/bin/
+
+helmfile version
+
 
 sudo apt update
 sudo apt install default-mysql-client -y
 
 mysql --version
+
+mysql -h 127.0.0.1 -P 3307 -u root -p
+
+----------------------
+# Disk usage and clean up
+----------------------------
+du -sh
+df -h
+
+All Unused Docker Data
+docker system prune -a --volumes
+
+Minikube Files	
+rm -rf ~/.minikube ~/.kube
+
+Docker Build Cache	
+docker builder prune -a
+
+Unused Apt Packages	
+sudo apt autoremove --purge
+
+---------

@@ -1,0 +1,18 @@
+Validate:
+----------
+helm template ./charts/springboot-app
+
+Apply via helmfile:
+-----------------------
+helmfile apply -e dev
+
+Upgrade or chnage
+------------------
+helmfile diff
+helmfile apply
+
+Destroy
+-------
+helmfile destroy
+
+

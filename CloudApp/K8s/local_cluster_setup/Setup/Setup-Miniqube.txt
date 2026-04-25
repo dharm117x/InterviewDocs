@@ -62,6 +62,10 @@ http://<minikube-ip>:<nodeport>
 kubectl port-forward svc/springboot-service 9001:9001 --address 0.0.0.0
 http://192.168.1.9:9001
 
-
+Minicube Uninstall
+-----------------------
+minikube delete --purge --all
+rm -rf ~/.minikube ~/.kube
+sudo rm /usr/local/bin/minikube 
 
 

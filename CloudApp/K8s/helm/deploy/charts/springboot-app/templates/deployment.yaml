@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "springboot-app.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "springboot-app.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "springboot-app.name" . }}
+    spec:
+      containers:
+        - name: app
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.service.targetPort }}
+          
+          # 1. Mount the volume into the container
+          volumeMounts:
+            - name: log-volume
+              mountPath: /app/logs  # Matches your Spring Boot logging path (logging.file.path)
+
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.env.SPRING_PROFILES_ACTIVE | quote }}
+            - name: SPRING_DATASOURCE_URL
+              value: {{ .Values.env.SPRING_DATASOURCE_URL | quote }}
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.env.SPRING_DATASOURCE_USERNAME | quote }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: {{ .Values.env.SPRING_DATASOURCE_PASSWORD | quote }}
+            # Optional: Ensure Spring Boot points to the mounted folder
+            - name: LOGGING_FILE_PATH
+              value: "/app/logs"
+            - name: LOGGING_FILE
+              value: docker-app  
+
+      # 2. Define the volume using the host's filesystem path
+      volumes:
+        - name: log-volume
+          hostPath:
+            path: /app/logs/  # Path on the physical host machine
+            type: DirectoryOrCreate           # Creates the folder on host if it doesn't exist
+
